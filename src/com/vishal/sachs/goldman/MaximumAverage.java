@@ -17,7 +17,6 @@ public class MaximumAverage {
 						new SimpleEntry<Integer, Integer>(Integer.parseInt(student[1]), 1));
 			} else {
 				Entry<Integer, Integer> entry = studentsMap.get(student[0]);
-				studentsMap.remove(student[0]);
 				studentsMap.put(student[0], new SimpleEntry<Integer, Integer>(
 						Integer.parseInt(student[1]) + entry.getKey(), entry.getValue() + 1));
 			}
