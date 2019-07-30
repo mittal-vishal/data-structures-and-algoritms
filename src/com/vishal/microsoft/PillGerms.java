@@ -41,6 +41,12 @@ public class PillGerms {
 					if (row < a.length - 1 && col < a[row].length - 1) {
 						a[row + 1][col + 1] = 'k';
 					}
+					if(row < a.length - 1 && col > 0) {
+						a[row+1][col-1] = 'k';
+					}
+					if(row > 0 && col < a[row].length - 1) {
+						a[row-1][col+1] = 'k';
+					}
 				}
 			}
 		}
