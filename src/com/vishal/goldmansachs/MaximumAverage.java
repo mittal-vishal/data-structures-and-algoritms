@@ -1,4 +1,4 @@
-package com.vishal.sachs.goldman;
+package com.vishal.goldmansachs;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.HashMap;
