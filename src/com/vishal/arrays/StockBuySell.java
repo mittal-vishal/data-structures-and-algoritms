@@ -24,13 +24,10 @@ public class StockBuySell {
 			}
 		}
 		for (int i = 0; i < price.length; i++) {
-			if (i == 0 || (price[i] < min && price[i] < price[i - 1])) {
+			if (i == 0 || (price[i] < min && price[i] < price[i - 1]) || (price[i] > min && price[i] < price[i-1])) {
 				min = price[i];
 				minima[i] = min;
 			} else if (price[i] > min && price[i] > price[i - 1]) {
-				minima[i] = min;
-			} else {
-				min = price[i];
 				minima[i] = min;
 			}
 		}
