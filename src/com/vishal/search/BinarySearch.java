@@ -3,8 +3,8 @@ package com.vishal.search;
 public class BinarySearch {
 
 	public static void main(String[] args) {
-		int a[] = { 1, 3, 7, 11, 15, 21, 35, 44, 56 };
-		System.out.println(find(a, 3));
+		int a[] = { 11, 15, 17, 18, 19, 20 };
+		System.out.println(find(a, 21));
 	}
 
 	private static int find(int[] a, int i) {
@@ -17,9 +17,9 @@ public class BinarySearch {
 			return -1;
 		}
 		if (item == a[mid]) {
-			return mid + 1;
+			return mid;
 		} else if (item < a[mid]) {
-			return find(a, 0, mid - 1, item);
+			return find(a, start, mid - 1, item);
 		} else {
 			return find(a, mid + 1, end, item);
 		}

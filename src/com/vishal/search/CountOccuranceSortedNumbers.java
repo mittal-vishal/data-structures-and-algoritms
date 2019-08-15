@@ -26,7 +26,7 @@ public class CountOccuranceSortedNumbers {
 			if (item == a[mid] && (mid == 0 ||item != a[mid - 1])) {
 				return mid;
 			} else if (item <= a[mid]) {
-				return find(a, 0, mid - 1, item, true);
+				return find(a, start, mid - 1, item, true);
 			} else {
 				return find(a, mid + 1, end, item, true);
 			}
@@ -34,7 +34,7 @@ public class CountOccuranceSortedNumbers {
 			if (item == a[mid] && (mid == 0 ||item != a[mid + 1])) {
 				return mid;
 			} else if (item < a[mid]) {
-				return find(a, 0, mid - 1, item, false);
+				return find(a, start, mid - 1, item, false);
 			} else {
 				return find(a, mid + 1, end, item, false);
 			}

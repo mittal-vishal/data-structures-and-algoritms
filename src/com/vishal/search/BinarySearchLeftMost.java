@@ -19,7 +19,7 @@ public class BinarySearchLeftMost {
 		if (item == a[mid] && (mid == 0 || a[mid - 1] != item)) {
 			return mid;
 		} else if (item <= a[mid]) {
-			return find(a, 0, mid - 1, item);
+			return find(a, start, mid - 1, item);
 		} else {
 			return find(a, mid + 1, end, item);
 		}
