@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,7 @@ public class FileProblem {
 	}
 	
 	public static Map<String, Integer> getStockWiseQuantity(File tradeFile) throws IOException {
-		Map<String, Integer> stockMap = new LinkedHashMap<>();
+		Map<String, Integer> stockMap = new HashMap<String, Integer>();
 		BufferedReader br = new BufferedReader(new FileReader(tradeFile));
 		for(String line = br.readLine(); line != null; line = br.readLine()) {
 			String[] array = line.split("\\,");
@@ -30,7 +31,6 @@ public class FileProblem {
 				stockMap.put(array[0], Integer.parseInt(array[2]));
 			}else {
 				int qty = stockMap.get(array[0]);
-				stockMap.remove(stockMap.get(array[0]));
 				stockMap.put(array[0], Integer.parseInt(array[2]) + qty);
 			}
 		}
