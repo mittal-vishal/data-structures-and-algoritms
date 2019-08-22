@@ -4,7 +4,7 @@ public class BinarySearch {
 
 	public static void main(String[] args) {
 		int a[] = { 11, 15, 17, 18, 19, 20 };
-		System.out.println(find(a, 21));
+		System.out.println(find(a, 20));
 	}
 
 	private static int find(int[] a, int i) {
