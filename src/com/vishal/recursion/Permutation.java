@@ -30,5 +30,9 @@ public class Permutation {
 		charArray[j] = temp;
 		return String.valueOf(charArray);
 	}
+	
+	public static void main(String args[]) {
+		System.out.println(permute("aaba"));
+	}
 
 }
