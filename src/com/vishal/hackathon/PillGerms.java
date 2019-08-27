@@ -1,4 +1,4 @@
-package com.vishal.microsoft;
+package com.vishal.hackathon;
 
 import java.util.Scanner;
 
