@@ -1,13 +1,17 @@
 package com.vishal.arrays;
 
+import java.util.Arrays;
+
 public class ThreeNumSum {
 
 	public static void main(String[] args) {
-		int a[] = { 2, 3, 4, 8, 9, 22, 40 };
-		System.out.println(findTriplet(a, 32));
+		int a[] = { 60, -65, 5, -21, 8, 93 };
+		Arrays.sort(a);
+		System.out.println(findTriplet(a, 0));
 	}
 
 	private static String findTriplet(int[] a, int item) {
+		Arrays.sort(a);
 		for (int i = 0; i < a.length-2; i++) {
 			if (find(a, i+1, a.length - 1, item - a[i]).equals("found")) {
 				return "found";
