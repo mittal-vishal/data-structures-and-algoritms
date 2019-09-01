@@ -13,7 +13,7 @@ public class Sort012 {
 	private static int[] sort(int[] a) {
 		int temp = 0;
 		int beg = 0, i = 0, end = a.length-1;
-		while(i < end) {
+		while(i <= end) {
 			switch (a[i]) {
 			case 0:
 				temp = a[i];
@@ -30,7 +30,6 @@ public class Sort012 {
 				a[i] = a[end];
 				a[end] = temp;
 				end--;
-				i++;
 				break;
 			default:
 				break;
