@@ -54,7 +54,7 @@ public class SmallestWindow {
 			if(set.contains(str.charAt(i))) {
 				map.put(i, str.charAt(i));
 			}
-			if(str.charAt(i) == pattern.charAt(j)) {
+			if(pattern.contains(String.valueOf(str.charAt(i)))) {
 				set.add(str.charAt(i));
 				if(j == 0) {
 					first = i;
