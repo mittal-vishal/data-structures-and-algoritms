@@ -7,11 +7,12 @@ public class SumSubArray {
 		find(a.length, 468, a);
 	}
 
-	private static void find(int length, int sum, int[] a) {
-		int startIndex = 0, lastIndex = 0;
+	private static void find(int length, int item, int[] a) {
+		int startIndex = 0;
+		int lastIndex = 0;
 		int totalSum = a[startIndex];
-		while(totalSum != sum) {
-			if (totalSum > sum) {
+		while(totalSum != item) {
+			if (totalSum > item) {
 				totalSum = totalSum - a[startIndex];
 				startIndex++;
 			} else {
@@ -23,7 +24,7 @@ public class SumSubArray {
 				}
 			}
 		}
-		if (totalSum == sum) {
+		if (totalSum == item) {
 			System.out.println((startIndex + 1) + " " + (lastIndex + 1));
 		} else {
 			System.out.println("-1");
