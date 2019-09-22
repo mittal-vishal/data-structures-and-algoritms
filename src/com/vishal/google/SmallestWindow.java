@@ -39,7 +39,7 @@ public class SmallestWindow {
 	private static int outputLast = 0;
 	
 	public static void main(String[] args) {
-		String str = "zoomlazapzo";
+		String str = "zoomlazoaza";
 		String pattern = "oza";
 		find(str, pattern, 0, 0, 0, 0);
 		if(min != Integer.MAX_VALUE) {
@@ -54,7 +54,7 @@ public class SmallestWindow {
 			if(set.contains(str.charAt(i))) {
 				map.put(i, str.charAt(i));
 			}
-			if(pattern.contains(String.valueOf(str.charAt(i)))) {
+			if(str.charAt(i) == pattern.charAt(j)) {
 				set.add(str.charAt(i));
 				if(j == 0) {
 					first = i;
