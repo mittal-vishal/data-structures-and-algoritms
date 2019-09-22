@@ -49,7 +49,7 @@ public class SmallestWindow {
 		}
 	}
 
-	private static void find(String str, String pattern, int first, int last, int i, int j) {
+	private static void find(String str, String pattern, int first, int last, int i, int j) { 
 		if(i < str.length() && j < pattern.length()) {
 			if(set.contains(str.charAt(i))) {
 				map.put(i, str.charAt(i));
