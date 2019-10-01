@@ -4,16 +4,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 public class SortByOccurances {
 
-	private static Map<Integer, Integer> sortByOccurances(int[] array) {
+	private static void sortByOccurances(int[] array) {
 		Map<Integer, Integer> arrayMap = new HashMap<>();
-		Map<Integer, Integer> returnedMap = new LinkedHashMap<>();
 		for (int i : array) {
 			if (arrayMap.containsKey(i)) {
 				int arrayMapValue = arrayMap.get(i);
@@ -25,7 +23,6 @@ public class SortByOccurances {
 		}
 		List<Entry<Integer, Integer>> arrayList = new ArrayList<>(arrayMap.entrySet());
 		Comparator<Entry<Integer, Integer>> customComparator = new Comparator<Map.Entry<Integer, Integer>>() {
-
 			@Override
 			public int compare(Entry<Integer, Integer> o1, Entry<Integer, Integer> o2) {
 				return o2.getValue().compareTo(o1.getValue());
@@ -33,14 +30,17 @@ public class SortByOccurances {
 		};
 		Collections.sort(arrayList, customComparator);
 		for (Entry<Integer, Integer> entry : arrayList) {
-			returnedMap.put(entry.getKey(), entry.getValue());
+			int count = entry.getValue();
+		    while(count > 0){
+		        System.out.print(entry.getKey() + " ");
+		        count--;
+		    }
 		}
-		return returnedMap;
 	}
 
 	public static void main(String args[]) {
-		int a[] = { 2, 5, 2, 7, 9, 7, 2, 9, 2, 9};
-		System.out.println(sortByOccurances(a));
+		int a[] = { 9, 2, 5, 2, 7, 7, 2, 9, 2, 9, 9};
+		sortByOccurances(a);
 	}
 
 }
