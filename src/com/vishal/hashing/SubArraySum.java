@@ -14,12 +14,13 @@ public class SubArraySum {
 	private static boolean find(int[] a, int x) {
 		Set<Integer> set = new HashSet<>();
 		int sum = 0;
+		set.add(0);
 		for(int i=0;i<a.length;i++) {
 			sum = sum + a[i];
-			if(set.contains(x-sum) || sum == 0) {
+			if(set.contains(sum - x)) {
 				return true;
 			}else {
-				set.add(x-sum);
+				set.add(sum);
 			}
 		}
 		return false;
