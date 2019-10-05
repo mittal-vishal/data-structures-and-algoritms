@@ -47,6 +47,29 @@ public class SinglyLinkedList {
 			temp.setNext(null);
 		}
 	}
+	
+	private static void deleteAtBeg() {
+		head = head.getNext();
+	}
+	
+	private static void deleteAtEnd() {
+		SinglyNode currNode = head;
+		SinglyNode prevNode = head;
+		while(currNode.getNext() != null) {
+			prevNode = currNode;
+			currNode = currNode.getNext();
+		}
+		prevNode.setNext(null);
+	}
+	
+	private static void deleteAtSpecificElement(int element) {
+		SinglyNode currNode = head;
+		while(currNode.getData() != element) {
+			currNode = currNode.getNext();
+		}
+		currNode.setData(currNode.getNext().getData());
+		currNode.setNext(null);
+	}
 
 	private static void print() {
 		SinglyNode current = head;
@@ -63,6 +86,9 @@ public class SinglyLinkedList {
 		insertAtBegin(2);
 		insertAfterSpecificElement(23, 5);
 		insertBeforeSpecificElement(34, 5);
+		deleteAtBeg();
+		deleteAtEnd();
+		deleteAtSpecificElement(5);
 		print();
 	}
 
