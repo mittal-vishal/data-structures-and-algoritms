@@ -79,7 +79,7 @@ public class SinglyLinkedList {
 		}
 		if(currNode == head) {
 			head = null;
-		}else {
+		}else if(currNode != null){
 			currNode.setData(currNode.getNext().getData());
 			currNode.setNext(null);
 		}

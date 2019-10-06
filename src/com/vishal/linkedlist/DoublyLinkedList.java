@@ -58,16 +58,67 @@ public class DoublyLinkedList {
 		}
 		temp.setNext(currNode);
 		temp.setPrev(currNode.getPrev());
-		currNode.getPrev().setNext(temp);
 		currNode.setPrev(temp);
+		if(currNode != head){
+			currNode.getPrev().setNext(temp);
+		}else {
+			head = temp;
+		}
+	}
+	
+	private static void insetAtPos(int x, int pos) {
+		DoublyNode temp = new DoublyNode(x);
+		DoublyNode currNode = head;
+		while (pos > 0) {
+		    currNode = currNode.getNext();
+			pos--;
+	   	}
+		temp.setNext(currNode.getNext());
+		currNode.setNext(temp);
+		temp.setPrev(currNode);
+	}
+	
+	private static void deleteAtBeg() {
+		if(head == null) {
+			return;
+		}else {
+			head = head.getNext();
+		}
+	}
+	
+	private static void deleteAtEnd() {
+		DoublyNode currNode = head;
+		while(currNode.getNext() != null) {
+			currNode = currNode.getNext();
+		}
+		currNode.getPrev().setNext(null);
+		currNode.setPrev(null);
+	}
+	
+	private static void deleteAtSpecificElement(int element) {
+		DoublyNode currNode = head;
+		while(currNode.getData() != element) {
+			currNode = currNode.getNext();
+		}
+		if(currNode == head) {
+			head = null;
+		}else if(currNode != null) {
+			currNode.getPrev().setNext(currNode.getNext());
+			currNode.getNext().setPrev(currNode.getPrev());
+		}
 	}
 	
 	public static void main(String[] args) {
 		insertAtBegining(8);
 		insertAtBegining(12);
 		insertAtEnd(3);
+		insertAtEnd(1);
 		insertAfterSpecificElement(34, 8);
 		insertBeforeSpecificElement(7, 8);
+		deleteAtBeg();
+		deleteAtEnd();
+		deleteAtSpecificElement(34);
+		insetAtPos(43, 0);
 		print();
 	}
 
