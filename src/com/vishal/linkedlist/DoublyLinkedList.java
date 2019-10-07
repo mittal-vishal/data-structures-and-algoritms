@@ -99,10 +99,13 @@ public class DoublyLinkedList {
 		DoublyNode currNode = head;
 		while(currNode.getData() != element) {
 			currNode = currNode.getNext();
+			if (currNode.getNext() == null && currNode.getData() != element) {
+				return;
+			}
 		}
 		if(currNode == head) {
 			head = null;
-		}else if(currNode != null) {
+		}else {
 			currNode.getPrev().setNext(currNode.getNext());
 			currNode.getNext().setPrev(currNode.getPrev());
 		}
@@ -117,7 +120,7 @@ public class DoublyLinkedList {
 		insertBeforeSpecificElement(7, 8);
 		deleteAtBeg();
 		deleteAtEnd();
-		deleteAtSpecificElement(34);
+		deleteAtSpecificElement(100);
 		insetAtPos(43, 0);
 		print();
 	}

@@ -1,13 +1,39 @@
 package com.vishal.linkedlist;
 
-public class SinglyLinkedList {
+public class CircularLinkedList {
 
 	private static SinglyNode head = null;
 
 	private static void insertAtBegin(int item) {
 		SinglyNode temp = new SinglyNode(item);
-		temp.setNext(head);
-		head = temp;
+		if (head == null) {
+			temp.setNext(head);
+			head = temp;
+			head.setNext(head);
+		} else {
+			SinglyNode currNode = head;
+			while (currNode.getNext() != head) {
+				currNode = currNode.getNext();
+			}
+			temp.setNext(head);
+			currNode.setNext(temp);
+			head = temp;
+		}
+	}
+
+	private static void insertAtEnd(int item) {
+		SinglyNode temp = new SinglyNode(item);
+		if (head == null) {
+			head = temp;
+			head.setNext(null);
+		} else {
+			SinglyNode currNode = head;
+			while (currNode.getNext() != head) {
+				currNode = currNode.getNext();
+			}
+			currNode.setNext(temp);
+			temp.setNext(head);
+		}
 	}
 
 	private static void insertAfterSpecificElement(int item, int element) {
@@ -33,25 +59,17 @@ public class SinglyLinkedList {
 		currNode.setNext(temp);
 	}
 
-	private static void insertAtEnd(int item) {
-		SinglyNode temp = new SinglyNode(item);
-		if (head == null) {
-			head = temp;
-			head.setNext(null);
-		} else {
-			SinglyNode currNode = head;
-			while (currNode.getNext() != null) {
-				currNode = currNode.getNext();
-			}
-			currNode.setNext(temp);
-			temp.setNext(null);
-		}
-	}
-
 	private static void deleteAtBeg() {
 		if (head == null) {
 			return;
+		} else if (head.getNext() == head) {
+			head = null;
 		} else {
+			SinglyNode currNode = head;
+			while (currNode.getNext() != head) {
+				currNode = currNode.getNext();
+			}
+			currNode.setNext(head.getNext());
 			head = head.getNext();
 		}
 	}
@@ -64,24 +82,28 @@ public class SinglyLinkedList {
 		} else {
 			SinglyNode currNode = head;
 			SinglyNode prevNode = head;
-			while (currNode.getNext() != null) {
+			while (currNode.getNext() != head) {
 				prevNode = currNode;
 				currNode = currNode.getNext();
 			}
-			prevNode.setNext(null);
+			prevNode.setNext(head);
 		}
 	}
 
 	private static void deleteAtSpecificElement(int element) {
 		SinglyNode currNode = head;
+		SinglyNode prevNode = head;
 		while (currNode.getData() != element) {
+			prevNode = currNode;
 			currNode = currNode.getNext();
-			if (currNode.getNext() == null && currNode.getData() != element) {
+			if (currNode.getNext() == head && currNode.getData() != element) {
 				return;
 			}
 		}
 		if (currNode == head) {
 			head = null;
+		} else if (currNode.getNext() == head) {
+			prevNode.setNext(head);
 		} else {
 			currNode.setData(currNode.getNext().getData());
 			currNode.setNext(currNode.getNext().getNext());
@@ -90,22 +112,26 @@ public class SinglyLinkedList {
 
 	private static void print() {
 		SinglyNode current = head;
-		while (current != null) {
+		do {
 			System.out.print(current.getData() + " ");
 			current = current.getNext();
-		}
+		} while (current != head);
 	}
 
 	public static void main(String[] args) {
 		insertAtBegin(5);
-		insertAtBegin(12);
-		insertAtEnd(3);
 		insertAtBegin(2);
-		insertAfterSpecificElement(23, 5);
-		insertBeforeSpecificElement(34, 5);
+		insertAtBegin(7);
+		insertAtEnd(12);
+		insertAtBegin(32);
+		insertAfterSpecificElement(8, 5);
+		insertBeforeSpecificElement(43, 5);
+		insertAtEnd(3);
+		deleteAtBeg();
 		deleteAtBeg();
 		deleteAtEnd();
 		deleteAtSpecificElement(5);
+		deleteAtSpecificElement(12);
 		print();
 	}
 
