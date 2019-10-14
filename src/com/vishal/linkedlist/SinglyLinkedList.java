@@ -96,16 +96,78 @@ public class SinglyLinkedList {
 		}
 	}
 
+	private static int findNthNodeFromLast(int n) {
+		SinglyNode currNode = head;
+		int length = 0;
+		while (currNode != null) {
+			length++;
+			currNode = currNode.getNext();
+		}
+		if (n > length || n <= 0) {
+			return -1;
+		}
+		currNode = head;
+		int count = (length - n + 1);
+		while (count != 1) {
+			currNode = currNode.getNext();
+			count--;
+		}
+		return currNode.getData();
+	}
+
+	private static int findMiddle() {
+		SinglyNode currNode = head;
+		SinglyNode doubleNode = head;
+		while (doubleNode != null && (doubleNode != null && doubleNode.getNext() != null)) {
+			currNode = currNode.getNext();
+			doubleNode = doubleNode.getNext().getNext();
+		}
+		return currNode.getData();
+	}
+	
+	private static void reverseIteratively() {
+		SinglyNode currNode = head;
+		SinglyNode prevNode = null;
+		SinglyNode temp = null;
+		while(currNode != null) {
+			temp = currNode.getNext();
+			currNode.setNext(prevNode);
+			prevNode = currNode;
+			currNode = temp;
+		}
+		head = prevNode;
+	}
+	
+	private static void reverseRecursively(SinglyNode currNode, SinglyNode prevNode) {
+		if(currNode != null) {
+			SinglyNode temp = null;
+			temp = currNode.getNext();
+			currNode.setNext(prevNode);
+			reverseRecursively(temp, currNode);
+		}else {
+			head = prevNode;
+		}
+	}
+
 	public static void main(String[] args) {
 		insertAtBegin(5);
 		insertAtBegin(12);
 		insertAtEnd(3);
 		insertAtBegin(2);
+		insertAtEnd(7);
 		insertAfterSpecificElement(23, 5);
 		insertBeforeSpecificElement(34, 5);
 		deleteAtBeg();
 		deleteAtEnd();
 		deleteAtSpecificElement(5);
+		System.out.println("nth node = " + findNthNodeFromLast(3));
+		System.out.println("middle node is = " + findMiddle());
+		print();
+		reverseRecursively(head, null);
+		System.out.println();
+		print();
+		reverseIteratively();
+		System.out.println();
 		print();
 	}
 
