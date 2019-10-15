@@ -1,5 +1,8 @@
 package com.vishal.linkedlist;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 public class CircularLinkedList {
 
 	private static SinglyNode head = null;
@@ -130,6 +133,57 @@ public class CircularLinkedList {
 		}
 		return false;
 	}
+	
+	private static boolean isCycleExist() {
+		SinglyNode currNode = head;
+		Set<SinglyNode> hashSet = new LinkedHashSet<>();
+		while (currNode != null) {
+			if (!hashSet.contains(currNode)) {
+				hashSet.add(currNode);
+			}else {
+				return true;
+			}
+			currNode = currNode.getNext();
+		}
+		return false;
+	}
+	
+	private static void removeCycle() {
+		SinglyNode currNode = head;
+		Set<SinglyNode> hashSet = new LinkedHashSet<>();
+		while (currNode != null && currNode.getNext() != null) {
+			if (!hashSet.contains(currNode.getNext())) {
+				hashSet.add(currNode);
+			}else {
+				currNode.setNext(null);
+			}
+			currNode = currNode.getNext();
+		}
+	}
+	
+	private static void removeCycleUsingFloyd() {
+		SinglyNode fast = head;
+		SinglyNode slow = head;
+		while (fast != null && fast.getNext() != null) {
+			slow = slow.getNext();
+			fast = fast.getNext().getNext();
+			if(fast == slow) {
+				break;
+			}
+		}
+		if(slow != fast) {
+			return;
+		}
+		slow = head;
+		while(slow != fast) {
+			slow = slow.getNext();
+			fast = fast.getNext();
+		}
+		while(slow != null && slow.getNext() != fast) {
+			slow = slow.getNext();
+		}
+		slow.setNext(null);
+	}
 
 	public static void main(String[] args) {
 		insertAtBegin(5);
@@ -146,6 +200,9 @@ public class CircularLinkedList {
 		deleteAtSpecificElement(5);
 		deleteAtSpecificElement(12);
 		System.out.println(isCycle());
+		System.out.println(isCycleExist());
+		removeCycle();
+		removeCycleUsingFloyd();
 		print();
 	}
 

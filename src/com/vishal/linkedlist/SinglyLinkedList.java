@@ -1,5 +1,8 @@
 package com.vishal.linkedlist;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 public class SinglyLinkedList {
 
 	private static SinglyNode head = null;
@@ -161,6 +164,20 @@ public class SinglyLinkedList {
 		}
 		return false;
 	}
+	
+	private static boolean isCycleExist() {
+		SinglyNode currNode = head;
+		Set<SinglyNode> hashSet = new LinkedHashSet<>();
+		while (currNode != null) {
+			if (!hashSet.contains(currNode)) {
+				hashSet.add(currNode);
+			}else {
+				return true;
+			}
+			currNode = currNode.getNext();
+		}
+		return false;
+	}
 
 	public static void main(String[] args) {
 		insertAtBegin(5);
@@ -179,6 +196,7 @@ public class SinglyLinkedList {
 		reverseRecursively(head, null);
 		System.out.println();
 		System.out.println("cycle = " + isCycle());
+		System.out.println("cycle = " + isCycleExist());
 		print();
 		reverseIteratively();
 		System.out.println();
