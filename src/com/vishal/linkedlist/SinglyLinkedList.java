@@ -1,5 +1,6 @@
 package com.vishal.linkedlist;
 
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -185,9 +186,28 @@ public class SinglyLinkedList {
 	        if(curr.getData() == curr.getNext().getData()){
 	            curr.setData(curr.getNext().getData());
 	            curr.setNext(curr.getNext().getNext());
-	        }else{
-	            curr = curr.getNext();
 	        }
+	        curr = curr.getNext();
+	    }
+	}
+	
+	private static void purgeDuplicateInUnSortedList() {
+		SinglyNode curr = head;
+		SinglyNode prev = head;
+		Set<Integer> hashSet = new HashSet<>(); 
+	    while(curr != null){
+	        if(hashSet.contains(curr.getData())){
+	        	if(curr.getNext() != null) {
+	        		curr.setData(curr.getNext().getData());
+		            curr.setNext(curr.getNext().getNext());
+	        	}else {
+	        		prev.setNext(null);
+	        	}
+	        }else {
+	        	hashSet.add(curr.getData());
+	        }
+	        prev = curr;
+	        curr = curr.getNext();
 	    }
 	}
 
@@ -211,7 +231,11 @@ public class SinglyLinkedList {
 		System.out.println("cycle = " + isCycleExist());
 		print();
 		reverseIteratively();
+		insertAtEnd(7);
+		insertAtBegin(7);
+		insertAtBegin(7);
 		purgeDuplicateInSortedList();
+		purgeDuplicateInUnSortedList();
 		System.out.println();
 		print();
 	}
