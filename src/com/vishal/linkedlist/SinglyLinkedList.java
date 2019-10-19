@@ -178,6 +178,18 @@ public class SinglyLinkedList {
 		}
 		return false;
 	}
+	
+	private static void purgeDuplicateInSortedList() {
+		SinglyNode curr = head;
+	    while(curr != null && curr.getNext() != null){
+	        if(curr.getData() == curr.getNext().getData()){
+	            curr.setData(curr.getNext().getData());
+	            curr.setNext(curr.getNext().getNext());
+	        }else{
+	            curr = curr.getNext();
+	        }
+	    }
+	}
 
 	public static void main(String[] args) {
 		insertAtBegin(5);
@@ -199,6 +211,7 @@ public class SinglyLinkedList {
 		System.out.println("cycle = " + isCycleExist());
 		print();
 		reverseIteratively();
+		purgeDuplicateInSortedList();
 		System.out.println();
 		print();
 	}
