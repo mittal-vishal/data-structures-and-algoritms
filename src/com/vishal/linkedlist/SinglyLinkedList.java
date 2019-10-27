@@ -210,6 +210,42 @@ public class SinglyLinkedList {
 	        curr = curr.getNext();
 	    }
 	}
+	
+	private static void segregateEvenAndOdd() {
+		SinglyNode currNode = head;
+		SinglyNode endNode = null;
+		while(currNode != null) {
+			endNode = currNode;
+			currNode = currNode.getNext();
+		}
+		currNode = head;
+		SinglyNode actualEndNode = endNode;
+		while(currNode != actualEndNode) {
+			if(currNode.getData() % 2 == 1) {
+				endNode.setNext(currNode);
+				currNode = currNode.getNext();
+				endNode = endNode.getNext();
+				endNode.setNext(null);
+				head = currNode;
+			}else {
+				break;
+			}
+		}
+		SinglyNode prevNode = null;
+		while(currNode != actualEndNode) {
+			if(currNode.getData() % 2 == 0) {
+				prevNode = currNode;
+				currNode = currNode.getNext();
+			}else if(prevNode != null){
+				endNode.setNext(currNode);
+				prevNode.setNext(currNode.getNext());
+				currNode = currNode.getNext();
+				endNode = endNode.getNext();
+				endNode.setNext(null);
+			}
+		}
+		
+	}
 
 	public static void main(String[] args) {
 		insertAtBegin(5);
@@ -236,6 +272,9 @@ public class SinglyLinkedList {
 		insertAtBegin(7);
 		purgeDuplicateInSortedList();
 		purgeDuplicateInUnSortedList();
+		System.out.println();
+		print();
+		segregateEvenAndOdd();
 		System.out.println();
 		print();
 	}
