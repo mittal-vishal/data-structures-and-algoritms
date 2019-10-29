@@ -165,78 +165,73 @@ public class SinglyLinkedList {
 		}
 		return false;
 	}
-	
+
 	private static boolean isCycleExist() {
 		SinglyNode currNode = head;
 		Set<SinglyNode> hashSet = new LinkedHashSet<>();
 		while (currNode != null) {
 			if (!hashSet.contains(currNode)) {
 				hashSet.add(currNode);
-			}else {
+			} else {
 				return true;
 			}
 			currNode = currNode.getNext();
 		}
 		return false;
 	}
-	
+
 	private static void purgeDuplicateInSortedList() {
 		SinglyNode curr = head;
-	    while(curr != null && curr.getNext() != null){
-	        if(curr.getData() == curr.getNext().getData()){
-	            curr.setData(curr.getNext().getData());
-	            curr.setNext(curr.getNext().getNext());
-	        }
-	        curr = curr.getNext();
-	    }
+		while (curr != null && curr.getNext() != null) {
+			if (curr.getData() == curr.getNext().getData()) {
+				curr.setData(curr.getNext().getData());
+				curr.setNext(curr.getNext().getNext());
+			}
+			curr = curr.getNext();
+		}
 	}
-	
+
 	private static void purgeDuplicateInUnSortedList() {
+		Set<Integer> set = new HashSet<>();
 		SinglyNode curr = head;
-		SinglyNode prev = head;
-		Set<Integer> hashSet = new HashSet<>(); 
-	    while(curr != null){
-	        if(hashSet.contains(curr.getData())){
-	        	if(curr.getNext() != null) {
-	        		curr.setData(curr.getNext().getData());
-		            curr.setNext(curr.getNext().getNext());
-	        	}else {
-	        		prev.setNext(null);
-	        	}
-	        }else {
-	        	hashSet.add(curr.getData());
-	        }
-	        prev = curr;
-	        curr = curr.getNext();
-	    }
+		SinglyNode prev = null;
+		while (curr != null) {
+			if (set.contains(curr.getData()) && prev != null) {
+				prev.setNext(curr.getNext());
+			} else {
+				set.add(curr.getData());
+				prev = curr;
+			}
+			curr = curr.getNext();
+		}
 	}
-	
+
 	private static void segregateEvenAndOdd() {
 		SinglyNode currNode = head;
 		SinglyNode endNode = null;
-		while(currNode != null) {
+		while (currNode != null) {
 			endNode = currNode;
 			currNode = currNode.getNext();
 		}
 		currNode = head;
 		SinglyNode actualEndNode = endNode;
-		while(currNode != actualEndNode) {
-			if(currNode.getData() % 2 == 1) {
+		while (currNode != actualEndNode) {
+			if (currNode.getData() % 2 == 1) {
 				endNode.setNext(currNode);
 				currNode = currNode.getNext();
 				endNode = endNode.getNext();
 				endNode.setNext(null);
 				head = currNode;
-			}else {
+			} else {
 				break;
 			}
 		}
 		SinglyNode prevNode = null;
-		while(currNode != actualEndNode) {
-			if(currNode.getData() % 2 == 0) {
+		while (currNode != actualEndNode) {
+			if (currNode.getData() % 2 == 0) {
 				prevNode = currNode;
 				currNode = currNode.getNext();
-			}else if(prevNode != null){
+			} else if (prevNode != null) {
 				endNode.setNext(currNode);
 				prevNode.setNext(currNode.getNext());
 				currNode = currNode.getNext();
@@ -244,7 +239,57 @@ public class SinglyLinkedList {
 				endNode.setNext(null);
 			}
 		}
-		
+
+	}
+
+	private static void segregateEvenAndOdd1() {
+		SinglyNode evenStart = null;
+		SinglyNode evenEnd = null;
+		SinglyNode oddStart = null;
+		SinglyNode oddEnd = null;
+		for (SinglyNode currNode = head; currNode != null; currNode = currNode.getNext()) {
+			if (currNode.getData() % 2 == 0 && (currNode == head || evenStart == null)) {
+				evenStart = currNode;
+				evenEnd = evenStart;
+			} else if (currNode.getData() % 2 == 0 && currNode != head && evenEnd != null) {
+				evenEnd.setNext(currNode);
+				evenEnd = evenEnd.getNext();
+			} else if (currNode.getData() % 2 == 1 && (currNode == head || oddStart == null)) {
+				oddStart = currNode;
+				oddEnd = oddStart;
+			} else if (currNode.getData() % 2 == 1 && currNode != head && oddEnd != null){
+				oddEnd.setNext(currNode);
+				oddEnd = oddEnd.getNext();
+			}
+		}
+		if (evenEnd != null && oddStart != null) {
+			evenEnd.setNext(oddStart);
+			oddEnd.setNext(null);
+		}else if(evenStart == null) {
+			head = oddStart;
+			oddEnd.setNext(null);
+		}else {
+			head = evenStart;
+			evenEnd.setNext(null);
+		}
+		head = evenStart;
+	}
+	
+	private static int intersectPoint(SinglyNode headA, SinglyNode headB) {
+	    Set<SinglyNode> set = new HashSet<>();
+	    SinglyNode currNode = headA;
+        while(currNode != null){
+             set.add(currNode);
+             currNode = currNode.getNext();
+        }
+        currNode = headB;
+        while(currNode != null){
+             if(set.contains(currNode)){
+                 return currNode.getData();
+             }
+             currNode = currNode.getNext();
+        }
+        return -1;
 	}
 
 	public static void main(String[] args) {
@@ -275,8 +320,11 @@ public class SinglyLinkedList {
 		System.out.println();
 		print();
 		segregateEvenAndOdd();
+		segregateEvenAndOdd1();
 		System.out.println();
 		print();
+		System.out.println();
+		System.out.println(intersectPoint(head, head));
 	}
 
 }
