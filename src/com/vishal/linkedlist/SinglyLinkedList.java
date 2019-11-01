@@ -291,6 +291,27 @@ public class SinglyLinkedList {
         }
         return -1;
 	}
+	
+	private static void pairwiseSwap(SinglyNode head) {
+		SinglyNode currNode = head;
+		SinglyNode temp = null;
+		SinglyNode currIncr = null;
+		SinglyNode prev = null;
+        while(currNode != null && currNode.getNext() != null){
+            currIncr = currNode.getNext().getNext();
+            temp = currNode.getNext();
+        	if(currNode == head){
+                head = currNode.getNext();
+            }else {
+                prev.setNext(temp);
+            }
+            currNode.setNext(currNode.getNext().getNext());
+            temp.setNext(currNode);
+            prev = currNode;
+            currNode = currIncr;
+        }
+        SinglyLinkedList.head = head;
+    }
 
 	public static void main(String[] args) {
 		insertAtBegin(5);
@@ -325,6 +346,9 @@ public class SinglyLinkedList {
 		print();
 		System.out.println();
 		System.out.println(intersectPoint(head, head));
+		pairwiseSwap(head);
+		print();
+		
 	}
 
 }
