@@ -43,9 +43,9 @@ public class ArrayImpl {
 	}
 	
 	private static void print() {
-		for(int i : stack) {
-			if(i != Integer.MIN_VALUE) {
-				System.out.print(i + " ");
+		for(int i = top; i >= 0; i--) {
+			if(stack[i] != Integer.MIN_VALUE) {
+				System.out.print(stack[i] + " ");
 			}else {
 				break;
 			}
