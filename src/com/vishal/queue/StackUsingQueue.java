@@ -1,6 +1,9 @@
 package com.vishal.queue;
 
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class StackUsingQueue {
 	
@@ -15,9 +18,9 @@ public class StackUsingQueue {
 		pop();
 		push(4);
 		push(1);
+		push(15);
 		print();
 		pop();
-		push(15);
 		System.out.println();
 		print();
 	}
@@ -30,9 +33,18 @@ public class StackUsingQueue {
 			queue[++rear] = item;
 			front = 0;
 		}else {
-			int popItem = pop();
+			Queue<Integer> tempQueue = new LinkedList<Integer>();
+			for(int i= 0; i < queue.length; i++) {
+				int element = pop();
+				if(element != -1) {
+					tempQueue.add(element);
+				}
+			}
 			queue[++rear] = item;
-			queue[++rear] = popItem;
+			Iterator<Integer> itr = tempQueue.iterator();
+			while(itr.hasNext()) {
+				queue[++rear] = itr.next();
+			}
 		}
 	}
 	
