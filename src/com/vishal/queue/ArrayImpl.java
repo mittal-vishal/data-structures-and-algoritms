@@ -1,5 +1,10 @@
 package com.vishal.queue;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
+
 public class ArrayImpl {
 
 	private static int QUEUE_SIZE = 10;
@@ -8,12 +13,23 @@ public class ArrayImpl {
 	private static int rear = -1;
 	
 	public static void main(String[] args) {
+		Arrays.fill(QUEUE, Integer.MIN_VALUE);
 		push(10);
 		push(5);
 		push(12);
 		push(20);
 		pop();
 		display();
+		System.out.println();
+		reverseIteratively();
+		display();
+		System.out.println();
+		Queue<Integer> queue = new LinkedList<Integer>();
+		queue.add(1);
+		queue.add(2);
+		queue.add(4);
+		reverseRecursively(queue);
+		System.out.println(queue);
 	}
 	
 	private static void push(int item) {
@@ -40,6 +56,28 @@ public class ArrayImpl {
 	private static void display() {
 		for(int i = front ; i <= rear; i++ ) {
 			System.out.print(QUEUE[i] + " ");
+		}
+	}
+	
+	private static void reverseIteratively() {
+		Stack<Integer> stack = new Stack<>();
+		for(int i = front; i <= rear; i++) {
+			if(QUEUE[i] != Integer.MIN_VALUE) {
+				stack.push(pop());
+			}
+		}
+		while(!stack.isEmpty()) {
+			push(stack.pop());
+		}
+	}
+	
+	private static void reverseRecursively(Queue<Integer> queue) {
+		if(queue.isEmpty()) {
+			return;
+		}else {
+			int item = queue.remove();
+			reverseRecursively(queue);
+			queue.add(item);
 		}
 	}
 
