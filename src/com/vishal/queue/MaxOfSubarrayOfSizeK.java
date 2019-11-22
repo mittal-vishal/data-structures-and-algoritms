@@ -1,7 +1,7 @@
 package com.vishal.queue;
 
-import java.util.Deque;
 import java.util.LinkedList;
+import java.util.Queue;
 
 public class MaxOfSubarrayOfSizeK {
 
@@ -30,26 +30,22 @@ public class MaxOfSubarrayOfSizeK {
 	
 	private static void findUsingQueue(int[] arr, int k) {
 		int max = Integer.MIN_VALUE;
-		Deque<Integer> queue = new LinkedList<Integer>();
+		Queue<Integer> queue = new LinkedList<Integer>();
 		for(int i=0;i<k;i++) {
 			if(arr[i] > max) {
 				max = arr[i];
-				queue.addFirst(max);
-			}else {
-				queue.addLast(arr[i]);
+				queue.add(max);
 			}
 		}
-		System.out.print(queue.peek() + " ");
-		queue.removeLast();
+		System.out.print(max + " ");
+		queue.remove();
 		for(int i=k;i<arr.length;i++){
 			if(arr[i] > max) {
 				max = arr[i];
-				queue.addFirst(max);
-			}else {
-				queue.addLast(arr[i]);
 			}
-			System.out.print(queue.peek() + " ");
-			queue.removeLast();
+			queue.add(arr[i]);
+			System.out.print(max + " ");
+			queue.remove();
 		}
 	}
 
