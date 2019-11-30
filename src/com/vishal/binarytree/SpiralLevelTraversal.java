@@ -9,10 +9,10 @@ public class SpiralLevelTraversal {
 	private static Node rootNode = null;
 
 	public static void main(String[] args) {
-		rootNode = new Node(5);
+		rootNode = new Node(1);
 		rootNode.setLeft(new Node(2));
-		rootNode.setRight(new Node(25));
-		rootNode.getLeft().setLeft(new Node(1));
+		rootNode.setRight(new Node(3));
+		rootNode.getLeft().setLeft(new Node(34));
 		rootNode.getLeft().setRight(new Node(4));
 		rootNode.getRight().setLeft(new Node(13));
 		rootNode.getRight().setRight(new Node(40));
@@ -27,40 +27,40 @@ public class SpiralLevelTraversal {
 		queue.add(root);
 		queue.add(null);
 		int level = 1;
-		while(!queue.isEmpty()) {
-			if(queue.size() == 1 && queue.peek() == null) {
+		while (!queue.isEmpty()) {
+			if (queue.size() == 1 && queue.peek() == null && (level % 2 != 1)) {
 				break;
 			}
-			if(level % 2 == 1) {
-				if(queue.peek() != null) {
+			if (level % 2 == 1) {
+				if (queue.peek() != null) {
 					Node item = queue.poll();
 					stack.push(item);
-					if(item.getLeft() != null) {
+					if (item.getLeft() != null) {
 						queue.add(item.getLeft());
 					}
-					if(item.getRight() != null) {
+					if (item.getRight() != null) {
 						queue.add(item.getRight());
 					}
-				}else {
+				} else {
 					queue.poll();
 					queue.add(null);
-					while(!stack.isEmpty()) {
+					while (!stack.isEmpty()) {
 						System.out.print(stack.pop().getData() + " ");
 					}
 					System.out.println();
 					level++;
 				}
-			}else {
-				if(queue.peek() != null) {
+			} else {
+				if (queue.peek() != null) {
 					Node item = queue.poll();
 					System.out.print(item.getData() + " ");
-					if(item.getLeft() != null) {
+					if (item.getLeft() != null) {
 						queue.add(item.getLeft());
 					}
-					if(item.getRight() != null) {
+					if (item.getRight() != null) {
 						queue.add(item.getRight());
 					}
-				}else {
+				} else {
 					queue.poll();
 					queue.add(null);
 					System.out.println();
