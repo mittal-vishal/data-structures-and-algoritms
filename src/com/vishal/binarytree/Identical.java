@@ -28,7 +28,7 @@ public class Identical {
 	private static boolean find(Node rootA, Node rootB) {
 		if (rootA == null && rootB == null) {
 			return true;
-		} else if (rootA == null || rootB == null) {
+		} else if ((rootA == null && rootB != null) || (rootA != null && rootB == null)) {
 			return false;
 		} else {
 			return rootA.getData() == rootB.getData() && find(rootA.getLeft(), rootB.getLeft())
