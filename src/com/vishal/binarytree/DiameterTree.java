@@ -2,7 +2,7 @@ package com.vishal.binarytree;
 
 public class DiameterTree {
 
-private static Node rootNode = null;
+	private static Node rootNode = null;
 	
 	public static void main(String[] args) {
 		rootNode = new Node(1);
