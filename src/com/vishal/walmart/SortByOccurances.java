@@ -21,25 +21,23 @@ public class SortByOccurances {
 				arrayMap.put(i, 1);
 			}
 		}
+		
 		List<Entry<Integer, Integer>> arrayList = new ArrayList<>(arrayMap.entrySet());
-		Comparator<Entry<Integer, Integer>> customComparator = new Comparator<Map.Entry<Integer, Integer>>() {
-			@Override
-			public int compare(Entry<Integer, Integer> o1, Entry<Integer, Integer> o2) {
-				return o2.getValue().compareTo(o1.getValue());
-			}
-		};
+		Comparator<Entry<Integer, Integer>> customComparator = (Entry<Integer, Integer> o1,
+				Entry<Integer, Integer> o2) -> o2.getValue().compareTo(o1.getValue());
 		Collections.sort(arrayList, customComparator);
+		
 		for (Entry<Integer, Integer> entry : arrayList) {
 			int count = entry.getValue();
-		    while(count > 0){
-		        System.out.print(entry.getKey() + " ");
-		        count--;
-		    }
+			while (count > 0) {
+				System.out.print(entry.getKey() + " ");
+				count--;
+			}
 		}
 	}
 
 	public static void main(String args[]) {
-		int a[] = { 9, 2, 5, 2, 7, 7, 2, 9, 2, 9, 9};
+		int a[] = { 9, 2, 5, 2, 7, 7, 2, 9, 2, 9, 9 };
 		sortByOccurances(a);
 	}
 
