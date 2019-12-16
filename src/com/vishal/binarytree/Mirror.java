@@ -1,6 +1,6 @@
 package com.vishal.binarytree;
 
-public class PreOrder {
+public class Mirror {
 
 	private static Node rootNode = null;
 
@@ -10,19 +10,21 @@ public class PreOrder {
 		rootNode.setRight(new Node(3));
 		rootNode.getLeft().setLeft(new Node(34));
 		rootNode.getLeft().setRight(new Node(4));
-		rootNode.getRight().setLeft(new Node(13));
-		rootNode.getRight().setRight(new Node(40));
-		rootNode.getLeft().getLeft().setLeft(new Node(10));
-		rootNode.getLeft().getLeft().setRight(new Node(12));
+		PreOrder.find(rootNode);
 		find(rootNode);
+		System.out.println();
+		PreOrder.find(rootNode);
 	}
 
-	public static void find(Node root) {
-		if(root != null){
-			System.out.print(root.getData() + " ");
+	private static void find(Node root) {
+		Node temp = null;
+		if(root != null && (root.getLeft() != null || root.getRight() != null)) {
 			find(root.getLeft());
 			find(root.getRight());
+			temp = root.getLeft();
+			root.setLeft(root.getRight());
+			root.setRight(temp);
 		}
 	}
-
+	
 }
