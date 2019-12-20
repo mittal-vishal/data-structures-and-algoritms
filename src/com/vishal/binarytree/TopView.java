@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class VerticalOrder {
-
+public class TopView {
+	
 	private static Node rootNode = null;
 	private static List<Integer> list = null;
 	private static Map<Integer, List<Integer>> map = null;
@@ -31,9 +31,7 @@ public class VerticalOrder {
 		Collections.sort(sortList, customComparator);
 
 		for (Entry<Integer, List<Integer>> entry : sortList) {
-			for (Integer i : entry.getValue()) {
-				System.out.print(i + " ");
-			}
+			System.out.print(entry.getValue().get(0) + " ");
 		}
 	}
 

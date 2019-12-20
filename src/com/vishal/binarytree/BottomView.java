@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class VerticalOrder {
+public class BottomView {
 
 	private static Node rootNode = null;
 	private static List<Integer> list = null;
@@ -20,7 +20,7 @@ public class VerticalOrder {
 		rootNode.setRight(new Node(3));
 		rootNode.getLeft().setLeft(new Node(34));
 		rootNode.getLeft().setRight(new Node(4));
-		
+
 		find(rootNode);
 
 		List<Entry<Integer, List<Integer>>> sortList = new LinkedList<>(map.entrySet());
@@ -29,11 +29,11 @@ public class VerticalOrder {
 				Entry<Integer, List<Integer>> o2) -> o1.getKey().compareTo(o2.getKey());
 
 		Collections.sort(sortList, customComparator);
+		
+		System.out.println(sortList);
 
 		for (Entry<Integer, List<Integer>> entry : sortList) {
-			for (Integer i : entry.getValue()) {
-				System.out.print(i + " ");
-			}
+			System.out.print(entry.getValue().get(entry.getValue().size() - 1) + " ");
 		}
 	}
 
