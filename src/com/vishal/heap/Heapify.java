@@ -2,10 +2,10 @@ package com.vishal.heap;
 
 import java.util.Arrays;
 
-public class Insertion {
+public class Heapify {
 	
 	private static final int CAPACITY = 10;
-	private static int heap[] = null;
+	private static int[] heap = null;
 	private static int size;
 	
 	public static int getLeft(int i) {
@@ -44,6 +44,23 @@ public class Insertion {
 		}
 	}
 	
+	public static void minHeapify(int[] heap, int pos) {
+		int min = pos;
+		if(getLeft(min) < size && heap[getLeft(min)] < heap[min]) {
+			min = getLeft(min);
+		}
+		if(getRight(min) < size && heap[getRight(min)] < heap[min]) {
+			min = getRight(min);
+		}
+		if(min != pos) {
+			int temp = heap[pos];
+			heap[pos] = heap[min];
+			heap[min] = temp;
+			pos = min;
+			minHeapify(heap, pos);
+		}
+	}
+	
 	public static void main(String[] args) {
 		heap = new int[CAPACITY];
 		Arrays.fill(heap, -1);
@@ -59,5 +76,5 @@ public class Insertion {
 		insert(12);
 		display();
 	}
-
+	
 }
