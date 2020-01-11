@@ -1,6 +1,6 @@
 package com.vishal.heap;
 
-public class ExtractMin {
+public class Delete {
 
 	private static final int CAPACITY = 10;
 	private static int[] heap = null;
@@ -42,6 +42,20 @@ public class ExtractMin {
 		}
 	}
 
+	public static void decreaseKey(int[] heap, int pos, int item) {
+		if (pos < size) {
+			heap[pos] = 3;
+			int temp = -1;
+			for (int i = pos; i > 0; i = getParent(i)) {
+				if (heap[i] < heap[getParent(i)]) {
+					temp = heap[i];
+					heap[i] = heap[getParent(i)];
+					heap[getParent(i)] = temp;
+				}
+			}
+		}
+	}
+
 	public static void minHeapify(int[] heap, int pos) {
 		int min = pos;
 		if (getLeft(min) < size && heap[getLeft(min)] < heap[min]) {
@@ -73,6 +87,16 @@ public class ExtractMin {
 		return heap[size];
 	}
 
+	public static void delete(int[] heap, int pos) {
+		if (pos < size) {
+			decreaseKey(heap, pos, Integer.MIN_VALUE);
+			extractMin();
+		} else {
+			System.out.println("Underflow");
+			return;
+		}
+	}
+
 	public static void main(String[] args) {
 		heap = new int[CAPACITY];
 		size = 0;
@@ -87,8 +111,7 @@ public class ExtractMin {
 		insert(12);
 		display();
 		System.out.println();
-		System.out.println(extractMin());
-		System.out.println();
+		delete(heap, 7);
 		display();
 	}
 

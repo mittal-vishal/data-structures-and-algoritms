@@ -1,7 +1,5 @@
 package com.vishal.heap;
 
-import java.util.Arrays;
-
 public class DecreaseKey {
 
 	private static final int CAPACITY = 10;
@@ -60,7 +58,6 @@ public class DecreaseKey {
 	
 	public static void main(String[] args) {
 		heap = new int[CAPACITY];
-		Arrays.fill(heap, -1);
 		size = 0;
 		insert(10);
 		insert(20);
