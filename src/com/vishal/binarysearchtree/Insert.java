@@ -12,17 +12,17 @@ public class Insert {
 		rootNode.getRight().setLeft(new Node(10));
 		rootNode.getRight().setRight(new Node(40));
 		rootNode.getRight().getRight().setLeft(new Node(30));
-		find(rootNode, 15);
+		insert(rootNode, 15);
 		PreOrder.find(rootNode);
 	}
 
-	private static Node find(Node root, int item) {
+	private static Node insert(Node root, int item) {
 		if (root == null) {
 			return new Node(item);
 		}else if(item > root.getData()) {
-			root.setRight(find(root.getRight(), item));
+			root.setRight(insert(root.getRight(), item));
 		}else {
-			root.setLeft(find(root.getLeft(), item));
+			root.setLeft(insert(root.getLeft(), item));
 		}
 		return root;
 	}
