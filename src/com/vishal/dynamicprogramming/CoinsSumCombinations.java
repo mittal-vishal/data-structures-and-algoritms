@@ -15,7 +15,7 @@ public class CoinsSumCombinations {
 	}
 
 	private static int getCombinations(int val, int[] coins, int n) {
-		String key = String.valueOf(n) + "|" + String.valueOf(val);
+		String key = n + "|" + val;
 		int result;
 		if(lookUp.containsKey(key)) {
 			return lookUp.get(key);

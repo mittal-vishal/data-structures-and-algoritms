@@ -7,11 +7,13 @@ public class MinJumpsToReachEnd {
 	private static int[] memo;
 
 	public static void main(String[] args) {
-		int[] array = { 4, 1, 5, 3, 1, 3, 2, 1, 8 };
+		int[] array = { 0, 1, 1, 1, 1 };
 		int n = array.length;
 		memo = new int[n];
 		Arrays.fill(memo, -1);
-		System.out.println(getMinJumps(array, n));
+		int res = getMinJumps(array, n);
+		res = res != Integer.MAX_VALUE ? res : -1;
+		System.out.println(res);
 	}
 
 	private static int getMinJumps(int[] array, int n) {
@@ -31,7 +33,7 @@ public class MinJumpsToReachEnd {
 					result = memo[n - 1];
 				}
 			}
-			return result != Integer.MAX_VALUE ? result : -1;
+			return result;
 		}
 	}
 
