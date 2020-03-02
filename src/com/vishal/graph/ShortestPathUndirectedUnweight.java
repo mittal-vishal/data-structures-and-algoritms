@@ -21,25 +21,17 @@ public class ShortestPathUndirectedUnweight {
 			u = sc.nextInt();
 			v = sc.nextInt();
 			adj.get(u).add(v);
+			adj.get(v).add(u);
 		}
-		sc.close();
 		boolean[] visited = new boolean[nov];
-		bfs(adj, visited, nov);
-	}
-
-	private static void bfs(List<List<Integer>> adj, boolean[] visited, int nov) {
 		int[] dist = new int[nov];
-		for (int i = 0; i < nov; i++) {
-			if (visited[i] == false) {
-				bfsTraversal(adj, visited, i, dist);
-			}
-		}
-		for(int i : dist) {
-			System.out.print(i + " ");
-		}
+		int src = sc.nextInt();
+		int dest = sc.nextInt();
+		sc.close();
+		bfs(adj, visited, src, dist, dest);
 	}
 
-	private static void bfsTraversal(List<List<Integer>> adj, boolean[] visited, int src, int[] dist) {
+	private static void bfs(List<List<Integer>> adj, boolean[] visited, int src, int[] dist, int dest) {
 		Queue<Integer> queue = new LinkedList<>();
 		queue.add(src);
 		visited[src] = true;
@@ -53,6 +45,11 @@ public class ShortestPathUndirectedUnweight {
 					queue.add(i);
 					dist[i] = dist[popped] + 1;
 				}
+			}
+		}
+		for(int i = 0; i < dist.length; i++) {
+			if(i == dest) {
+				System.out.print(dist[i]);
 			}
 		}
 	}
