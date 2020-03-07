@@ -1,34 +1,23 @@
 package com.vishal.graph;
 
 public class GraphNode {
-	
-	private int source;
-	
-	private int destination;
-	
+
+	private int node;
+
 	private int cost;
 
-	public GraphNode(int source, int destination, int cost) {
+	public GraphNode(int node, int cost) {
 		super();
-		this.source = source;
-		this.destination = destination;
+		this.node = node;
 		this.cost = cost;
 	}
 
-	public int getSource() {
-		return source;
+	public int getNode() {
+		return node;
 	}
 
-	public void setSource(int source) {
-		this.source = source;
-	}
-
-	public int getDestination() {
-		return destination;
-	}
-
-	public void setDestination(int destination) {
-		this.destination = destination;
+	public void setNode(int node) {
+		this.node = node;
 	}
 
 	public int getCost() {
@@ -39,5 +28,4 @@ public class GraphNode {
 		this.cost = cost;
 	}
 
-	
 }
