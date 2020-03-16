@@ -1,6 +1,6 @@
 package com.vishal.binarytree;
 
-public class MaxPathSumResult {
+public class MaxPathSumBean {
 	
 	private int res;
 

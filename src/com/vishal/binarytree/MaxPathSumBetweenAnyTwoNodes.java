@@ -1,6 +1,6 @@
 package com.vishal.binarytree;
 
-public class MaxPathSum {
+public class MaxPathSumBetweenAnyTwoNodes {
 	
 	private static Node rootNode = null;
 	
@@ -17,15 +17,18 @@ public class MaxPathSum {
     }
 
 	private static int findMaxSum(Node root) {
-		MaxPathSumResult result = new MaxPathSumResult();
+		MaxPathSumBean result = new MaxPathSumBean();
 		result.setRes(Integer.MIN_VALUE);
 		findMax(root, result);
 		return result.getRes();
 	}
 
-	private static int findMax(Node root, MaxPathSumResult result) {
+	private static int findMax(Node root, MaxPathSumBean result) {
 		if(root == null)
 			return 0;
+		if(root.getLeft() == null && root.getRight() == null) {
+			return root.getData();
+		}
 		int left = findMax(root.getLeft(), result);
 		int right = findMax(root.getRight(), result);
 		int singleNodeMax = Math.max(Math.max(left, right) + root.getData(), root.getData());
