@@ -35,8 +35,7 @@ public class MaxPathSumBetweenAnyTwoLeaves {
 			result.setRes(Math.max(left + right + root.getData(), result.getRes()));
 			return Math.max(left, right) + root.getData();
 		}
-		int singleMax = root.getLeft() != null ? left + root.getData() : right + root.getData();
-		return singleMax;
+		return root.getLeft() != null ? left + root.getData() : right + root.getData();
 	}
 
 }
