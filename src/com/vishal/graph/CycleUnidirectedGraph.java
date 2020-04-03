@@ -40,12 +40,12 @@ public class CycleUnidirectedGraph {
 	private static boolean dfs(List<List<Integer>> adj, boolean[] visited, int src, int parent) {
 		visited[src] = true;
 		for(int i : adj.get(src)) {
-			if(visited[i] == false) {
+			if(!visited[i]) {
 				if(dfs(adj, visited, i, src)) {
 					return true;
 				}
 			}
-			else if(visited[i] == true && parent != i) {
+			else if(visited[i] && parent != i) {
 				return true;
 			}
 		}

@@ -28,10 +28,10 @@ public class ShortestPathUndirectedUnweight {
 		int src = sc.nextInt();
 		int dest = sc.nextInt();
 		sc.close();
-		bfs(adj, visited, src, dist, dest);
+		System.out.println(bfs(adj, visited, src, dist, dest));
 	}
 
-	private static void bfs(List<List<Integer>> adj, boolean[] visited, int src, int[] dist, int dest) {
+	private static int bfs(List<List<Integer>> adj, boolean[] visited, int src, int[] dist, int dest) {
 		Queue<Integer> queue = new LinkedList<>();
 		queue.add(src);
 		visited[src] = true;
@@ -40,7 +40,7 @@ public class ShortestPathUndirectedUnweight {
 		while (!queue.isEmpty()) {
 			popped = queue.poll();
 			for (int i : adj.get(popped)) {
-				if (visited[i] == false) {
+				if (!visited[i]) {
 					visited[i] = true;
 					queue.add(i);
 					dist[i] = dist[popped] + 1;
@@ -49,9 +49,10 @@ public class ShortestPathUndirectedUnweight {
 		}
 		for(int i = 0; i < dist.length; i++) {
 			if(i == dest) {
-				System.out.print(dist[i]);
+				return dist[i];
 			}
 		}
+		return -1;
 	}
 
 }

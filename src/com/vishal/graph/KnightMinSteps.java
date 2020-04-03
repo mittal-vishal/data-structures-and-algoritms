@@ -36,7 +36,7 @@ public class KnightMinSteps {
 		while (!queue.isEmpty()) {
 			cell = queue.poll();
 			for (int i = 0; i < possibleI.length; i++) {
-				if (isInside(cell.getX() + possibleI[i], cell.getY() + possibleJ[i], n) && visited[cell.getX() + possibleI[i]][cell.getY() + possibleJ[i]] == false) {
+				if (isInside(cell.getX() + possibleI[i], cell.getY() + possibleJ[i], n) && (!visited[cell.getX() + possibleI[i]][cell.getY() + possibleJ[i]])) {
 					visited[cell.getX() + possibleI[i]][cell.getY() + possibleJ[i]] = true;
 					dist[cell.getX() + possibleI[i]][cell.getY() + possibleJ[i]] = dist[cell.getX()][cell.getY()] + 1;
 					queue.add(new Cell(cell.getX() + possibleI[i], cell.getY() + possibleJ[i]));
