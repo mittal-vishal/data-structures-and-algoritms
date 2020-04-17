@@ -24,7 +24,7 @@ public class CountingSort {
 		}
 		for(int i = 0; i<a.length;i++) {
 			output[range[a[i]]-1] = a[i];
-			range[a[i]] = range[a[i]]-1;
+			range[a[i]]--;
 		}
 		return output;
 	}

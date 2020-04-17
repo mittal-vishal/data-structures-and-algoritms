@@ -23,7 +23,7 @@ public class FileProblem {
 	}
 	
 	public static Map<String, Integer> getStockWiseQuantity(File tradeFile) throws IOException {
-		Map<String, Integer> stockMap = new HashMap<String, Integer>();
+		Map<String, Integer> stockMap = new HashMap<>();
 		BufferedReader br = new BufferedReader(new FileReader(tradeFile));
 		for(String line = br.readLine(); line != null; line = br.readLine()) {
 			String[] array = line.split("\\,");
