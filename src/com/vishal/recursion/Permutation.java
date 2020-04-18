@@ -32,7 +32,7 @@ public class Permutation {
 	}
 	
 	public static void main(String args[]) {
-		System.out.println(permute("aaba"));
+		System.out.println(permute("aab"));
 	}
 
 }

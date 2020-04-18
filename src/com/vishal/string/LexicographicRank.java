@@ -25,7 +25,7 @@ public class LexicographicRank {
 				fact = fact / (str.length() - i);
 				rank = rank + (fact * charArray[str.charAt(i) - 1]);
 				for (int j = str.charAt(i); j < charArray.length; j++) {
-					charArray[j] = charArray[j] - 1;
+					charArray[j]--;
 				}
 			}
 			return rank;
