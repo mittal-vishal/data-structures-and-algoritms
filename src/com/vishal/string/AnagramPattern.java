@@ -23,6 +23,7 @@ public class AnagramPattern {
 		}
 		for (int i = pattern.length(); i <= str.length(); i++) {
 			if (isMatch(patternChar, strChar)) {
+				System.out.println(i);
 				return true;
 			} else {
 				strChar[str.charAt(i)]++;

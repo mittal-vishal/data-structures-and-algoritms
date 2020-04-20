@@ -7,7 +7,7 @@ public class LRUCache {
 
 	private Map<String, CacheNode> map;
 	private CacheNode head;
-	private static CacheNode tail;
+	private CacheNode tail;
 	private CacheNode curr;
 	private int capacity;
 	private int size;
