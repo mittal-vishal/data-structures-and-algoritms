@@ -26,21 +26,21 @@ public class LevelOrderLineByLine {
 		queue.add(null);
 		Node item = null;
 		while(!queue.isEmpty()) {
-		    if(queue.peek() == null && queue.size() == 1){
-		        break;
-		    }
-			if(queue.peek() == null){
+			if(queue.peek() != null) {
+				item = queue.poll();
+				System.out.print(item.getData() + " ");
+				if(item.getLeft() != null) {
+					queue.add(item.getLeft());
+				}
+				if(item.getRight() != null) {
+					queue.add(item.getRight());
+				}
+			}else if(queue.peek() == null && queue.size() > 1){
 			    queue.poll();
-			    System.out.println("");
+			    System.out.println();
 			    queue.add(null);
-			}
-			item = queue.poll();
-			System.out.print(item.getData() + " ");
-			if(item.getLeft() != null) {
-				queue.add(item.getLeft());
-			}
-			if(item.getRight() != null) {
-				queue.add(item.getRight());
+			}else {
+				queue.poll();
 			}
 		}
 	}
