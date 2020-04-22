@@ -2,9 +2,9 @@ package com.vishal.binarytree;
 
 public class Node {
 	
-	private int data;
-	private Node left;
-	private Node right;
+	public int data;
+	public Node left;
+	public Node right;
 	
 	public Node(int item) {
 		data = item;

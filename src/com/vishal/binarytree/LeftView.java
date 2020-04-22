@@ -28,20 +28,18 @@ public class LeftView {
 			queue.add(null);
 			System.out.print(root.getData() + " ");
 			while(!queue.isEmpty()) {
-				if(queue.peek() == null && queue.size() == 1) {
-					break;
-				}
-				if(queue.peek() == null) {
+				if(queue.peek() != null) {
+					item = queue.poll();
+					if(item.getLeft() != null)
+						queue.add(item.getLeft());
+					if(item.getRight() != null)
+						queue.add(item.getRight());
+				}else if(queue.peek() == null && queue.size() > 1) {
 					queue.poll();
 					System.out.print(queue.peek().getData() + " ");
 					queue.add(null);
-				}
-				item = queue.poll();
-				if(item.getLeft() != null) {
-					queue.add(item.getLeft());
-				}
-				if(item.getRight() != null) {
-					queue.add(item.getRight());
+				}else {
+					queue.poll();
 				}
 			}
 		}

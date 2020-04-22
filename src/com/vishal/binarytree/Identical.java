@@ -26,12 +26,12 @@ public class Identical {
 	}
 
 	private static boolean find(Node rootA, Node rootB) {
-		if (rootA == null && rootB == null) {
+		if (rootA == null || rootB == null) {
+			return rootA == null && rootB == null;
+		} else if(rootA.getData() == rootB.getData()){
 			return true;
-		} else if ((rootA == null && rootB != null) || (rootA != null && rootB == null)) {
-			return false;
-		} else {
-			return rootA.getData() == rootB.getData() && find(rootA.getLeft(), rootB.getLeft())
+		}else{
+			return find(rootA.getLeft(), rootB.getLeft())
 					&& find(rootA.getRight(), rootB.getRight());
 		}
 	}

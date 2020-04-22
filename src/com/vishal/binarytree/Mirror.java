@@ -11,20 +11,22 @@ public class Mirror {
 		rootNode.getLeft().setLeft(new Node(34));
 		rootNode.getLeft().setRight(new Node(4));
 		PreOrder.find(rootNode);
-		find(rootNode);
+		rootNode = invertTree(rootNode);
 		System.out.println();
 		PreOrder.find(rootNode);
 	}
 
-	private static void find(Node root) {
-		Node temp = null;
-		if(root != null && (root.getLeft() != null || root.getRight() != null)) {
-			find(root.getLeft());
-			find(root.getRight());
-			temp = root.getLeft();
-			root.setLeft(root.getRight());
-			root.setRight(temp);
-		}
-	}
+	public static Node invertTree(Node root) {
+        if(root == null){
+            return null;
+        }
+        Node left = invertTree(root.left);
+        Node right = invertTree(root.right);
+        if(left != null || right != null){
+            root.left = right;
+            root.right = left;
+        }
+        return root;
+    }
 	
 }

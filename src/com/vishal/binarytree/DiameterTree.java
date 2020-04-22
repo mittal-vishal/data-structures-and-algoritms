@@ -14,35 +14,26 @@ public class DiameterTree {
 		rootNode.getRight().setRight(new Node(40));
 		rootNode.getLeft().getLeft().setLeft(new Node(10));
 		rootNode.getLeft().getLeft().setRight(new Node(12));
-		System.out.println(find(rootNode));
+		System.out.println(diameterOfBinaryTree(rootNode));
 	}
-
-	private static int find(Node root) {
-		int diameter = 0;
-		if(root == null) {
-			return 0;
-		}else {
-			int leftT = height(root.getLeft());
-			int rightT = height(root.getRight());
-			if(leftT + rightT + 1 > diameter) {
-				diameter = leftT + rightT + 1;
-			}
-		}
-		int leftT = find(root.getLeft());
-		int right = find(root.getRight());
-		if((leftT > right ? leftT : right) > diameter) {
-			diameter = leftT > right ? leftT : right;
-		}
-		return diameter;
-	}
-
-	private static int height(Node root) {
+	
+    private static int diameterOfBinaryTree(Node root){
+        if(root == null){
+            return 0;
+        }else{
+            int option1 = height(root.getLeft()) + height(root.getRight());
+            int option2 = diameterOfBinaryTree(root.getLeft());
+            int option3 = diameterOfBinaryTree(root.getRight());
+            return Math.max(option1, Math.max(option2, option3));
+        }
+    }
+    private static int height(Node root) {
 		if(root == null) {
 			return 0;
 		}else {
 			int left = height(root.getLeft());
 			int right = height(root.getRight());
-			return (left > right ? left : right) + 1;
+			return Math.max(left, right) + 1;
 		}
 	}
 	
