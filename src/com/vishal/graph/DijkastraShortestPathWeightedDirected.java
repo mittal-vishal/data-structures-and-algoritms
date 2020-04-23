@@ -37,7 +37,7 @@ public class DijkastraShortestPathWeightedDirected {
 
 	private static int find(List<List<GraphNode>> adj, boolean[] visited, int nov, int source, int dest) {
 		PriorityQueue<GraphNode> pq = new PriorityQueue<>((GraphNode o1, GraphNode o2) -> o1.getCost() - o2.getCost());
-		Set<GraphNode> visitedSet = new HashSet<>();
+		Set<Integer> visitedSet = new HashSet<>();
 		int dist[] = new int[nov];
 		Arrays.fill(dist, Integer.MAX_VALUE);
 		dist[source] = 0;
@@ -46,13 +46,13 @@ public class DijkastraShortestPathWeightedDirected {
 		while (!pq.isEmpty()) {
 			popped = pq.poll();
 			for (GraphNode adjNode : adj.get(popped.getNode())) {
-				if (!visitedSet.contains(adjNode)
+				if (!visitedSet.contains(adjNode.getNode())
 						&& dist[adjNode.getNode()] > dist[popped.getNode()] + adjNode.getCost()) {
 					dist[adjNode.getNode()] = dist[popped.getNode()] + adjNode.getCost();
 					pq.add(new GraphNode(adjNode.getNode(), dist[adjNode.getNode()]));
 				}
 			}
-			visitedSet.add(popped);
+			visitedSet.add(popped.getNode());
 		}
 		for (int i = 0; i < dist.length; i++) {
 			if (dest == i) {
