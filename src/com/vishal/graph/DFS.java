@@ -28,7 +28,7 @@ public class DFS {
 
 	private static void dfs(List<List<Integer>> adj, boolean[] visited, int nov) {
 		for (int i = 0; i < nov; i++) {
-			if (visited[i] == false) {
+			if (!visited[i]) {
 				dfsTraversal(adj, visited, i);
 			}
 		}
@@ -38,7 +38,7 @@ public class DFS {
 		visited[src] = true;
 		System.out.print(src + " ");
 		for(int i : adj.get(src)) {
-			if(visited[i] == false) {
+			if(!visited[i]) {
 				dfsTraversal(adj, visited, i);
 			}
 		}

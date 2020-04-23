@@ -30,7 +30,7 @@ public class BFS {
 
 	private static void bfs(List<List<Integer>> adj, boolean[] visited, int nov) {
 		for (int i = 0; i < nov; i++) {
-			if (visited[i] == false) {
+			if (!visited[i]) {
 				bfsTraversal(adj, visited, i);
 			}
 		}
@@ -45,7 +45,7 @@ public class BFS {
 			popped = queue.poll();
 			System.out.print(popped + " ");
 			for (int i : adj.get(popped)) {
-				if (visited[i] == false) {
+				if (!visited[i]) {
 					visited[i] = true;
 					queue.add(i);
 				}

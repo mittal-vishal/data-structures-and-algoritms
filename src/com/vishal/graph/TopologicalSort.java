@@ -30,7 +30,7 @@ public class TopologicalSort {
 	private static void topological(List<List<Integer>> adj, boolean[] visited, int nov) {
 		Stack<Integer> stack = new Stack<>();
 		for (int i = 0; i < nov; i++) {
-			if (visited[i] == false) {
+			if (!visited[i]) {
 				dfsTraversal(adj, visited, i, stack);
 			}
 		}
@@ -42,7 +42,7 @@ public class TopologicalSort {
 	private static void dfsTraversal(List<List<Integer>> adj, boolean[] visited, int src, Stack<Integer> stack) {
 		visited[src] = true;
 		for(int i : adj.get(src)) {
-			if(visited[i] == false) {
+			if(!visited[i]) {
 				dfsTraversal(adj, visited, i, stack);
 			}
 		}

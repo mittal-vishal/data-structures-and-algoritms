@@ -7,7 +7,7 @@ import java.util.Scanner;
 import java.util.Stack;
 
 public class ShortestPathDirectedWeighted {
-	
+
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		int nov = sc.nextInt();
@@ -34,24 +34,21 @@ public class ShortestPathDirectedWeighted {
 
 	private static void find(List<List<GraphNode>> adj, boolean[] visited, int nov, int source, int dest) {
 		int dist[] = new int[nov];
-		int top[] = new int[nov];
 		Arrays.fill(dist, Integer.MAX_VALUE);
 		dist[source] = 0;
 		Stack<Integer> stack = new Stack<>();
 		dfs(adj, visited, nov, source, stack);
-		int counter = 0;
-		while(!stack.isEmpty()) {
-			top[counter++] = stack.pop();
-		}
-		for(int i=0;i<top.length;i++) {
-			for(GraphNode graphNode : adj.get(top[i])) {
-				if(dist[graphNode.getNode()] > dist[top[i]] + graphNode.getCost()) {
-					dist[graphNode.getNode()] = dist[top[i]] + graphNode.getCost();
+		int popped = -1;
+		while (!stack.isEmpty()) {
+			popped = stack.pop();
+			for (GraphNode graphNode : adj.get(popped)) {
+				if (dist[graphNode.getNode()] > dist[popped] + graphNode.getCost()) {
+					dist[graphNode.getNode()] = dist[popped] + graphNode.getCost();
 				}
 			}
 		}
-		for(int i=0;i<top.length;i++) {
-			if(dest == i) {
+		for (int i = 0; i < dist.length; i++) {
+			if (dest == i) {
 				System.out.println(dist[i]);
 			}
 		}
@@ -59,13 +56,12 @@ public class ShortestPathDirectedWeighted {
 
 	private static void dfs(List<List<GraphNode>> adj, boolean[] visited, int nov, int source, Stack<Integer> stack) {
 		visited[source] = true;
-		for(GraphNode graphNode : adj.get(source)) {
-			if(visited[graphNode.getNode()] == false) {
-				visited[graphNode.getNode()] = true;
+		for (GraphNode graphNode : adj.get(source)) {
+			if (!visited[graphNode.getNode()]) {
 				dfs(adj, visited, nov, graphNode.getNode(), stack);
 			}
 		}
 		stack.add(source);
 	}
-	
+
 }

@@ -28,7 +28,7 @@ public class CycleDirectedGraph {
 		boolean[] visited = new boolean[nov];
 		boolean[] recStack = new boolean[nov];
 		for(int i = 0; i < nov; i++) {
-			if(visited[i] == false) {
+			if(!visited[i]) {
 				if(dfs(adj, visited, recStack, i)) {
 					return true;
 				}
@@ -41,12 +41,12 @@ public class CycleDirectedGraph {
 		visited[src] = true;
 		recStack[src] = true;
 		for(int i : adj.get(src)) {
-			if(visited[i] == false) {
+			if(!visited[i]) {
 				if(dfs(adj, visited, recStack, i)) {
 					return true;
 				}
 			}
-			else if(visited[i] == true && recStack[i] == true) {
+			else if(visited[i] && recStack[i]) {
 				return true;
 			}
 		}

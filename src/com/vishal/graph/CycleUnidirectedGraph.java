@@ -28,7 +28,7 @@ public class CycleUnidirectedGraph {
 	private static boolean dfsTraversal(List<List<Integer>> adj, int nov) {
 		boolean[] visited = new boolean[nov];
 		for(int i = 0; i < nov; i++) {
-			if(visited[i] == false) {
+			if(!visited[i]) {
 				if(dfs(adj, visited, i, -1)) {
 					return true;
 				}
@@ -45,7 +45,7 @@ public class CycleUnidirectedGraph {
 					return true;
 				}
 			}
-			else if(visited[i] && parent != i) {
+			else if((visited[i] && parent != i) &&(visited[i] && parent == -1)) {
 				return true;
 			}
 		}
