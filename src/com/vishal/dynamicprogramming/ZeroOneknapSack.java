@@ -19,13 +19,10 @@ public class ZeroOneknapSack {
 	private static int getMaxProfit(int W, int[] val, int[] w, int n) {
 		if(n == 0 || W == 0) {
 			return 0;
-		}else if(W < 0) {
-			return getMaxProfit(W, val, w, n-1);
-		}
-		else {
+		}else {
 			String key = String.valueOf(n).concat("|").concat(String.valueOf(W));
 			if(!map.containsKey(key)) {
-				int included = W-w[n-1]>= 0 ? getMaxProfit(W-w[n-1], val, w, n-1) + val[n-1] : getMaxProfit(W-w[n-1], val, w, n-1);
+				int included = W-w[n-1] >= 0 ? getMaxProfit(W-w[n-1], val, w, n-1) + val[n-1] : getMaxProfit(W, val, w, n-1);
 				int excluded = getMaxProfit(W, val, w, n-1);
 				map.put(key, Math.max(included, excluded));
 			}

@@ -9,11 +9,13 @@ public class EditDistance {
 	}
 
 	private static int find(String s1, String s2, int m, int n) {
-		if (m == 0) {
-			return n;
-		} else if (n == 0) {
+		if (m == 0 && n == 0) {
+			return 0;
+		} else if (n == 0 && m != 0) {
 			return m;
-		} else if (s1.charAt(m - 1) == s2.charAt(n - 1)) {
+		} else if (m == 0 && n != 0) {
+			return n;
+		}else if (s1.charAt(m - 1) == s2.charAt(n - 1)) {
 			return find(s1, s2, m - 1, n - 1);
 		} else {
 			return 1 + getMin(find(s1, s2, m, n - 1), find(s1, s2, m - 1, n), find(s1, s2, m - 1, n - 1));

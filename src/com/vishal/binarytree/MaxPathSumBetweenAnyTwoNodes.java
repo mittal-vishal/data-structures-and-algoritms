@@ -15,12 +15,16 @@ public class MaxPathSumBetweenAnyTwoNodes {
         rootNode.getRight().getRight().setRight(new Node(4));
         System.out.println("maximum path sum is : " + findMaxSum(rootNode));
     }
+	
+	static class MaxPathSumBean{
+		public int res;
+	}
 
 	private static int findMaxSum(Node root) {
 		MaxPathSumBean result = new MaxPathSumBean();
-		result.setRes(Integer.MIN_VALUE);
+		result.res = Integer.MIN_VALUE;
 		findMax(root, result);
-		return result.getRes();
+		return result.res;
 	}
 
 	private static int findMax(Node root, MaxPathSumBean result) {
@@ -31,9 +35,9 @@ public class MaxPathSumBetweenAnyTwoNodes {
 		}
 		int left = findMax(root.getLeft(), result);
 		int right = findMax(root.getRight(), result);
-		int singleNodeMax = Math.max(Math.max(left, right) + root.getData(), root.getData());
+		int singleNodeMax = Math.max(Math.max(left + root.getData(), right + root.getData()), root.getData());
 		int doubleNodeMax = Math.max(singleNodeMax, left + right + root.getData());
-		result.setRes(Math.max(result.getRes(), doubleNodeMax));
+		result.res = Math.max(result.res, doubleNodeMax);
 		return singleNodeMax;
 	}
 

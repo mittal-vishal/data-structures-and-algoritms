@@ -47,14 +47,13 @@ public class RottenOranges {
 						queue.add(new Node(popped.i + validI[k], popped.j + validJ[k]));
 					}
 				}
-			}
-			if (popped == null && isChange) {
-				count++;
+			}else if(popped == null && isChange){
 				isChange = false;
-				if (!queue.isEmpty()) {
-					queue.add(null);
-				}
-			}
+                if(!queue.isEmpty()){
+                    queue.add(null);
+                    count++;
+                }
+            }
 		}
 		List<Integer> finalList = new ArrayList<>();
 		for(int[] a : grid) {

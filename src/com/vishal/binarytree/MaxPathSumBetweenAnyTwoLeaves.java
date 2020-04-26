@@ -16,23 +16,26 @@ public class MaxPathSumBetweenAnyTwoLeaves {
         System.out.println("maximum path sum is : " + findMaxSum(rootNode));
     }
 
+	static class MaxPathSumBean{
+		public int res;
+	}
+	
 	private static int findMaxSum(Node root) {
 		MaxPathSumBean result = new MaxPathSumBean();
-		result.setRes(Integer.MIN_VALUE);
+		result.res = Integer.MIN_VALUE;
 		findMax(root, result);
-		return result.getRes();
+		return result.res;
 	}
 
 	private static int findMax(Node root, MaxPathSumBean result) {
 		if(root == null)
 			return 0;
-		if(root.getLeft() == null && root.getRight() == null) {
+		if(root.getLeft() == null && root.getRight() == null)
 			return root.getData();
-		}
 		int left = findMax(root.getLeft(), result);
 		int right = findMax(root.getRight(), result);
 		if(root.getLeft() != null && root.getRight() != null) {
-			result.setRes(Math.max(left + right + root.getData(), result.getRes()));
+			result.res = Math.max(left + right + root.getData(), result.res);
 			return Math.max(left, right) + root.getData();
 		}
 		return root.getLeft() != null ? left + root.getData() : right + root.getData();

@@ -2,7 +2,7 @@ package com.vishal.dynamicprogramming;
 
 import java.util.Arrays;
 
-public class MaxLengthRope {
+public class MaxCutSegment {
 
 	private static int[] memo;
 
@@ -15,15 +15,13 @@ public class MaxLengthRope {
 	}
 
 	private static int getMaxCuts(int n, int a, int b, int c) {
-		if (n < 0) {
-			return -1;
-		} else if (n == 0) {
+		if (n <= 0) {
 			return 0;
 		} else if (memo[n - 1] != -1) {
 			return memo[n - 1];
 		} else {
-			int max = maxOfThree(getMaxCuts(n - a, a, b, c), getMaxCuts(n - b, a, b, c), getMaxCuts(n - c, a, b, c));
-			memo[n - 1] = max == -1 ? -1 : max + 1;
+			memo[n - 1] = 1
+					+ maxOfThree(getMaxCuts(n - a, a, b, c), getMaxCuts(n - b, a, b, c), getMaxCuts(n - c, a, b, c));
 			return memo[n - 1];
 		}
 	}
