@@ -14,7 +14,7 @@ public class PrintKLevel {
 		rootNode.getRight().setRight(new Node(40));
 		rootNode.getLeft().getLeft().setLeft(new Node(10));
 		rootNode.getLeft().getLeft().setRight(new Node(12));
-		int k = 2;
+		int k = 3;
 		find(rootNode, k);
 	}
 
