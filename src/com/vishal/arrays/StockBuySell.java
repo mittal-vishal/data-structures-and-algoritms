@@ -3,7 +3,7 @@ package com.vishal.arrays;
 public class StockBuySell {
 
 	public static void main(String[] args) {
-		int a[] = { 886, 2777, 6915, 7793, 8335, 5386, 492, 6649 };
+		int a[] = { 23, 13, 25, 29, 33, 19, 34, 45, 65, 67 };
 		stockBuySell(a, a.length);
 	}
 
