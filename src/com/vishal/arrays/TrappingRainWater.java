@@ -11,7 +11,8 @@ public class TrappingRainWater {
 	public static int tappRain(int a[]) {
 		int returnVal = 0;
 		for (int i = 1; i < a.length - 1; i++) {
-			int leftMax = 0, rightMax = 0;
+			int leftMax = 0;
+			int rightMax = 0;
 			for (int j = i - 1; j >= 0; j--) {
 				if (a[j] > leftMax) {
 					leftMax = a[j];

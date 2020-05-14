@@ -13,7 +13,7 @@ public class SharedResource {
 	
 	public void printNumbers(int result) {
 		synchronized (this) {
-			while(number <= maxNumber - (threadCount-1)) {
+			while(number <= maxNumber - (threadCount - 1)) {
 				while(number % threadCount != result) {
 					try {
 						this.wait();

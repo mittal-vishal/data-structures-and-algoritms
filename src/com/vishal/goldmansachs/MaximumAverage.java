@@ -8,7 +8,6 @@ import java.util.Map.Entry;
 public class MaximumAverage {
 
 	public static String getMaxAverageStudent(String[][] students) {
-		int max = 0;
 		String returnVal = null;
 		Map<String, Entry<Integer, Integer>> studentsMap = new HashMap<>();
 		for (String[] student : students) {
@@ -21,6 +20,7 @@ public class MaximumAverage {
 						Integer.parseInt(student[1]) + entry.getKey(), entry.getValue() + 1));
 			}
 		}
+		int max = 0;
 		for(Entry<String, Map.Entry<Integer, Integer>> mapEntry: studentsMap.entrySet()) {
 			Entry<Integer, Integer> entry = mapEntry.getValue();
 			if(entry.getKey()/entry.getValue() > max) {

@@ -14,11 +14,8 @@ public class FilterPredicate {
 		arrayList.add(40);
 		arrayList.add(52);
 		arrayList.add(7);
-		arrayList.stream().filter(getPredicate()).forEach(r  -> System.out.println(r));
-	}
-	
-	private static Predicate<Integer> getPredicate(){
-		return p -> p > 10 && p < 50;
+		Predicate<Integer> pred = o1 -> o1>5 && o1 < 20;
+		arrayList.stream().filter(pred).forEach(r  -> System.out.println(r));
 	}
 
 }
