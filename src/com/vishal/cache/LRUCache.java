@@ -3,8 +3,6 @@ package com.vishal.cache;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.vishal.hashing.CacheNode;
-
 public class LRUCache {
 	
 	private Map<String, CacheNode> cacheMap;
