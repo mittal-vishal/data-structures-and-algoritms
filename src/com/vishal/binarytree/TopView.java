@@ -1,18 +1,23 @@
 package com.vishal.binarytree;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 public class TopView {
 	
+	static class DataNode{
+		private int data;
+		private int level;
+		public DataNode(int data, int level) {
+			this.data = data;
+			this.level = level;
+		}
+	}
+	
 	private static Node rootNode = null;
-	private static List<Integer> list = null;
-	private static Map<Integer, List<Integer>> map = null;
 
 	public static void main(String[] args) {
 		rootNode = new Node(1);
@@ -21,43 +26,47 @@ public class TopView {
 		rootNode.getLeft().setLeft(new Node(34));
 		rootNode.getLeft().setRight(new Node(4));
 		
-		find(rootNode);
+		topView(rootNode);
+	}
 
-		List<Entry<Integer, List<Integer>>> sortList = new LinkedList<>(map.entrySet());
+	private static void topView(Node root) {
+		Map<Integer, List<DataNode>> map = new TreeMap<>();
+		
+		topView(root, 0, 0, map);
+		
+		List<DataNode> list = null; int topData = -1;
 
-		Comparator<Entry<Integer, List<Integer>>> customComparator = (Entry<Integer, List<Integer>> o1,
-				Entry<Integer, List<Integer>> o2) -> o1.getKey().compareTo(o2.getKey());
-
-		Collections.sort(sortList, customComparator);
-
-		for (Entry<Integer, List<Integer>> entry : sortList) {
-			System.out.print(entry.getValue().get(0) + " ");
+		for (Entry<Integer, List<DataNode>> entry : map.entrySet()) {
+			list = entry.getValue();
+			int minLevel = Integer.MAX_VALUE;
+			for(DataNode dataNode : list) {
+				if(dataNode.level < minLevel) {
+					minLevel = dataNode.level;
+					topData = dataNode.data;
+				}
+			}
+			System.out.print(topData + " ");
 		}
 	}
 
-	private static void find(Node root) {
-		map = new HashMap<>();
-		find(root, 0);
-	}
-
-	private static void find(Node root, int value) {
-		if (root != null) {
-			if (map.containsKey(value)) {
-				list = map.get(value);
-				list.add(root.getData());
-				map.put(value, list);
-			} else {
-				list = new LinkedList<>();
-				list.add(root.getData());
-				map.put(value, list);
-			}
-			if (root.getLeft() != null) {
-				find(root.getLeft(), value - 1);
-			}
-			if (root.getRight() != null) {
-				find(root.getRight(), value + 1);
-			}
-		}
-	}
+	public static void topView(Node root, int value, int level, Map<Integer, List<DataNode>> map) {
+        if (root != null) {
+            if (map.containsKey(value)) {
+                List<DataNode> list = map.get(value);
+                list.add(new DataNode(root.data, level));
+                map.put(value, list);
+            } else {
+            	List<DataNode> list = new LinkedList<>();
+                list.add(new DataNode(root.data, level));
+                map.put(value, list);
+            }
+            if (root.left != null) {
+                topView(root.left, value - 1, level + 1, map);
+            }
+            if (root.right != null) {
+                topView(root.right, value + 1, level + 1, map);
+            }
+        }
+    }
 
 }
