@@ -6,33 +6,20 @@ import java.util.List;
 public class Permutation {
 
 	private static List<String> returnList = new ArrayList<>();
-
-	public static List<String> permute(String str) {
-		return permute(str, 0, str.length() - 1);
-	}
-
-	public static List<String> permute(String str, int beg, int end) {
-		if (beg == end) {
-			returnList.add(str);
-		} else {
-			for (int i = beg; i <= end; i++) {
-				str = swapCharacter(str, beg, i);
-				permute(str, beg + 1, end);
-			}
-		}
-		return returnList;
-	}
-
-	private static String swapCharacter(String str, int i, int j) {
-		char charArray[] = str.toCharArray();
-		char temp = charArray[i];
-		charArray[i] = charArray[j];
-		charArray[j] = temp;
-		return String.valueOf(charArray);
-	}
 	
 	public static void main(String args[]) {
-		System.out.println(permute("aab"));
+		permutation("abc", "");
+		System.out.println(returnList);
+	}
+
+	private static void permutation(String str, String output) {
+		if (str.length() == 0) {
+			returnList.add(output);
+		}
+		for (int i = 0; i < str.length(); i++) {
+			String ros = str.substring(0, i) + str.substring(i + 1);
+			permutation(ros, output + str.charAt(i));
+		}
 	}
 
 }
