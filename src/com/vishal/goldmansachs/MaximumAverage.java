@@ -15,9 +15,9 @@ public class MaximumAverage {
 				studentsMap.put(student[0],
 						new SimpleEntry<Integer, Integer>(Integer.parseInt(student[1]), 1));
 			} else {
-				Entry<Integer, Integer> entry = studentsMap.get(student[0]);
+				Entry<Integer, Integer> existedEntry = studentsMap.get(student[0]);
 				studentsMap.put(student[0], new SimpleEntry<Integer, Integer>(
-						Integer.parseInt(student[1]) + entry.getKey(), entry.getValue() + 1));
+						Integer.parseInt(student[1]) + existedEntry.getKey(), existedEntry.getValue() + 1));
 			}
 		}
 		int max = 0;

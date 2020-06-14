@@ -19,7 +19,7 @@ public class RemoveDuplicateSquezeSequentially {
 		while(i < n) {
 			if (prev == '\0') {
 				start = i;
-				runningCount++;
+				runningCount = 1;
 				prev = s.charAt(i++);
 			} else if (prev == s.charAt(i)) {
 				runningCount++;

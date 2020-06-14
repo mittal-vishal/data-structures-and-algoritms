@@ -24,7 +24,7 @@ public class SortByOccurances {
 		
 		List<Entry<Integer, Integer>> arrayList = new ArrayList<>(arrayMap.entrySet());
 		Comparator<Entry<Integer, Integer>> customComparator = (Entry<Integer, Integer> o1,
-				Entry<Integer, Integer> o2) -> o2.getValue().compareTo(o1.getValue());
+				Entry<Integer, Integer> o2) -> o1.getValue().compareTo(o2.getValue()) > 0 ? -1 : 1;
 		Collections.sort(arrayList, customComparator);
 		
 		for (Entry<Integer, Integer> entry : arrayList) {
