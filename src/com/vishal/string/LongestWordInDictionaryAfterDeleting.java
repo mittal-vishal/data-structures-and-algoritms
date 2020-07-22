@@ -4,10 +4,10 @@ import java.util.List;
 
 public class LongestWordInDictionaryAfterDeleting {
 
-	public String findLongestWord(String s, List<String> d) {
+	public static String findLongestWord(String s, List<String> d) {
 		String resStr = "";
 		for (String str : d) {
-			if (isSubsequence(s, str)) {
+			if (isSubSequence(str, s)) {
 				if (str.length() > resStr.length()) {
 					resStr = str;
 				} else if (str.length() == resStr.length()) {
@@ -18,17 +18,18 @@ public class LongestWordInDictionaryAfterDeleting {
 		return resStr;
 	}
 
-	private boolean isSubsequence(String str, String resStr) {
-		int j = resStr.length() - 1;
-		for (int i = str.length() - 1; i >= 0; i--) {
-			if (j == 0 && str.charAt(i) == resStr.charAt(j)) {
-				return true;
-			}
-			if (str.charAt(i) == resStr.charAt(j)) {
-				j--;
+	private static boolean isSubSequence(String word, String str) {
+		int wordStartI = 0;
+		int strStartI = 0;
+		while (wordStartI < word.length() && strStartI < str.length()) {
+			if (word.charAt(wordStartI) == str.charAt(strStartI)) {
+				wordStartI++;
+				strStartI++;
+			} else {
+				strStartI++;
 			}
 		}
-		return false;
+		return wordStartI == word.length();
 	}
 
 }

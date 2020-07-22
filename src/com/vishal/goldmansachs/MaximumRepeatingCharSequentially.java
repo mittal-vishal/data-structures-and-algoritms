@@ -8,24 +8,27 @@ public class MaximumRepeatingCharSequentially {
 	}
 	
 	private static char getMaxRepeatingChar(String str) {
-		char returnChar = '\0';
-		int runningCount = 0;
-		char prev = '\0';
-		int max = Integer.MIN_VALUE;
-		for(int i = 0; i< str.length(); i++) {
-			if(prev == '\0' || prev == str.charAt(i)) {
-				prev = str.charAt(i);
-				runningCount++;
-			}else if(prev != str.charAt(i)) {
-				if(runningCount > max) {
-					max = runningCount;
-					returnChar = prev;
-					runningCount = 0;
-					prev = '\0';
+		char maxChar = '\0';
+		char prevChar = '\0';
+		int maxCount = 0;
+		int count = 0;
+		for(int i =0;i<str.length();i++) {
+			if(prevChar == '\0' || str.charAt(i) == prevChar) {
+				count++;
+				prevChar = str.charAt(i);
+			}else {
+				if(count > maxCount) {
+					maxChar = prevChar;
+					maxCount = count;
 				}
+				count = 1;
+				prevChar = str.charAt(i);
 			}
 		}
-		return returnChar;
+		if(count > maxCount) {
+			maxChar = prevChar;
+		}
+		return maxChar;
 	}
 
 }

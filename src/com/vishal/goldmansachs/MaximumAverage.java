@@ -7,28 +7,26 @@ import java.util.Map.Entry;
 
 public class MaximumAverage {
 
-	public static String getMaxAverageStudent(String[][] students) {
-		String returnVal = null;
-		Map<String, Entry<Integer, Integer>> studentsMap = new HashMap<>();
-		for (String[] student : students) {
-			if (!studentsMap.containsKey(student[0])) {
-				studentsMap.put(student[0],
-						new SimpleEntry<Integer, Integer>(Integer.parseInt(student[1]), 1));
-			} else {
-				Entry<Integer, Integer> existedEntry = studentsMap.get(student[0]);
-				studentsMap.put(student[0], new SimpleEntry<Integer, Integer>(
-						Integer.parseInt(student[1]) + existedEntry.getKey(), existedEntry.getValue() + 1));
+	public static int getMaxAverageStudent(String[][] students) {
+		Map<String, Entry<Integer, Integer>> studentMap = new HashMap<>();
+		Entry<Integer, Integer> existedEntry = null;
+		for(String[] student : students) {
+			if(!studentMap.containsKey(student[0])) {
+				studentMap.put(student[0], new SimpleEntry<Integer, Integer>(Integer.valueOf(student[1]), 1));
+			}else {
+				existedEntry = studentMap.get(student[0]);
+				studentMap.put(student[0], new SimpleEntry<Integer, Integer>(Integer.valueOf(existedEntry.getKey() + Integer.valueOf(student[1])), existedEntry.getValue() + 1));
 			}
 		}
-		int max = 0;
-		for(Entry<String, Map.Entry<Integer, Integer>> mapEntry: studentsMap.entrySet()) {
-			Entry<Integer, Integer> entry = mapEntry.getValue();
-			if(entry.getKey()/entry.getValue() > max) {
-				returnVal = mapEntry.getKey();
-				max = entry.getKey()/entry.getValue();
+		int maxScore = Integer.MIN_VALUE;
+		Entry<Integer, Integer> marksEntry = null;
+		for(Entry<String, Entry<Integer, Integer>> entry : studentMap.entrySet()) {
+			marksEntry = entry.getValue();
+			if(marksEntry.getKey() / marksEntry.getValue() > maxScore) {
+				maxScore = marksEntry.getKey() / marksEntry.getValue();
 			}
 		}
-		return returnVal;
+		return maxScore;
 	}
 
 	public static void main(String[] args) {

@@ -7,7 +7,7 @@ public class NumberOfWaysReachTopStair {
 	private static int[] memo;
 
 	public static void main(String[] args) {
-		int n = 5;
+		int n = 10;
 		memo = new int[n];
 		Arrays.fill(memo, -1);
 		System.out.println(reachTop(n, 0));
@@ -21,7 +21,7 @@ public class NumberOfWaysReachTopStair {
 		} else if (memo[start] != -1) {
 			return memo[start];
 		} else {
-			memo[start] = reachTop(end, start + 1) + reachTop(end, start + 2) + reachTop(end, start + 3);
+			memo[start] = reachTop(end, start + 1) + reachTop(end, start + 2);
 			return memo[start];
 		}
 	}

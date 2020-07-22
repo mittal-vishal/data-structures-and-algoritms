@@ -35,17 +35,13 @@ public class ReorderDataLogs {
 		    }
 		}
 		
-		Comparator<String> comparator = new Comparator<String>() {
-
-			@Override
-			public int compare(String o1, String o2) {
-				String[] stringArray1 = {o1.substring(0, o1.indexOf(' ')), o1.substring(o1.indexOf(' ') + 1, o1.length())};
-				String[] stringArray2 = {o2.substring(0, o2.indexOf(' ')), o2.substring(o2.indexOf(' ') + 1, o2.length())};
-				if(!stringArray1[1].equals(stringArray2[1])) {
-					return stringArray1[1].compareTo(stringArray2[1]) > 0 ? 1 : -1;
-				}else {
-					return stringArray1[0].compareTo(stringArray2[0]) > 0 ? 1 : -1;
-				}
+		Comparator<String> comparator = (String o1, String o2) -> {
+			String[] stringArray1 = {o1.substring(0, o1.indexOf(' ')), o1.substring(o1.indexOf(' ') + 1, o1.length())};
+			String[] stringArray2 = {o2.substring(0, o2.indexOf(' ')), o2.substring(o2.indexOf(' ') + 1, o2.length())};
+			if(!stringArray1[1].equals(stringArray2[1])) {
+				return stringArray1[1].compareTo(stringArray2[1]) > 0 ? 1 : -1;
+			}else {
+				return stringArray1[0].compareTo(stringArray2[0]) > 0 ? 1 : -1;
 			}
 		};
 		
