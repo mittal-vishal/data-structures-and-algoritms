@@ -1,31 +1,30 @@
 package com.vishal.goldmansachs;
 
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class LargestNumFromArray {
 
 	public static void main(String[] args) {
 		int[] a = { 3, 30, 34, 5, 9 };
-		System.out.println(getGreatestNum(a));
+		System.out.println(largestNum(a));
 	}
 
-	private static String getGreatestNum(int[] num) {
+	private static String largestNum(int[] a) {
+		List<Integer> list = IntStream.of(a).boxed().collect(Collectors.toList());
+		Comparator<Integer> comp = (Integer o1, Integer o2) -> {
+			String XY = String.valueOf(o1).concat(String.valueOf(o2));
+			String YX = String.valueOf(o2).concat(String.valueOf(o1));
+			return XY.compareTo(YX) > 0 ? -1 : 1;
+		};
+		Collections.sort(list, comp);
 		StringBuilder sb = new StringBuilder();
-		List<Integer> list = Arrays.stream(num).boxed().collect(Collectors.toList());
-
-		Collections.sort(list, (o1, o2) -> {
-			String s1 = String.valueOf(o1).concat(String.valueOf(o2));
-			String s2 = String.valueOf(o2).concat(String.valueOf(o1));
-			return s1.compareTo(s2) > 0 ? -1 : 1;
-		});
-
 		for (int i : list) {
 			sb.append(i);
 		}
-
 		return sb.toString();
 	}
 
