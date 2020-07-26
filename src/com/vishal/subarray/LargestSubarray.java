@@ -14,7 +14,7 @@ public class LargestSubarray {
 	private static int find(int[] arr) {
 		int large = Integer.MIN_VALUE;
 		int sum = 0;
-		Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+		Map<Integer, Integer> map = new HashMap<>();
 		for(int i=0;i<arr.length;i++) {
 			sum = sum + arr[i];
 			if(arr[i] == 0 && large == Integer.MIN_VALUE) {

@@ -13,8 +13,6 @@ public class PowerOfThree {
 			num = num / 3;
 			if (num == 1d) {
 				return true;
-			} else if (num < 1d) {
-				return false;
 			}
 		}
 
