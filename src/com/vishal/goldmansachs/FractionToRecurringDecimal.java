@@ -20,23 +20,22 @@ public class FractionToRecurringDecimal {
 		}
 		if (mod == 0) {
 			return res + div;
-		} else {
-			res += String.valueOf(div) + ".";
-			Map<Long, Integer> map = new HashMap<>();
-			while (mod != 0) {
-				if (map.containsKey(mod)) {
-					Integer idx = map.get(mod);
-					res = res.substring(0, idx) + "(" + res.substring(idx, res.length()) + ")";
-					return res;
-				} else {
-					map.put(mod, res.length());
-					div = (mod * 10) / den;
-					mod = (mod * 10) % den;
-					res += div;
-				}
-			}
 		}
-		return res;
+        res += String.valueOf(div) + ".";
+        Map<Long, Integer> map = new HashMap<>();
+        while(mod != 0){
+            if(!map.containsKey(mod)){
+                map.put(mod, res.length());
+                div = (mod*10)/den;
+                mod = (mod*10)%den;
+                res += div;
+            }else{
+                int index = map.get(mod);
+                res = res.substring(0,index) + "(" + res.substring(index, res.length()) + ")";
+                return res;
+            }
+        }
+        return res;
 	}
 	
 }
