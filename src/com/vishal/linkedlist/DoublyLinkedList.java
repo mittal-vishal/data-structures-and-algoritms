@@ -79,9 +79,7 @@ public class DoublyLinkedList {
 	}
 	
 	private static void deleteAtBeg() {
-		if(head == null) {
-			return;
-		}else {
+		if(head != null) {
 			head = head.getNext();
 		}
 	}
