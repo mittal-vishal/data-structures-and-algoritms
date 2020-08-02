@@ -5,28 +5,30 @@ import java.util.Map;
 
 public class LCS {
 
-	private static Map<String, Integer> lookup;
-
 	public static void main(String[] args) {
 		String s1 = "abcdgh";
 		String s2 = "aedfhr";
-		lookup = new HashMap<>();
-		System.out.println(find(s1, s2, s1.length(), s2.length()));
+		System.out.println(longestCommonSubsequence(s1, s2));
 	}
 
-	private static int find(String s1, String s2, int m, int n) {
-		String key = m + "|" + n;
-		if (lookup.containsKey(key)) {
-			return lookup.get(key);
-		}
-		if (m == 0 || n == 0) {
-			lookup.put(key, 0);
-		} else if (s1.charAt(m - 1) == s2.charAt(n - 1)) {
-			lookup.put(key, 1 + find(s1, s2, m - 1, n - 1));
-		} else {
-			lookup.put(key, Math.max(find(s1, s2, m - 1, n), find(s1, s2, m, n - 1)));
-		}
-		return lookup.get(key);
-	}
+	public static int longestCommonSubsequence(String text1, String text2) {
+        Map<String, Integer> lookUp = new HashMap<>();
+        return lcs(lookUp, text1, text2, text1.length() - 1, text2.length() - 1);
+    }
+    
+    private static int lcs(Map<String, Integer> lookUp, String text1, String text2, int i, int j) {
+        String key = i+"|"+j;
+        if(i < 0 || j < 0){
+            return 0;
+        }else if(lookUp.containsKey(key)){
+            return lookUp.get(key);
+        }else if(text1.charAt(i) == text2.charAt(j)){
+            lookUp.put(key, 1 + lcs(lookUp, text1, text2, i-1, j-1));
+            return lookUp.get(key);
+        }else{
+            lookUp.put(key, Math.max(lcs(lookUp, text1, text2, i-1, j), lcs(lookUp, text1, text2, i, j-1)));
+            return lookUp.get(key);
+        }
+    }
 
 }

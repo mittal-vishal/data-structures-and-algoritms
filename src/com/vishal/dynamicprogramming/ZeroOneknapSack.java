@@ -18,9 +18,8 @@ public class ZeroOneknapSack {
 		String key = n + "|" + W;
 		if(map.containsKey(key)) {
 			return map.get(key);
-		}
-		if(n < 1 || W <= 0) {
-			map.put(key, 0);
+		}else if(n < 1 || W <= 0) {
+			return 0;
 		}else if(W - w[n-1] < 0) {
 			map.put(key, getMaxProfit(W, val, w, n-1, map));
 		}else {

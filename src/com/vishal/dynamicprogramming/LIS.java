@@ -3,19 +3,23 @@ package com.vishal.dynamicprogramming;
 public class LIS {
 
 	public static void main(String[] args) {
-		int[] array = { 3, 4, 2, 8, 10 };
-		System.out.println(find(array, array.length, Integer.MAX_VALUE));
+		int[] array = {10,9,2,5,3,7,101,18};
+		System.out.println(lengthOfLIS(array));
 	}
 
-	private static int find(int[] array, int n, int next) {
-		if(n == 0) {
-			return 0;
-		}
-		if(array[n-1] < next) {
-			return Math.max(1 + find(array, n-1, array[n-1]), find(array, n-1, next));
-		}else {
-			return find(array, n-1, next);
-		}
-	}
+	public static int lengthOfLIS(int[] nums) {
+        int next = Integer.MAX_VALUE;
+        return lengthOfLIS(nums, nums.length - 1, next);
+    }
+    
+    private static int lengthOfLIS(int[] nums, int n, int next) {
+        if(n < 0){
+            return 0;
+        }else if(nums[n] >= next){
+            return lengthOfLIS(nums, n - 1, next);
+        }else{
+            return Math.max(1 + lengthOfLIS(nums, n - 1, nums[n]), lengthOfLIS(nums, n - 1, next));
+        }
+    }
 
 }

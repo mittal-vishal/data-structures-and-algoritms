@@ -7,15 +7,14 @@ public class WaysForClimbingStairs {
 	public int climbStairs(int n) {
         int[] memo = new int[n];
         Arrays.fill(memo, -1);
-        int begin = 0;
-        return climbStairs(memo, begin, n);
+        return climbStairs(memo, 0, n);
     }
     
     private int climbStairs(int[] memo, int beg, int end){
-        if(beg == end){
-            return 1;
-        }else if(beg > end){
+        if(beg > end){
             return 0;
+        }else if(beg == end){
+            return 1;
         }else if(memo[beg] != -1){
             return memo[beg];
         }else{

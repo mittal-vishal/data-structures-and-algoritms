@@ -6,7 +6,6 @@ import java.util.Map;
 public class MaxPointInCards {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		int a[] = {2,2,2};
 		int k = 2;
 		System.out.println(maxScore(a, k));
