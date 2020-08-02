@@ -16,7 +16,7 @@ public class MinCoinsValue2 {
 		String key = n + "|" + val;
 		if (val == 0) {
 			return 0;
-		} else if (n == 0) {
+		} else if (n == 0 || val < 0) {
 			return Integer.MAX_VALUE;
 		} else if (lookUp.containsKey(key)) {
 			return lookUp.get(key);

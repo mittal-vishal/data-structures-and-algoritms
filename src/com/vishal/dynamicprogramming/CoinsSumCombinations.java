@@ -8,8 +8,8 @@ public class CoinsSumCombinations {
 	private static Map<String, Integer> lookUp;
 
 	public static void main(String[] args) {
-		int val = 10;
-		int[] coins = { 2, 5, 3, 6 };
+		int val = 8;
+		int[] coins = { 2, 5, 3 };
 		lookUp = new HashMap<>();
 		System.out.println(getCombinations(val, coins, coins.length));
 	}
