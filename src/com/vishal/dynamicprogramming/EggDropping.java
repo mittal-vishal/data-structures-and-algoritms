@@ -5,38 +5,40 @@ import java.util.Map;
 
 public class EggDropping {
 	
-	private static Map<String, Integer> map;
-
 	public static void main(String[] args) {
 		int n = 2;
-		int k = 4; 
-		map = new HashMap<>();
-		System.out.println(find(n, k));
+		int k = 6; 
+		System.out.println(superEggDrop(n, k));
 	}
 
-	private static int find(int n, int k) {
-		String key = n + "|" + k;
-		if(map.containsKey(key)) {
-			return map.get(key);
-		}
-		if(n == 1) {
-			return k;
-		}
-		if(k == 0 || k == 1) {
-			return k;
-		}
-		int min = Integer.MAX_VALUE;
-		int attempt = 0;
-		for(int i=1;i<=k;i++) {
-			attempt = Math.max(find(n-1, i-1) , find(n, k-i)) + 1;
-			if(attempt < min) {
-				min = attempt;
-			}
-			map.put(key, min);
-		}
-		return min;
-	}
-	
-	
+	public static int superEggDrop(int K, int N) {
+        Map<String, Integer> lookUp = new HashMap<>();
+        return superEggDrop(lookUp, K, N);
+    }
+    
+    private static int superEggDrop(Map<String, Integer> lookUp, int K, int N){
+        String key = K + "|" + N;
+        if(K == 1){
+            return N;
+        }else if(N == 0 || N == 1){
+            return N;
+        }else if(lookUp.containsKey(key)){
+            return lookUp.get(key);
+        }else{
+            int min = Integer.MAX_VALUE;
+            int result = 0;
+            for(int i = 1; i <= N; i++){
+                result = 1 + Math.max(
+                    superEggDrop(lookUp, K - 1, i - 1),
+                    superEggDrop(lookUp, K, N - i)
+                );
+                if(result < min){
+                    min = result;
+                }
+            }
+            lookUp.put(key, min);
+            return lookUp.get(key);
+        }
+    }
 
 }
