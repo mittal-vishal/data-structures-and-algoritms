@@ -25,7 +25,7 @@ public class LongestPalin {
 	     int max = Integer.MIN_VALUE;
 	     String returnStr = null;
 	     for(String st : subStrSet){
-	         if(isPalin(st, 0, st.length()) && st.length() > max){
+	         if(isPalin(st, 0, st.length() - 1) && st.length() > max){
 	             max = st.length();
 	             returnStr = st;
 	         }

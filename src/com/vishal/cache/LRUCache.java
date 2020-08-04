@@ -3,94 +3,91 @@ package com.vishal.cache;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LRUCache {
-	
-	private Map<String, CacheNode> cacheMap;
-	private int capacity;
-	private CacheNode head;
-	private CacheNode tail;
-	private int size;
-	
-	public LRUCache(int capacity, Map<String, CacheNode> cacheMap) {
-		this.capacity = capacity;
-		this.cacheMap = cacheMap;
-		this.size = 0;
-	}
-	
-	private void put(String key, int value) {
-		CacheNode cacheNode = new CacheNode(value, key);
-		cacheMap.put(key, cacheNode);
-		if(size < capacity && size == 0) {
-			head = cacheNode;
-			tail = head;
-			size++;
-		}else if(size < capacity && size > 0){
-			tail.next = cacheNode;
-			cacheNode.prev = tail;
-			tail = tail.next;
-			size++;
-		}else {
-			delete();
-			tail.next = cacheNode;
-			cacheNode.prev = tail;
-			tail = tail.next;
-		}
-	}
-	
-	private int get(String key) {
-		if(!cacheMap.containsKey(key)) {
-			return -1;
-		}else if(tail != head){
-			CacheNode cacheNode = cacheMap.get(key);
-			if(cacheNode == head) {
-				head = head.next;
-			}else{
-				cacheNode.prev.next = cacheNode.next;
-				cacheNode.next.prev = cacheNode.prev;
-			}
-			cacheNode.prev = tail;
-			tail.next = cacheNode;
-			cacheNode.next = null;
-			tail = tail.next;
-			return cacheMap.get(key).data;
-		}else {
-			return cacheMap.get(key).data;
-		}
-		
-	}
-	
-	private void delete() {
-		CacheNode temp = head;
-		head = head.next;
-		cacheMap.remove(temp.key);
-		size--;
-	}
-	
-	private void printCache() {
-		CacheNode currNode = head;
-		while (currNode != null) {
-			System.out.print(currNode.key + "|" + currNode.data + " ");
-			currNode = currNode.next;
-		}
-		System.out.println();
-	}
-	
-	public static void main(String[] args) {
-		int capacity = 5;
-		Map<String, CacheNode> cacheMap = new HashMap<>();
-		LRUCache cache = new LRUCache(capacity, cacheMap);
-		System.out.println(cache.get("c1"));
-		cache.put("c1", 10);
-		cache.printCache();
-		System.out.println(cache.get("c1"));
-		cache.put("c2", 11);
-		cache.put("c3", 12);
-		cache.put("c4", 14);
-		cache.put("c5", 15);
-		cache.printCache();
-		cache.get("c1");
-		cache.put("c6", 23);
-		cache.printCache();
-	}
+class LRUCache {
+    
+    class DoublyNode{
+        int key;
+        int data;
+        DoublyNode prev;
+        DoublyNode next;
+        public DoublyNode(int key, int data){
+            this.key = key;
+            this.data = data;
+        }
+    }
+    
+    private Map<Integer, DoublyNode> map = null;
+    private int size = -1;
+    private int capacity = -1;
+    private DoublyNode head = null;
+    private DoublyNode tail = null; 
 
+    public LRUCache(int capacity) {
+        map = new HashMap<>(capacity);
+        size = 0;
+        this.capacity = capacity;
+    }
+    
+    public int get(int key) {
+        if(map.containsKey(key)){
+            DoublyNode node = map.get(key);
+            if(node != tail){
+                moveToTail(node);
+            }
+            return node.data;
+        }else{
+            return -1;
+        }
+    }
+    
+    public void put(int key, int value) {
+        DoublyNode existedNode = map.get(key);
+        if(existedNode == null){
+            DoublyNode newNode = new DoublyNode(key, value);
+            map.put(key, newNode);
+            addNode(newNode);
+            ++size;
+            if(size > capacity){
+                map.remove(head.key);
+                removeNode(head);
+                --size;
+            }
+        }else{
+            existedNode.data = value;
+            if(existedNode != tail){
+                moveToTail(existedNode);
+            }
+        }
+    }
+    
+    private void addNode(DoublyNode newNode){
+        if(tail == null){
+            head = newNode;
+            tail = newNode;
+        }else{
+            tail.next = newNode;
+            newNode.prev = tail;
+            newNode.next = null;
+            tail = newNode;
+        }
+    }
+    
+    private void moveToTail(DoublyNode newNode) {
+        removeNode(newNode);
+        addNode(newNode);
+    }
+    
+    private void removeNode(DoublyNode node) {
+        if(node != head && node != tail){
+            node.prev.next = node.next;
+            node.next.prev = node.prev;
+        }else if(node == head){
+            head = head.next;
+            head.prev.next = null;
+            head.prev = null;
+        }else{
+            head.prev.next = null;
+            head.prev = null;
+        }
+    }
 }
