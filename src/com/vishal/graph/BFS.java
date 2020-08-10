@@ -9,11 +9,10 @@ import java.util.Scanner;
 public class BFS {
 
 	public static void main(String[] args) {
-		//Directed Graph, we considered disconnected cases
 		Scanner sc = new Scanner(System.in);
 		int nov = sc.nextInt();
 		int edges = sc.nextInt();
-		List<List<Integer>> adj = new ArrayList<>();
+		List<List<Integer>> adj = new ArrayList<>(nov);
 		for (int i = 0; i < nov; i++) {
 			adj.add(new ArrayList<>());
 		}

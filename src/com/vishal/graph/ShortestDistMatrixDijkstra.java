@@ -47,7 +47,7 @@ class Implementation {
 		int[] validCol = { -1, 1, 0, 0 };
 		PriorityQueue<GraphNode> pq = new PriorityQueue<>((GraphNode o1, GraphNode o2) -> o1.cost - o2.cost);
 		Set<GraphNode> visitedSet = new HashSet<>();
-		int dist[][] = new int[nov][nov];
+		int[][] dist = new int[nov][nov];
 		for (int[] distArray : dist) {
 			Arrays.fill(distArray, Integer.MAX_VALUE);
 		}
@@ -74,9 +74,9 @@ class Implementation {
 	}
 
 	private boolean isValid(int i, int j, int n) {
-		if (i >= 0 && i < n && j >= 0 && j < n)
+		if(i >= 0 && i < n && j >= 0 && j < n) {
 			return true;
-		else
-			return false;
+		}
+		return false;
 	}
 }

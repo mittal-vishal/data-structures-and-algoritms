@@ -6,8 +6,8 @@ import java.util.Map;
 public class KSumSubArraysCount {
 
 	public static void main(String[] args) {
-		int arr[] = {10, 2, -2, -20, 10};
-		int k = -10;
+		int arr[] = {1, 1,1,1,-1};
+		int k = 3;
 		System.out.println(find(arr, k));
 
 	}

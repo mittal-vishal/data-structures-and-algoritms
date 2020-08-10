@@ -241,6 +241,23 @@ public class SinglyLinkedList {
 		}
 
 	}
+	
+	private static SinglyNode oddEvenList(SinglyNode head) {
+        if(head == null || head.getNext() == null){
+            return head;
+        }
+        SinglyNode odd = head;
+        SinglyNode even = head.getNext();
+        SinglyNode evenStart = even;
+        while(odd != null && odd.getNext() != null && even != null && even.getNext() != null){
+            odd.setNext(odd.getNext().getNext());
+            even.setNext(even.getNext().getNext());
+            odd = odd.getNext();
+            even = even.getNext();
+        }
+        odd.setNext(evenStart);
+        return head;
+    }
 
 	private static void segregateEvenAndOdd1() {
 		SinglyNode evenStart = null;
@@ -314,11 +331,15 @@ public class SinglyLinkedList {
     }
 
 	public static void main(String[] args) {
-		insertAtBegin(5);
-		insertAtBegin(12);
-		insertAtEnd(3);
 		insertAtBegin(2);
-		insertAtEnd(7);
+		insertAtBegin(1);
+		insertAtEnd(3);
+		insertAtEnd(4);
+		insertAtEnd(5);
+		print();
+		System.out.println();
+		oddEvenList(head);
+		print();
 		insertAfterSpecificElement(23, 5);
 		insertBeforeSpecificElement(34, 5);
 		deleteAtBeg();

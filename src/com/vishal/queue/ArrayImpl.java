@@ -33,9 +33,7 @@ public class ArrayImpl {
 	}
 	
 	private static void push(int item) {
-		if(rear == QUEUE_SIZE - 1) {
-			return;
-		}else {
+		if(rear != QUEUE_SIZE - 1) {
 			rear = rear + 1;
 			QUEUE[rear] = item;
 			if(front == -1) {
@@ -72,9 +70,7 @@ public class ArrayImpl {
 	}
 	
 	private static void reverseRecursively(Queue<Integer> queue) {
-		if(queue.isEmpty()) {
-			return;
-		}else {
+		if(!queue.isEmpty()) {
 			int item = queue.remove();
 			reverseRecursively(queue);
 			queue.add(item);

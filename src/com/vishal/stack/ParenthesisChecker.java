@@ -26,11 +26,7 @@ public class ParenthesisChecker {
 	}
 
 	private static boolean compare(Character peek, char currentChar) {
-		if (peek == '(' && currentChar == ')') {
-			return true;
-		} else if (peek == '{' && currentChar == '}') {
-			return true;
-		} else if (peek == '[' && currentChar == ']') {
+		if ((peek == '(' && currentChar == ')') || (peek == '{' && currentChar == '}') || (peek == '[' && currentChar == ']')) {
 			return true;
 		}
 		return false;

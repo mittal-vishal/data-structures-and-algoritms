@@ -8,7 +8,6 @@ import java.util.Stack;
 public class TopologicalSort {
 
 	public static void main(String[] args) {
-		//Directed Acyclic Graph, we considered disconnected cases
 		Scanner sc = new Scanner(System.in);
 		int nov = sc.nextInt();
 		int edges = sc.nextInt();

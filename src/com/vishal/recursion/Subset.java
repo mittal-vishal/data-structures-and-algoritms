@@ -4,22 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Subset {
-
-	private static List<String> subsetList = new ArrayList<>();
+	
+	public static void main(String[] args) {
+		System.out.println(getSubset("abc"));
+	}
 	
 	public static List<String> getSubset(String str){
-		return getSubset("", str, 0, str.length()-1);
+		List<String> subsetList = new ArrayList<>();
+		return getSubset(str, "", subsetList);
 	}
 
-	private static List<String> getSubset(String current, String str, int beg, int end) {
-		if(beg <= end) {
-			getSubset(current, str, beg + 1, end);
-			current = current + str.charAt(beg);
-			getSubset(current, str, beg + 1, end);
+	private static List<String> getSubset(String str, String current, List<String> subList) {
+		if(str.length() == 0) {
+			subList.add(current);
 		}else {
-			subsetList.add(current);
+			getSubset(str.substring(1), current, subList);
+			getSubset(str.substring(1), current + str.charAt(0), subList);
 		}
-		return subsetList;
+		return subList;
 	}
 	
 }

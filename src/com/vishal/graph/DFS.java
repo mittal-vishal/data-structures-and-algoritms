@@ -7,7 +7,6 @@ import java.util.Scanner;
 public class DFS {
 
 	public static void main(String[] args) {
-		//Directed Graph, we considered disconnected cases
 		Scanner sc = new Scanner(System.in);
 		int nov = sc.nextInt();
 		int edges = sc.nextInt();

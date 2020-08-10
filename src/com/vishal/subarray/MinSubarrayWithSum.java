@@ -4,64 +4,29 @@ public class MinSubarrayWithSum {
 	public static void main(String[] args) {
 		int arr1[] = { 1, 5, 45, 6, 10, 19 };
 		int item = 51;
-		System.out.println(smallestSubWithSum(arr1, 6, item));
+		System.out.println(minSubArrayLen(arr1, item));
 	}
 
-	private static int smallestSubWithSum(int arr[], int n, int item) {
-		// Initialize current sum and minimum length
-		int curr_sum = 0, min_len = n + 1;
-
-		// Initialize starting and ending indexes
-		int start = 0, end = 0;
-		while (end < n) {
-			// Keep adding array elements while current sum
-			// is smaller than x
-			while (curr_sum <= item && end < n) {
-				curr_sum += arr[end++];
-				if (curr_sum == item) {
-					min_len = end - start;
+	public static int minSubArrayLen(int[] nums, int k) {
+		int start = 0;
+		int end = 0;
+		int sum = 0;
+		int min = Integer.MAX_VALUE;
+		while (end < nums.length) {
+			while (sum <= k && end < nums.length) {
+				sum = sum + nums[end++];
+				if (sum == k) {
+					min = end - start;
 				}
 			}
-
-			// If current sum becomes greater than x.
-			while (curr_sum > item && start < n) {
-				// remove starting elements
-				curr_sum -= arr[start++];
-
-				// Update minimum length if needed
-				if (curr_sum == item && end - start < min_len)
-					min_len = end - start;
+			while (sum > k && start < nums.length) {
+				sum = sum - nums[start++];
+				if (sum == k && (end - start) < min) {
+					min = end - start;
+				}
 			}
 		}
-		return min_len;
+		return (min == Integer.MAX_VALUE) ? 0 : min;
 	}
-	
-	static int smallestSubWithSumGreater(int arr[], int n, int x)  
-    { 
-        // Initialize current sum and minimum length 
-        int curr_sum = 0, min_len = n + 1; 
-  
-        // Initialize starting and ending indexes 
-        int start = 0, end = 0; 
-        while (end < n)  
-        { 
-            // Keep adding array elements while current sum 
-            // is smaller than x 
-            while (curr_sum <= x && end < n) 
-                curr_sum += arr[end++]; 
-  
-            // If current sum becomes greater than x. 
-            while (curr_sum > x && start < n)  
-            { 
-                // Update minimum length if needed 
-                if (end - start < min_len) 
-                    min_len = end - start; 
-  
-                // remove starting elements 
-                curr_sum -= arr[start++]; 
-            } 
-        } 
-        return min_len; 
-    } 
-	
+
 }

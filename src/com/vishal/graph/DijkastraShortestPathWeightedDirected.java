@@ -31,11 +31,10 @@ public class DijkastraShortestPathWeightedDirected {
 		int source = sc.nextInt();
 		int dest = sc.nextInt();
 		sc.close();
-		boolean[] visited = new boolean[nov];
-		System.out.println(find(adj, visited, nov, source, dest));
+		System.out.println(find(adj, nov, source, dest));
 	}
 
-	private static int find(List<List<GraphNode>> adj, boolean[] visited, int nov, int source, int dest) {
+	private static int find(List<List<GraphNode>> adj, int nov, int source, int dest) {
 		PriorityQueue<GraphNode> pq = new PriorityQueue<>((GraphNode o1, GraphNode o2) -> o1.getCost() - o2.getCost());
 		Set<Integer> visitedSet = new HashSet<>();
 		int dist[] = new int[nov];

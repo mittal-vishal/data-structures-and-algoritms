@@ -8,7 +8,7 @@ public class MaxOfSubarrayOfSizeK {
 	public static void main(String[] args) {
 		int arr[] = { 1, 3, 1, 2, 0, 5 };
 		int k = 3;
-		findUsingQueue(arr, k);
+		find(arr, k);
 	}
 
 	private static void find(int[] arr, int k) {

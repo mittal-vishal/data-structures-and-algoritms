@@ -15,7 +15,6 @@ public class StackUsingQueue {
 
 	public static void main(String[] args) {
 		Arrays.fill(queue, -1);
-		pop();
 		push(4);
 		push(1);
 		push(15);
@@ -33,7 +32,7 @@ public class StackUsingQueue {
 			queue[++rear] = item;
 			front = 0;
 		}else {
-			Queue<Integer> tempQueue = new LinkedList<Integer>();
+			Queue<Integer> tempQueue = new LinkedList<>();
 			for(int i= 0; i < queue.length; i++) {
 				int element = pop();
 				if(element != -1) {

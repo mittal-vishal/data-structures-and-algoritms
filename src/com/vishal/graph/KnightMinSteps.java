@@ -23,7 +23,7 @@ public class KnightMinSteps {
 	private static int minSteps(int[] knight, int[] target, int n) {
 		int[] possibleI = { -1, -2, -1, -2, 1, 2, 1, 2 };
 		int[] possibleJ = { -2, -1, 2, 1, 2, 1, -2, -1 };
-		Queue<Cell> queue = new LinkedList<Cell>();
+		Queue<Cell> queue = new LinkedList<>();
 		boolean[][] visited = new boolean[n][n];
 		int dist[][] = new int[n][n];
 		for(int distArray[] : dist) {
