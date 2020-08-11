@@ -23,25 +23,20 @@ private static Node rootNode = null;
 	private static void find(Node root) {
 		Deque<Node> queue = new LinkedList<>();
 		if(root != null) {
-			Node item = null;
+			Node popped = null;
 			queue.add(root);
 			queue.add(null);
 			System.out.print(root.getData() + " ");
 			while(!queue.isEmpty()) {
-				if(queue.peek() == null && queue.size() == 1) {
-					break;
-				}
-				if(queue.peek() == null) {
-					queue.poll();
+				popped = queue.poll();
+				if(popped != null) {
+					if(popped.getLeft() != null)
+						queue.add(popped.getLeft());
+					if(popped.getRight() != null)
+						queue.add(popped.getRight());
+				}else if(popped == null && queue.size() > 0) {
 					System.out.print(queue.peekLast().getData() + " ");
 					queue.add(null);
-				}
-				item = queue.poll();
-				if(item.getLeft() != null) {
-					queue.add(item.getLeft());
-				}
-				if(item.getRight() != null) {
-					queue.add(item.getRight());
 				}
 			}
 		}

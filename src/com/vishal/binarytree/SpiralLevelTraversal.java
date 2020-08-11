@@ -22,7 +22,7 @@ public class SpiralLevelTraversal {
 	}
 
 	private static void find(Node root) {
-		Queue<Node> queue = new LinkedList<Node>();
+		Queue<Node> queue = new LinkedList<>();
 		Stack<Node> stack = new Stack<>();
 		queue.add(root);
 		queue.add(null);

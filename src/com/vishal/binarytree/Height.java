@@ -20,10 +20,10 @@ public class Height {
 	private static int find(Node root) {
 		if(root == null) {
 			return 0;
-		}else {
-			int left = find(root.getLeft());
-			int right = find(root.getRight());
-			return (left > right ? left : right) + 1;
+		}else if(root.getLeft() == null && root.getRight() == null){
+			return 1;
+		}else{
+			return 1 + Math.max(find(root.getLeft()), find(root.getRight()));
 		}
 	}
 	

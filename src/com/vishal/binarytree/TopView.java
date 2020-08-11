@@ -23,8 +23,11 @@ public class TopView {
 		rootNode = new Node(1);
 		rootNode.setLeft(new Node(2));
 		rootNode.setRight(new Node(3));
-		rootNode.getLeft().setLeft(new Node(34));
-		rootNode.getLeft().setRight(new Node(4));
+		rootNode.getLeft().setLeft(new Node(4));
+		rootNode.getLeft().setRight(new Node(5));
+		rootNode.getRight().setLeft(new Node(6));
+		rootNode.getRight().setRight(new Node(7));
+		rootNode.getLeft().getLeft().setLeft(new Node(8));
 		
 		topView(rootNode);
 	}

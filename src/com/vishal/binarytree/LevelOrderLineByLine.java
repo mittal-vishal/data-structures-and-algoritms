@@ -24,23 +24,22 @@ public class LevelOrderLineByLine {
 		Queue<Node> queue = new LinkedList<>();
 		queue.add(root);
 		queue.add(null);
-		Node item = null;
+		Node popped = null;
 		while(!queue.isEmpty()) {
-			if(queue.peek() != null) {
-				item = queue.poll();
-				System.out.print(item.getData() + " ");
-				if(item.getLeft() != null) {
-					queue.add(item.getLeft());
+			popped = queue.poll();
+			if(popped == null){
+				System.out.println();
+			    if(queue.size() > 0) {
+			    	queue.add(null);
+			    }
+			}else{				
+				System.out.print(popped.getData() + " ");
+				if(popped.getLeft() != null) {
+					queue.add(popped.getLeft());
 				}
-				if(item.getRight() != null) {
-					queue.add(item.getRight());
+				if(popped.getRight() != null) {
+					queue.add(popped.getRight());
 				}
-			}else if(queue.peek() == null && queue.size() > 1){
-			    queue.poll();
-			    System.out.println();
-			    queue.add(null);
-			}else {
-				queue.poll();
 			}
 		}
 	}
