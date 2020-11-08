@@ -1,4 +1,4 @@
-package com.vishal.window.sliding;
+package com.vishal.windowsliding;
 
 public class WindowSlidingProblem {
 
