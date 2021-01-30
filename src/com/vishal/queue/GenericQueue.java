@@ -6,7 +6,7 @@ public class GenericQueue<T> {
     private Node<T> rear = null;
 
     public static void main(String[] args) {
-        GenericQueue queue = new GenericQueue();
+        GenericQueue<Integer> queue = new GenericQueue();
         queue.enqueue(1);
         queue.enqueue(7);
         queue.dequeue();
