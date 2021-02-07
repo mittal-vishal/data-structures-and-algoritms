@@ -2,8 +2,8 @@ package com.vishal.linkedlist;
 
 public class SinglyNode {
 
-	private int data;
-	private SinglyNode next;
+	public int data;
+	public SinglyNode next;
 
 	public SinglyNode(int data) {
 		super();

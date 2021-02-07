@@ -369,7 +369,9 @@ public class SinglyLinkedList {
 		System.out.println(intersectPoint(head, head));
 		pairwiseSwap(head);
 		print();
-		
+		Partition p = new Partition();
+		p.partitionOptimized(head, 3);
+		print();
 	}
 
 }

@@ -2,6 +2,40 @@ package com.vishal.linkedlist;
 
 public class Partition {
 
+    public SinglyNode partitionOptimized(SinglyNode head, int x) {
+        SinglyNode lessS = null;
+        SinglyNode lessE = null;
+        SinglyNode greaterS = null;
+        SinglyNode greaterE = null;
+
+        SinglyNode curr = head;
+        while(curr != null){
+            if(curr.data < x){
+                if(lessS == null){
+                    lessS = curr;
+                    lessE = lessS;
+                }else{
+                    lessE.next = curr;
+                    lessE = lessE.next;
+                }
+            }else{
+                if(greaterS == null){
+                    greaterS = curr;
+                    greaterE = greaterS;
+                }else{
+                    greaterE.next = curr;
+                    greaterE = greaterE.next;
+                }
+            }
+        }
+        if(lessS == null || greaterS == null){
+            return head;
+        }
+        lessE.next = greaterS;
+        greaterE.next = null;
+        return lessS;
+    }
+
     public SinglyNode partition(SinglyNode head, int k){
         SinglyNode itr = head;
         SinglyNode tail = head;
@@ -34,39 +68,5 @@ public class Partition {
             }
         }
         return head;
-    }
-
-    public SinglyNode partition2(SinglyNode head, int x) {
-        SinglyNode lessS = null;
-        SinglyNode lessE = null;
-        SinglyNode greaterS = null;
-        SinglyNode greaterE = null;
-
-        SinglyNode curr = head;
-        while(curr != null){
-            if(curr.data < x){
-                if(lessS == null){
-                    lessS = curr;
-                    lessE = lessS;
-                }else{
-                    lessE.next = curr;
-                    lessE = lessE.next;
-                }
-            }else{
-                if(greaterS == null){
-                    greaterS = curr;
-                    greaterE = greaterS;
-                }else{
-                    greaterE.next = curr;
-                    greaterE = greaterE.next;
-                }
-            }
-        }
-        if(lessS == null || greaterS == null){
-            return head;
-        }
-        lessE.next = greaterS;
-        greaterE.next = null;
-        return lessS;
     }
 }
