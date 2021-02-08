@@ -37,33 +37,44 @@ public class Partition {
     }
 
     public SinglyNode partition(SinglyNode head, int k){
-        SinglyNode itr = head;
+        if(head == null){
+            return null;
+        }
+        SinglyNode curr = head;
         SinglyNode tail = head;
+        SinglyNode end = head;
         while(tail.next != null) {
             tail = tail.next;
         }
-        SinglyNode end = tail;
+        end = tail;
         SinglyNode prev = null;
         SinglyNode temp = null;
         boolean  isFirst = true;
-        while(itr != end){
-            if(itr.data >= k) {
-                if (itr == head) {
-                    head = head.next;
-                } else {
-                    prev.next = itr.next;
-                }
-                temp = itr;
-                tail.next = temp;
-                itr = itr.next;
-                temp.next = null;
-                tail = temp;
-            }else{
-                prev = itr;
-                itr = itr.next;
+        while(curr != end){
+            if(curr == tail && end == null){
+                break;
             }
-            if((itr == end) && isFirst){
-                end = itr.next;
+            if(curr.data < k) {
+                prev = curr;
+                curr = curr.next;
+            }else{
+                if(curr == head){
+                    temp = curr.next;
+                    tail.next = curr;
+                    curr.next = null;
+                    curr = temp;
+                    head = curr;
+                    tail = tail.next;
+                }else{
+                    prev.next = curr.next;
+                    curr.next = null;
+                    tail.next = curr;
+                    tail = tail.next;
+                    curr = prev.next;
+                }
+            }
+            if((curr == end) && isFirst){
+                end = end.next;
                 isFirst = false;
             }
         }
