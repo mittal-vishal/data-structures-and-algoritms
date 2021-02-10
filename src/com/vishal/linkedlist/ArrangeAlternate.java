@@ -11,20 +11,27 @@ public class ArrangeAlternate {
             fast = fast.next.next;
         }
 
-        SinglyNode oddE = head;
-        SinglyNode evenE = slow;
-        SinglyNode tempO = null;
-        SinglyNode tempE = null;
+        if(fast != null){
+            slow = slow.next;
+        }
 
-        while(evenE != null){
-            tempO = oddE.next;
-            tempE = evenE.next;
-            oddE.next = evenE;
-            if(tempE != null){
-                evenE.next = tempO;
+        SinglyNode first = head;
+        SinglyNode second = slow;
+        SinglyNode tempF = null;
+        SinglyNode tempS = null;
+
+        while(second != null){
+            tempF = first.next;
+            tempS = second.next;
+            first.next = second;
+            if(tempS == null && tempF != slow){
+                second.next = tempF;
+                tempF.next = null;
+            }else if(tempS != null){
+                second.next = tempF;
             }
-            oddE = tempO;
-            evenE = tempE;
+            first = tempF;
+            second = tempS;
         }
 
         return head;
