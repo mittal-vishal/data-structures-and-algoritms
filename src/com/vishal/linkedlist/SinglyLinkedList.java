@@ -142,15 +142,13 @@ public class SinglyLinkedList {
 		head = prevNode;
 	}
 
-	private static void reverseRecursively(SinglyNode currNode, SinglyNode prevNode) {
-		if (currNode != null) {
-			SinglyNode temp = null;
-			temp = currNode.getNext();
-			currNode.setNext(prevNode);
-			reverseRecursively(temp, currNode);
-		} else {
-			head = prevNode;
-		}
+	private static SinglyNode reverseRecursively(SinglyNode curr, SinglyNode prev) {
+		if(curr == null)
+			return prev;
+		SinglyNode temp = null;
+		temp = curr.getNext();
+		curr.setNext(prev);
+		return reverseRecursively(temp, curr);
 	}
 
 	private static boolean isCycle() {
