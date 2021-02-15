@@ -1,32 +1,42 @@
 package com.vishal.stack;
 
 public class TwoStack {
-	int arr[] = new int[100];
-	int top1 = -1;
-	int top2 = arr.length;
+	int stack[];
+	int top1;
+	int top2;
 
-	public void push1(int x, TwoStack sq) {
-		sq.arr[++sq.top1] = x;
+	public TwoStack(int capacity) {
+		this.stack = new int[capacity];
+		this.top1 = -1;
+		this.top2 = capacity;
 	}
 
-	public void push2(int x, TwoStack sq) {
-		sq.arr[--sq.top2] = x;
+	public void push1(int item) {
+		if(top1 < (top2 + 1)){
+			stack[++top1] = item;
+		}
 	}
 
-	public int pop1(TwoStack sq) {
-		if (sq.top1 > -1) {
-			int item = sq.arr[sq.top1];
-			sq.top1 = sq.top1 - 1;
+	public void push2(int item) {
+		if(top2 > (top1 + 1)){
+			stack[--top2] = item;
+		}
+	}
+
+	public int pop1() {
+		if (top1 > -1) {
+			int item = stack[top1];
+			top1 = top1 - 1;
 			return item;
 		} else {
 			return -1;
 		}
 	}
 
-	public int pop2(TwoStack sq) {
-		if (sq.top2 <= sq.arr.length - 1) {
-			int item = sq.arr[sq.top2];
-			sq.top2 = sq.top2 + 1;
+	public int pop2() {
+		if (top2 < stack.length) {
+			int item = stack[top2];
+			top2 = top2 + 1;
 			return item;
 		} else {
 			return -1;
