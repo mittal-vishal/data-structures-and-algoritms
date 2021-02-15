@@ -8,10 +8,10 @@ public class QueueUsingStack {
 
 	private static int CAPACITY = 10;
 	private static int top = -1;
-	private static int stack[] = new int[CAPACITY];
+	private static int queue[] = new int[CAPACITY];
 
 	public static void main(String[] args) {
-		Arrays.fill(stack, Integer.MIN_VALUE);
+		Arrays.fill(queue, Integer.MIN_VALUE);
 		pop();
 		push(4);
 		push(1);
@@ -40,7 +40,7 @@ public class QueueUsingStack {
 			}
 			Iterator<Integer> itr2 = stack2.iterator();
 			while (itr2.hasNext()) {
-				stack[++top] = itr2.next();
+				queue[++top] = itr2.next();
 			}
 		}
 	}
@@ -49,14 +49,14 @@ public class QueueUsingStack {
 		if (top == -1) {
 			return -1;
 		} else {
-			return stack[top--];
+			return queue[top--];
 		}
 	}
 
 	private static void print() {
 		for (int i = top; i >= 0; i--) {
-			if (stack[i] != Integer.MIN_VALUE) {
-				System.out.print(stack[i] + " ");
+			if (queue[i] != Integer.MIN_VALUE) {
+				System.out.print(queue[i] + " ");
 			} else {
 				break;
 			}
