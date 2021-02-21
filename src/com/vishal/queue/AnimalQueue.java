@@ -6,10 +6,10 @@ public class AnimalQueue {
 
     private LinkedList<Dog> dogList = new LinkedList<>();
     private LinkedList<Cat> catList = new LinkedList<>();
-    private int ts = 0;
 
     public void enqueue(Animal animal){
-        animal.setTs(ts++);
+        animal.setTs(animal.getTs());
+        animal.setTs(animal.getTs() + 1);
         if(animal instanceof Dog){
             dogList.add((Dog)animal);
         }else{
@@ -18,10 +18,17 @@ public class AnimalQueue {
     }
 
     public Animal dequeueAny(){
-        if(!dogList.isEmpty() && (dogList.peek().getTs() < catList.peek().getTs())){
-            return dogList.removeFirst();
+        if(dogList.size() == 0){
+            return dequeueCat();
+        }else if(catList.size() == 0){
+            return dequeueDog();
+        }
+        Cat firstCat = catList.peek();
+        Dog firstDog = dogList.peek();
+        if(firstCat.getTs() < firstDog.getTs()){
+            return dequeueCat();
         }else{
-            return catList.removeFirst();
+            return dequeueDog();
         }
     }
 
@@ -44,8 +51,8 @@ public class AnimalQueue {
 }
 
 abstract class Animal{
-    String name;
-    int ts;
+    protected String name;
+    private int ts = 0;
     public Animal(String name){
         this.name = name;
     }
@@ -58,14 +65,12 @@ abstract class Animal{
 }
 
 class Dog extends Animal{
-    String name;
     public Dog(String name){
         super(name);
     }
 }
 
 class Cat extends Animal{
-    String name;
     public Cat(String name){
         super(name);
     }
