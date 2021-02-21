@@ -4,24 +4,24 @@ import java.util.Stack;
 
 public class SortStack {
 
-    public static Stack<Integer> sort(Stack<Integer> s){
+    public static Stack<Integer> sort(Stack<Integer> stack){
         Stack<Integer> tempStack = new Stack<>();
         int temp;
-        while(!s.isEmpty()){
-            temp = s.pop();
+        while(!stack.isEmpty()){
+            temp = stack.pop();
             if(tempStack.isEmpty() || temp >= tempStack.peek()){
                 tempStack.push(temp);
             }else{
                 while((!tempStack.isEmpty()) && temp < tempStack.peek()){
-                    s.push(tempStack.pop());
+                    stack.push(tempStack.pop());
                 }
                 tempStack.push(temp);
             }
         }
         while(!tempStack.isEmpty()){
-            s.push(tempStack.pop());
+            stack.push(tempStack.pop());
         }
-        return s;
+        return stack;
     }
 
     public static void main(String[] args) {
