@@ -36,7 +36,7 @@ public class StackPlates {
         }
         int item = currStack.pop();
         stackList.add(index,currStack);
-        return item
+        return item;
     }
 
     public Stack<Integer> getLastStack(){
