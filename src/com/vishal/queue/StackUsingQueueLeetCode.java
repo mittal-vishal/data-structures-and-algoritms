@@ -5,38 +5,42 @@ import java.util.Queue;
 
 public class StackUsingQueueLeetCode {
 
-    Queue<Integer> queue1;
-    Queue<Integer> queue2;
+    Queue<Integer> origQ;
+    Queue<Integer> tempQ;
     /** Initialize your data structure here. */
     public StackUsingQueueLeetCode() {
-        queue1 = new LinkedList<>();
-        queue2 = new LinkedList<>();
+        origQ = new LinkedList<>();
+        tempQ = new LinkedList<>();
     }
 
     /** Push element x onto stack. */
     public void push(int x) {
-        while(!queue1.isEmpty()){
-            queue2.add(queue1.poll());
+        while(!origQ.isEmpty()){
+            tempQ.add(tempQ.poll());
         }
-        queue1.add(x);
-        while(!queue2.isEmpty()){
-            queue1.add(queue2.poll());
+        origQ.add(x);
+        while(!tempQ.isEmpty()){
+            origQ.add(tempQ.poll());
         }
     }
 
     /** Removes the element on top of the stack and returns that element. */
     public int pop() {
-        return queue1.poll();
+        if(!origQ.isEmpty()){
+            return origQ.poll();
+        }else{
+            return -1;
+        }
     }
 
     /** Get the top element. */
     public int top() {
-        return queue1.peek();
+        return origQ.peek();
     }
 
     /** Returns whether the stack is empty. */
     public boolean empty() {
-        return queue1.isEmpty();
+        return origQ.isEmpty();
     }
 
 }
