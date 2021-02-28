@@ -35,6 +35,9 @@ public class KStack {
     }
 
     public int pop(int n){
+        if(top[n - 1] == -1){
+            System.out.println("Underflow");
+        }
         int i = top[n - 1];
         top[n - 1] = next[i];
         next[i] = free;
