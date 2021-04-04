@@ -2,9 +2,28 @@ package com.vishal.arrays;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 public class MergeIntervals {
+
+    public int[][] mergeOptimized(int[][] intervals) {
+        if(intervals == null || intervals.length < 2){
+            return intervals;
+        }
+
+        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+
+        LinkedList<int[]> mergedIntervals = new LinkedList<>();
+        for(int[] interval: intervals){
+            if(mergedIntervals.isEmpty() || mergedIntervals.getLast()[1] < interval[0]){
+                mergedIntervals.add(interval);
+            }else{
+                mergedIntervals.getLast()[1] = Math.max(mergedIntervals.getLast()[1], interval[1]);
+            }
+        }
+        return mergedIntervals.toArray(new int[mergedIntervals.size()][]);
+    }
 
     public int[][] merge(int[][] intervals) {
 
