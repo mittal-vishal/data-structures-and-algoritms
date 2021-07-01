@@ -3,12 +3,15 @@ package com.vishal.twopointer;
 public class RemoveDups {
 
     public static int remove(int[] arr) {
-        int nonDupIdx = 0;
-        for(int i = 1; i < arr.length; i++){
-            if(arr[i] != arr[nonDupIdx]){
-                nonDupIdx++;
-                arr[nonDupIdx] = arr[i];
+        if(arr == null || arr.length == 0){
+            return 0;
+        }
+        int i = 1, nonDupIdx = 0;
+        while(i < arr.length){
+            if(arr[i] != arr[i-1]){
+                arr[nonDupIdx++] = arr[i];
             }
+            i++;
         }
         return nonDupIdx + 1;
     }
