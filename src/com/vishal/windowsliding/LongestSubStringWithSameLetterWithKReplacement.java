@@ -6,24 +6,29 @@ import java.util.Map;
 public class LongestSubStringWithSameLetterWithKReplacement {
 
     public static int findLength(String str, int k) {
-        Map<Character, Integer> freqMap = new HashMap<>();
-        int start = 0, end = 0;
+        Map<Character, Integer> charsMap = new HashMap<>();
+        int max = 0;
+        int left = 0, right = 0;
         int maxRepeatLetterCount = 0;
-        int max = Integer.MIN_VALUE;
-        while(end < str.length()){
-            char rightChar = str.charAt(end++);
-            freqMap.put(rightChar, freqMap.getOrDefault(rightChar, 0) + 1);
-            maxRepeatLetterCount = Math.max(maxRepeatLetterCount, freqMap.get(rightChar));
-
-            if(end - start - maxRepeatLetterCount > k){
-                char leftChar = str.charAt(start++);
-                freqMap.put(leftChar, freqMap.get(leftChar) - 1);
+        while(right < str.length()){
+            //Expand the window until condition satisfies
+            char currChar = str.charAt(right++);
+            charsMap.put(currChar, charsMap.getOrDefault(currChar, 0) + 1);
+            maxRepeatLetterCount = Math.max(maxRepeatLetterCount, charsMap.get(currChar));
+            //Shrink the window until cond satisfies
+            while((right - left) - maxRepeatLetterCount > k){
+                char removeChar = str.charAt(left++);
+                charsMap.put(removeChar, charsMap.get(removeChar) - 1);
             }
-
-            max = Math.max(max, end - start);
-
+            max = Math.max(max, right - left);
         }
         return max;
+    }
+
+    public static void main(String[] args) {
+        String str ="aaabcpbbbb";
+        int k = 2;
+        System.out.print(findLength(str, k));
     }
 
 }

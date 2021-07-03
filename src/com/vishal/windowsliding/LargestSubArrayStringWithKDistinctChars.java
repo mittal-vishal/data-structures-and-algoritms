@@ -11,24 +11,32 @@ public class LargestSubArrayStringWithKDistinctChars {
         System.out.print(findLength(str, k));
     }
 
-    public static int findLength(String str, int k) {
-        Map<Character, Integer> map = new HashMap<>();
-        int start = 0, end = 0;
-        int longest = Integer.MIN_VALUE;
-        while(end < str.length()){
-            //Expand the window until cond satisfies
-            char rightChar = str.charAt(end++);
-            map.put(rightChar, map.getOrDefault(rightChar, 0) + 1);
-            //Contract the window until cond satisfies
-            while(start < end && map.size() > k){
-                char leftChar = str.charAt(start++);
-                map.put(leftChar, map.get(leftChar) - 1);
-                if(map.get(leftChar) == 0){
-                    map.remove(leftChar);
+    public static int findLength(String s, int k) {
+        if(s == null || s.length() == 0 || k == 0){
+            return 0;
+        }
+        int left = 0, right = 0;
+        int max = Integer.MIN_VALUE;
+        Map<Character, Integer> occuranceMap = new HashMap<>();
+        while(right < s.length()){
+            //Expand the window until condition satisfies
+            if(occuranceMap.size() <= k){
+                char currentChar = s.charAt(right++);
+                occuranceMap.put(currentChar, occuranceMap.getOrDefault(currentChar, 0) + 1);
+            }
+            if(occuranceMap.size() <= k){
+                max = Math.max(max, (right-left));
+            }
+            //Shrink the window until condition satisfies
+            if(occuranceMap.size() > k){
+                char removedChar = s.charAt(left++);
+                if(occuranceMap.get(removedChar) > 1){
+                    occuranceMap.put(removedChar, occuranceMap.get(removedChar) - 1);
+                }else{
+                    occuranceMap.remove(removedChar);
                 }
             }
-            longest = Math.max(longest, end - start);
         }
-        return longest;
+        return max;
     }
 }

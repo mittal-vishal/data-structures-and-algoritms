@@ -6,24 +6,29 @@ import java.util.Map;
 public class MaxFruitOfKTypes {
 
     public static int findLength(char[] arr, int k) {
-        Map<Character, Integer> freqMap = new HashMap<>();
-        int start = 0, end = 0;
-        int numOfFruits = Integer.MIN_VALUE;
-        while(end < arr.length){
-            //Expand the basket
-            char rightFruit = arr[end++];
-            freqMap.put(rightFruit, freqMap.getOrDefault(rightFruit, 0) + 1);
-            //Shrink the basket
-            while(start < end && freqMap.size() > k){
-                char leftFruit = arr[start++];
-                freqMap.put(leftFruit, freqMap.get(leftFruit) - 1);
-                if(freqMap.get(leftFruit) == 0){
-                    freqMap.remove(leftFruit);
+        int left = 0, right = 0;
+        int max = Integer.MIN_VALUE;
+        Map<Character, Integer> occuranceMap = new HashMap<>();
+        while(right < arr.length){
+            //Expand the window, until cond satisfied
+            if(occuranceMap.size() < 3){
+                char currentFruit = arr[right++];
+                occuranceMap.put(currentFruit, occuranceMap.getOrDefault(currentFruit, 0) + 1);
+            }
+            if(occuranceMap.size() < 3){
+                max = Math.max(max, right - left);
+            }
+            //Shrink the window to optimize the answer, and until cond satisfies
+            if(occuranceMap.size() > 2){
+                char fruitToRemove = arr[left++];
+                if(occuranceMap.get(fruitToRemove) > 1){
+                    occuranceMap.put(fruitToRemove, occuranceMap.get(fruitToRemove) - 1);
+                }else{
+                    occuranceMap.remove(fruitToRemove);
                 }
             }
-            numOfFruits = Math.max(numOfFruits, end - start);
         }
-        return numOfFruits;
+        return max;
     }
 
 }
