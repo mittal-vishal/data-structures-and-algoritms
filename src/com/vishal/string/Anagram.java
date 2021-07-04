@@ -11,21 +11,19 @@ public class Anagram {
 	}
 
 	private static boolean find(String str1, String str2) {
-		int[] charArray = new int[256];
-		Arrays.fill(charArray, 0);
-		if (str1.length() != str2.length()) {
+		if(str1.length() != str2.length())
 			return false;
-		}
+		int[] charArray = new int[26];
+		Arrays.fill(charArray, 0);
 		for (int i = 0; i < str1.length(); i++) {
-			charArray[str1.charAt(i)]++;
+			charArray[str1.charAt(i) - 'a']++;
 		}
 		for (int i = 0; i < str2.length(); i++) {
-			charArray[str2.charAt(i)]--;
+			charArray[str2.charAt(i) - 'a']--;
 		}
-		for (int i = 0; i < charArray.length; i++) {
-			if (charArray[i] != 0) {
+		for (int i = 0; i < 26; i++) {
+			if (charArray[i] != 0)
 				return false;
-			}
 		}
 		return true;
 	}
