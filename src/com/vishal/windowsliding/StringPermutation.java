@@ -6,32 +6,38 @@ import java.util.Map;
 public class StringPermutation {
 
     public static boolean findPermutation(String str, String pattern) {
-        Map<Character, Integer> freqMap = new HashMap<>();
-        int start = 0, end = 0;
-        int matchCount = 0;
-        for(char ch : pattern.toCharArray()){
-            freqMap.put(ch, freqMap.getOrDefault(ch, 0) + 1);
+        if(pattern == null || str == null){
+            return false;
+        }else if(pattern == ""){
+            return true;
         }
-        while(end < str.length()){
-            char rightChar = str.charAt(end++);
-            if(freqMap.containsKey(rightChar)){
-                freqMap.put(rightChar, freqMap.get(rightChar) - 1);
-                if(freqMap.get(rightChar) == 0){
-                    matchCount++;
+        Map<Character, Integer> charsOccurMap = new HashMap<>();
+        for(char ch: pattern.toCharArray()){
+            charsOccurMap.put(ch, charsOccurMap.getOrDefault(ch, 0) + 1);
+        }
+        int desiredCount = charsOccurMap.size();
+        int actualCount = 0;
+        int left = 0, right = 0;
+        while(right < str.length()){
+            //Expand the window
+            char currChar = str.charAt(right++);
+            if(charsOccurMap.containsKey(currChar)){
+                charsOccurMap.put(currChar, charsOccurMap.get(currChar) - 1);
+                if(charsOccurMap.get(currChar) == 0){
+                    actualCount++;
                 }
             }
-            if(matchCount == freqMap.size()){
+            //Shrink the window
+            if((right - left) > pattern.length()){
+                char removeChar = str.charAt(left++);
+                if(charsOccurMap.containsKey(removeChar)){
+                    if(charsOccurMap.get(removeChar) == 0)
+                        actualCount--;
+                    charsOccurMap.put(removeChar, charsOccurMap.get(removeChar) + 1);
+                }
+            }
+            if(actualCount == desiredCount)
                 return true;
-            }
-            if(end > pattern.length() - 1){
-                char leftChar = str.charAt(start++);
-                if(freqMap.containsKey(leftChar)){
-                    if(freqMap.get(leftChar) == 0){
-                        matchCount--;
-                    }
-                    freqMap.put(leftChar, freqMap.get(leftChar) + 1);
-                }
-            }
         }
         return false;
     }

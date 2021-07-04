@@ -7,40 +7,71 @@ import java.util.Map;
 
 public class StringAnagram {
 
-    public static List<Integer> findStringAnagrams(String str, String pattern) {
+    public static List<Integer> findStringAnagrams(String s, String p) {
         List<Integer> resultIndices = new ArrayList<>();
-        Map<Character, Integer> freqMap = new HashMap<>();
-        for(char ch: pattern.toCharArray()){
-            freqMap.put(ch, freqMap.getOrDefault(ch, 0) + 1);
+        Map<Character, Integer> charOccurMap = new HashMap<>();
+        for(char ch: p.toCharArray()){
+            charOccurMap.put(ch, charOccurMap.getOrDefault(ch, 0) + 1);
         }
-        int start = 0, end = 0;
-        int matchedCount = 0;
-        while(end < str.length()){
-            char rightChar = str.charAt(end++);
-            if(freqMap.containsKey(rightChar)){
-                freqMap.put(rightChar, freqMap.get(rightChar) - 1);
-                if(freqMap.get(rightChar) == 0){
-                    matchedCount++;
+        int desiredCount = charOccurMap.size();
+        int actualCount = 0;
+        int left = 0, right = 0;
+        while(right < s.length()){
+            //Expand the window until condition do not violates
+            char currChar = s.charAt(right++);
+            if(charOccurMap.containsKey(currChar)){
+                charOccurMap.put(currChar, charOccurMap.get(currChar) - 1);
+                if(charOccurMap.get(currChar) == 0){
+                    actualCount++;
                 }
             }
-            if(matchedCount == freqMap.size()){
-                resultIndices.add(start);
-            }
-            if(start < end && end > pattern.length() - 1){
-                char leftChar = str.charAt(start++);
-                if(freqMap.containsKey(leftChar)){
-                    if(freqMap.get(leftChar) == 0){
-                        matchedCount--;
+            //Shrink the window if condition violates
+            if((right - left) > p.length()){
+                char removeChar = s.charAt(left++);
+                if(charOccurMap.containsKey(removeChar)){
+                    if(charOccurMap.get(removeChar) == 0){
+                        actualCount--;
                     }
-                    freqMap.put(leftChar, freqMap.get(leftChar) + 1);
+                    charOccurMap.put(removeChar, charOccurMap.get(removeChar) + 1);
                 }
+            }
+            if(actualCount == desiredCount){
+                resultIndices.add(left);
             }
         }
         return resultIndices;
     }
 
+    public List<Integer> findAnagrams(String s, String p) {
+        List<Integer> indicesList = new ArrayList<>();
+        int[] patternArray = new int[26];
+        int[] strArray = new int[26];
+        for(char ch: p.toCharArray()){
+            patternArray[ch - 'a']++;
+        }
+        int left = 0, right = 0;
+        while(right < s.length()){
+            strArray[s.charAt(right++) - 'a']++;
+            if((right - left) > p.length())
+                strArray[s.charAt(left++) - 'a']--;
+            if((right - left) == p.length() &&
+                    isEqual(strArray, patternArray))
+                indicesList.add(left);
+        }
+        return indicesList;
+
+    }
+
+    private boolean isEqual(int[] strArray, int[] patternArray){
+        for(int i = 0; i < 26; i++){
+            if(strArray[i] != patternArray[i])
+                return false;
+        }
+        return true;
+    }
+
     public static void main(String[] args) {
-        String str = "abbcabc";
+        String str = "cbaebabacd";
         String pattern = "abc";
         System.out.print(findStringAnagrams(str, pattern));
     }
