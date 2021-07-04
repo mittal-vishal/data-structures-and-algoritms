@@ -7,26 +7,23 @@ public class MinSubarrayWithSum {
 		System.out.println(minSubArrayLen(arr1, item));
 	}
 
-	public static int minSubArrayLen(int[] nums, int k) {
-		int start = 0;
-		int end = 0;
+	public static int minSubArrayLen(int[] nums, int target) {
+		if(nums == null || nums.length == 0){
+			return 0;
+		}
 		int sum = 0;
-		int min = Integer.MAX_VALUE;
-		while (end < nums.length) {
-			while (sum <= k && end < nums.length) {
-				sum = sum + nums[end++];
-				if (sum == k) {
-					min = end - start;
-				}
-			}
-			while (sum > k && start < nums.length) {
-				sum = sum - nums[start++];
-				if (sum == k && (end - start) < min) {
-					min = end - start;
-				}
+		int left = 0, right = 0;
+		int min = nums.length + 1;
+		while(right < nums.length){
+			//Expand the window
+			sum += nums[right++];
+			//shrink the window and update the answer
+			while(sum >= target && left < right){
+				min = Math.min(min,(right - left));
+				sum -= nums[left++];
 			}
 		}
-		return (min == Integer.MAX_VALUE) ? 0 : min;
+		return min != nums.length + 1 ? min : 0;
 	}
 
 }

@@ -27,21 +27,23 @@ class SubarrayProductLessThanK {
     }
 
     public static List<List<Integer>> findSubarrays(int[] arr, int target) {
-        List<List<Integer>> result = new ArrayList<>();
-        int right = 0; int left = 0;
+        List<List<Integer>> subarrays = new ArrayList<>();
         double prod = 1;
+        int left = 0, right = 0;
         while(right < arr.length){
+            //Expand the window
             prod *= arr[right++];
-            while(prod >= target){
-                prod /= (arr[left++]);
+            //Shrink the window
+            while(prod >= target && left < right){
+                prod /= arr[left++];
             }
-            List<Integer> innerList = new ArrayList();
-            for(int i = (right - 1); i >= left; i--) {
-                innerList.add(arr[i]);
-                result.add(new ArrayList<>(innerList));
+            List<Integer> temp = new ArrayList<>();
+            for(int i = right - 1; i >= left; i--){
+                temp.add(arr[i]);
+                subarrays.add(new ArrayList<>(temp));
             }
         }
-        return result;
+        return subarrays;
     }
 
     public static void main(String[] args) {
