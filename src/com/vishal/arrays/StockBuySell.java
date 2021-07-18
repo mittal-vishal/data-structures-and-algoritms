@@ -3,49 +3,39 @@ package com.vishal.arrays;
 public class StockBuySell {
 
 	public static void main(String[] args) {
-		int a[] = { 23, 13, 25, 29, 33, 19, 34, 45, 65, 67 };
-		stockBuySell(a, a.length);
+		int a[] = { 3,3,5,0,0,3,1,4 };
+		System.out.print(maxProfitWithOneTransaction(a));
 	}
 
-	private static void stockBuySell(int price[], int n) {
-		int minima[] = new int[price.length];
-		int maxima[] = new int[price.length];
-		Integer max = Integer.MIN_VALUE;
-		Integer min = Integer.MAX_VALUE;
-		for (int i = price.length - 1; i >= 0; i--) {
-			if (price[i] < max && price[i] < price[i + 1]) {
-				maxima[i] = max;
-			} else if (i == price.length - 1 || (price[i] > max && price[i] > price[i + 1])
-					|| (price[i] < max && price[i] > price[i + 1])) {
-				max = price[i];
-				maxima[i] = max;
-			} else {
-				maxima[i] = max;
-			}
-		}
-		for (int i = 0; i < price.length; i++) {
-			if (i == 0 || (price[i] < min && price[i] < price[i - 1]) || (price[i] > min && price[i] < price[i-1])) {
-				min = price[i];
-				minima[i] = min;
-			} else if (price[i] > min && price[i] > price[i - 1]) {
-				minima[i] = min;
-			}
-		}
-		int count = 0;
-		for (int i = 0; i < price.length; i++) {
-			if ((price[i] == minima[i] || price[i] == maxima[i]) && (maxima[i] - minima[i] > 0)) {
-				count++;
-				if (count % 2 == 1) {
-					System.out.print("(" + i + " ");
-				} else {
-					System.out.print(i + ")" + " ");
-				}
-			}
+	public static int maxProfitWithOneTransaction(int[] prices) {
+		if(prices == null || prices.length < 2){
+			return 0;
 		}
 
-		if (count == 0) {
-			System.out.print("No Profit");
+		int min = Integer.MAX_VALUE;
+		int maxProfit = 0;
+
+		for(int i = 0; i < prices.length; i++){
+			if(prices[i] < min){
+				min = prices[i];
+			}else{
+				maxProfit = Math.max(maxProfit, prices[i] - min);
+			}
 		}
+		return maxProfit;
+	}
+
+	public static int maxProfitWithManyTransaction(int[] prices) {
+		if(prices == null || prices.length < 2){
+
+		}
+		int profit = 0;
+		for(int i = 1; i < prices.length; i++){
+			if(prices[i-1] < prices[i]){
+				profit += (prices[i] - prices[i-1]);
+			}
+		}
+		return profit;
 	}
 
 }

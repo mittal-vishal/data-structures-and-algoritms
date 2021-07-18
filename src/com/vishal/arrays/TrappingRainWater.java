@@ -8,7 +8,7 @@ public class TrappingRainWater {
 	 * @param a the a
 	 * @return the int
 	 */
-	public static int tappRain(int a[]) {
+	public static int trapRain(int a[]) {
 		int returnVal = 0;
 		for (int i = 1; i < a.length - 1; i++) {
 			int leftMax = 0;
@@ -35,39 +35,37 @@ public class TrappingRainWater {
 	 * @param a the a
 	 * @return the int
 	 */
-	public static int tappRainWater(int rain[]) {
-		int[] leftMaxima = new int[rain.length];
-		int[] rightMaxima = new int[rain.length];
-		int leftMax = 0;
-		for (int i = 0; i < rain.length; i++) {
-			if (rain[i] > leftMax) {
-				leftMaxima[i] = leftMax;
-				leftMax = rain[i];
-			} else {
-				leftMaxima[i] = leftMax;
-			}
+	public static int trap(int[] height) {
+		if(height == null || height.length < 3){
+			return 0;
 		}
-		int rightMax = 0;
-		for (int i = rain.length - 1; i >= 0; i--) {
-			if (rain[i] > rightMax) {
-				rightMaxima[i] = rightMax;
-				rightMax = rain[i];
-			} else {
-				rightMaxima[i] = rightMax;
-			}
+		int[] maxLeft = new int[height.length];
+		int[] maxRight = new int[height.length];
+		int maxL = height[0];
+		int maxR = height[height.length-1];
+
+		for(int i  = 1; i < height.length - 1; i++){
+			maxLeft[i] = maxL;
+			maxL = Math.max(maxL, height[i]);
 		}
+
+		for(int i  = height.length - 1; i > 0; i--){
+			maxRight[i] = maxR;
+			maxR = Math.max(maxR, height[i]);
+		}
+
 		int trappedWater = 0;
-		for (int i = 1; i < rain.length - 1; i++) {
-			if ((Math.min(rightMaxima[i], leftMaxima[i]) - rain[i]) > 0) {
-				trappedWater = trappedWater + (Math.min(rightMaxima[i], leftMaxima[i]) - rain[i]);
-			}
+		int depth = 0;
+		for(int i = 1; i < height.length - 1; i++){
+			depth = Math.min(maxLeft[i], maxRight[i]) - height[i];
+			trappedWater += ((depth < 0) ? 0: depth);
 		}
 		return trappedWater;
 	}
 
 	public static void main(String[] args) {
 		int a[] = { 3, 5, 1, 0, 7 };
-		System.out.println(tappRainWater(a));
+		System.out.println(trap(a));
 	}
 
 }

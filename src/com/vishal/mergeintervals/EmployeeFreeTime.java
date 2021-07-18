@@ -69,15 +69,17 @@ public class EmployeeFreeTime {
             sortedIntervalQueue.offer(new EmployeeInterval(schedule.get(i).get(0), i, 0));
         }
 
-        Interval prevInterval = sortedIntervalQueue.peek().interval;
+        Interval prevInterval = null;
 
         while(!sortedIntervalQueue.isEmpty()){
             EmployeeInterval topEmpInterval = sortedIntervalQueue.poll();
-            if(prevInterval.end < topEmpInterval.interval.start){
+            if(prevInterval == null){
+                prevInterval = topEmpInterval.interval;
+            }else if(prevInterval.end < topEmpInterval.interval.start){
                 //Free Employee Interval
                 freeIntervals.add(new Interval(prevInterval.end, topEmpInterval.interval.start));
                 prevInterval = topEmpInterval.interval;
-            }else{
+            }else {
                 //Overlap
                 topEmpInterval.interval.end = Math.max(topEmpInterval.interval.end, prevInterval.end);
                 prevInterval = topEmpInterval.interval;

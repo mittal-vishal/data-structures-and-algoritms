@@ -1,8 +1,6 @@
 package com.vishal.google;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class TaskScheduler {
 
@@ -10,34 +8,29 @@ public class TaskScheduler {
         if(tasks == null || tasks.length == 0){
             return 0;
         }
-        if(n == 0){
-            return tasks.length;
-        }
-        HashMap<Character, Integer> freqMap = new HashMap<>();
+
+        Map<Character, Integer> taskFreqMap = new HashMap<>();
         for(char task: tasks){
-            freqMap.put(task, freqMap.getOrDefault(task, 0) + 1);
+            taskFreqMap.put(task, taskFreqMap.getOrDefault(task, 0) + 1);
         }
-        PriorityQueue<Integer> taskQueue = new PriorityQueue<>((a, b) -> b-a );
-        taskQueue.addAll(freqMap.values());
 
-        int cycles = 0;
-
+        PriorityQueue<Integer> taskQueue = new PriorityQueue<>((a, b) -> b - a);
+        taskQueue.addAll(taskFreqMap.values());
+        List<Integer> taskList = null;
+        int unit = 0;
         while(!taskQueue.isEmpty()){
-            ArrayList<Integer> cycleTaskList = new ArrayList<>();
-            for(int i = 0; i < n + 1; i++){
-                if(!taskQueue.isEmpty()){
-                    cycleTaskList.add(taskQueue.poll());
+            taskList = new ArrayList<>();
+            for(int i = 0; i < n+1 && (!taskQueue.isEmpty()); i++){
+                taskList.add(taskQueue.poll());
+            }
+            for(int freq: taskList){
+                if(--freq > 0){
+                    taskQueue.offer(freq);
                 }
             }
-            for(int taskFreq: cycleTaskList){
-                if(--taskFreq > 0){
-                    taskQueue.add(taskFreq);
-                }
-            }
-            cycles += taskQueue.isEmpty() ? cycleTaskList.size() : n + 1;
+            unit += ((!taskQueue.isEmpty()) ? (n + 1) : (taskList.size()));
         }
-
-        return cycles;
+        return unit;
 
     }
 

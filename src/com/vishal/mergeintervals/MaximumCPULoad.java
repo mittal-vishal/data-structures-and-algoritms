@@ -17,28 +17,21 @@ class Job {
 class MaximumCPULoad {
 
     public static int findMaxCPULoad(List<Job> jobs) {
+        if(jobs == null || jobs.size() == 0){
+            return 0;
+        }
         Collections.sort(jobs, (Job a, Job b) -> a.start - b.start);
-        PriorityQueue<Job> jobsQueue = new PriorityQueue<>((Job a, Job b) -> a.end - b.end);
-        jobsQueue.add(jobs.get(0));
-        int maxCpuLoad = 0;
-        for(int i = 1; i < jobs.size(); i++){
-            if(jobs.get(i).start <= jobsQueue.peek().end){
-                jobsQueue.add(jobs.get(i));
-            }else{
-                int cpuLoad = 0;
-                while(!jobsQueue.isEmpty() && jobs.get(i).start > jobsQueue.peek().end){
-                    cpuLoad += jobsQueue.poll().cpuLoad;
-                }
-                jobsQueue.add(jobs.get(i));
-                maxCpuLoad = Math.max(cpuLoad, maxCpuLoad);
+        PriorityQueue<Job> jobQueue = new PriorityQueue<>((Job a, Job b) -> a.end - b.end);
+        int currentLoad = 0, maxLoad = 0;
+        for(int i = 0; i < jobs.size(); i++){
+            currentLoad += jobs.get(i).cpuLoad;
+            jobQueue.offer(jobs.get(i));
+            while(jobs.get(i).start > jobQueue.peek().end && (!jobQueue.isEmpty())){
+                currentLoad -= jobQueue.poll().cpuLoad;
             }
+            maxLoad = Math.max(maxLoad, currentLoad);
         }
-        int cpuLoad = 0;
-        while(!jobsQueue.isEmpty()){
-            cpuLoad += jobsQueue.poll().cpuLoad;
-        }
-        maxCpuLoad = Math.max(cpuLoad, maxCpuLoad);
-        return maxCpuLoad;
+        return maxLoad;
     }
 
     public static void main(String[] args) {
