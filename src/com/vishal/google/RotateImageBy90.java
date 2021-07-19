@@ -2,6 +2,27 @@ package com.vishal.google;
 
 public class RotateImageBy90 {
 
+    public void rotateMatrixByLayers(int[][] matrix){
+        int n = matrix.length;
+        int layers = n/2;
+        for(int i = 0; i < layers; i++){
+            int start = i;
+            int end = n - i - 1;
+            for(int j = start; j < end; j++){
+                //Store Top
+                int temp = matrix[start][j];
+                //Left to Top
+                matrix[start][j] = matrix[n-1-j][start];
+                //Bottom to Left
+                matrix[n-1-j][start] = matrix[end][n-1-j];
+                //Right to Bottom
+                matrix[end][n-1-j] = matrix[j][end];
+                //Top to Right
+                matrix[j][end] = temp;
+            }
+        }
+    }
+
     public void rotate(int[][] matrix) {
         //Create transpose of matrix
         int n = matrix.length;
