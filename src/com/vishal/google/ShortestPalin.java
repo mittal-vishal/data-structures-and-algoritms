@@ -13,7 +13,7 @@ public class ShortestPalin {
 
     private static int generateLPS(String s){
         StringBuilder revStr = new StringBuilder(s).reverse();
-        s = new StringBuilder(s).append(',').append(revStr).toString();
+        s = new StringBuilder(s).append('#').append(revStr).toString();
         int[] lps = new int[s.length()];
         int i = 0;
         lps[0] = 0;
@@ -36,7 +36,7 @@ public class ShortestPalin {
     }
 
     public static void main(String[] args) {
-        String s = "aaaaa"; //a a b b a # a b b a a
+        String s = "aaa"; //a a b b a # a b b a a
         System.out.print(shortestPalindrome(s));
     }
 
