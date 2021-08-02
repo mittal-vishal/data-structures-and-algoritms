@@ -6,22 +6,23 @@ import java.util.List;
 public class Subset {
 	
 	public static void main(String[] args) {
-		System.out.println(getSubset("abc"));
-	}
-	
-	public static List<String> getSubset(String str){
-		List<String> subsetList = new ArrayList<>();
-		return getSubset(str, "", subsetList);
+		int[] a = {1, 2, 3};
+		List<List<Integer>> resultList = new ArrayList<>();
+		List<Integer> subsetList = new ArrayList<>();
+		getSubsets(a, resultList, subsetList, 0);
+		System.out.print(resultList);
 	}
 
-	private static List<String> getSubset(String str, String current, List<String> subList) {
-		if(str.length() == 0) {
-			subList.add(current);
-		}else {
-			getSubset(str.substring(1), current, subList);
-			getSubset(str.substring(1), current + str.charAt(0), subList);
+	private static void getSubsets(int[] a, List<List<Integer>> resultList,
+								   List<Integer> subsetList, int i){
+		if(i == a.length){
+			resultList.add(new ArrayList(subsetList));
+			return;
 		}
-		return subList;
+		subsetList.add(a[i]);
+		getSubsets(a, resultList, subsetList, i+1);
+		subsetList.remove(subsetList.size()-1);
+		getSubsets(a, resultList, subsetList, i+1);
 	}
 	
 }
