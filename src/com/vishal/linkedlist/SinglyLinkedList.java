@@ -178,15 +178,19 @@ public class SinglyLinkedList {
 		return false;
 	}
 
-	private static void purgeDuplicateInSortedList() {
-		SinglyNode curr = head;
-		while (curr != null && curr.getNext() != null) {
-			if (curr.getData() == curr.getNext().getData()) {
-				curr.setData(curr.getNext().getData());
-				curr.setNext(curr.getNext().getNext());
-			}
-			curr = curr.getNext();
+	public static SinglyNode deleteDuplicates(SinglyNode head) {
+		if(head == null){
+			return head;
 		}
+		SinglyNode curr = head;
+		while(curr != null && curr.next != null){
+			if(curr.data == curr.next.data){
+				curr.next = curr.next.next;
+			}else{
+				curr = curr.next;
+			}
+		}
+		return head;
 	}
 
 	private static void purgeDuplicateInUnSortedList() {
@@ -355,7 +359,7 @@ public class SinglyLinkedList {
 		insertAtEnd(7);
 		insertAtBegin(7);
 		insertAtBegin(7);
-		purgeDuplicateInSortedList();
+		deleteDuplicates(head);
 		purgeDuplicateInUnSortedList();
 		System.out.println();
 		print();
