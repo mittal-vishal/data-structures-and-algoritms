@@ -70,5 +70,22 @@ class LongestPrefix {
         String prefix = longestPrefix.longestCommonPrefix(strArr);
         System.out.print(prefix);
     }
+
+    public String longestCommonPrefixBrute(String[] strs) {
+        if(strs == null || strs.length == 0){
+            return "";
+        }
+        String prefix = strs[0];
+        int i = 1;
+        while(i < strs.length){
+            if(strs[i].startsWith(prefix)){
+                i++;
+                continue;
+            }else{
+                prefix = prefix.substring(0, prefix.length()-1);
+            }
+        }
+        return prefix;
+    }
 }
 
