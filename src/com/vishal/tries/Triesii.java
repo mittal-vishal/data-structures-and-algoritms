@@ -77,5 +77,8 @@ class Triesii {
         if(curr.wordCount > 0){
             curr.wordCount--;
         }
+        if(curr.wordCount == 0){
+            curr.isWord = false;
+        }
     }
 }
