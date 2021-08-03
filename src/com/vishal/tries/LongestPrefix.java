@@ -2,24 +2,24 @@ package com.vishal.tries;
 
 class LongestPrefix {
 
-    private static Node root;
+    private static TrieNode root;
 
     public LongestPrefix(){
-        root = new Node('\0');
+        root = new TrieNode('\0');
     }
 
-    static class Node{
+    static class TrieNode{
         char ch;
-        Node[] childrens;
+        TrieNode[] childrens;
         boolean isWord;
-        public Node(char ch){
+        public TrieNode(char ch){
             this.ch = ch;
-            childrens = new Node[26];
+            childrens = new TrieNode[26];
         }
     }
 
     public String longestCommonPrefix(String[] strs) {
-        Node curr = root;
+        TrieNode curr = root;
         for(String str: strs) {
             insert(curr, str);
             curr = root;
@@ -29,9 +29,9 @@ class LongestPrefix {
         return prefix.toString();
     }
 
-    private void getCommonPrefix(Node curr, StringBuilder prefix){
+    private void getCommonPrefix(TrieNode curr, StringBuilder prefix){
         boolean isOneChild = false;
-        Node oneChildNode = null;
+        TrieNode oneChildNode = null;
         if(curr.isWord){
             return;
         }
@@ -52,11 +52,11 @@ class LongestPrefix {
         }
     }
 
-    private void insert(Node current, String s){
+    private void insert(TrieNode current, String s){
         for(int i = 0; i < s.length(); i++){
             char curr = s.charAt(i);
             if(current.childrens[curr-'a'] == null){
-                Node newNode = new Node(curr);
+                TrieNode newNode = new TrieNode(curr);
                 current.childrens[curr-'a'] = newNode;
             }
             current = current.childrens[curr-'a'];

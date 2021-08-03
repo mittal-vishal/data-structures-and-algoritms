@@ -1,17 +1,28 @@
 package com.vishal.tries;
 
 class Tries2 {
-    private Node root;
+
+    class TrieNode{
+        TrieNode childrens[];
+        boolean isWord;
+        int wordCount;
+        int prefixCount;
+        public TrieNode(){
+            childrens = new TrieNode[26];
+        }
+    }
+
+    private TrieNode root;
     public Tries2() {
-        root = new Node();
+        root = new TrieNode();
     }
 
     public void insert(String word) {
-        Node curr = root;
+        TrieNode curr = root;
         for(int i = 0; i < word.length(); i++){
             char currChar = word.charAt(i);
             if(curr.childrens[currChar-'a'] == null){
-                curr.childrens[currChar-'a'] = new Node();
+                curr.childrens[currChar-'a'] = new TrieNode();
             }
             curr = curr.childrens[currChar-'a'];
             curr.prefixCount += 1;
@@ -21,7 +32,7 @@ class Tries2 {
     }
 
     public int countWordsEqualTo(String word) {
-        Node prefixNode = getNode(word);
+        TrieNode prefixNode = getNode(word);
         if(prefixNode != null && prefixNode.isWord){
             return prefixNode.wordCount;
         }else{
@@ -29,8 +40,8 @@ class Tries2 {
         }
     }
 
-    private Node getNode(String word){
-        Node curr = root;
+    private TrieNode getNode(String word){
+        TrieNode curr = root;
         for(int i = 0; i < word.length(); i++){
             char currChar = word.charAt(i);
             if(curr.childrens[currChar-'a'] != null){
@@ -43,7 +54,7 @@ class Tries2 {
     }
 
     public int countWordsStartingWith(String prefix) {
-        Node prefixNode = getNode(prefix);
+        TrieNode prefixNode = getNode(prefix);
         if(prefixNode != null){
             return prefixNode.prefixCount;
         }else{
@@ -52,30 +63,19 @@ class Tries2 {
     }
 
     public void erase(String word) {
-        Node curr = root;
+        TrieNode curr = root;
         for(int i = 0;i < word.length();i++){
             char c = word.charAt(i);
-            Node child = curr.childrens[c-'a'];
+            TrieNode child = curr.childrens[c-'a'];
 
             child.prefixCount -= 1;
             if(child.prefixCount == 0){
                 curr.childrens[c-'a'] = null;
-                return;
             }
             curr = child;
         }
         if(curr.wordCount > 0){
             curr.wordCount--;
-        }
-    }
-
-    class Node{
-        Node childrens[];
-        boolean isWord;
-        int wordCount;
-        int prefixCount;
-        public Node(){
-            childrens = new Node[26];
         }
     }
 }
