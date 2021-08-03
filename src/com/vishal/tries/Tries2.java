@@ -16,7 +16,7 @@ class Tries2 {
             curr = curr.childrens[currChar-'a'];
             curr.prefixCount += 1;
         }
-        curr.wordCount = curr.wordCount + 1;
+        curr.wordCount += 1;
         curr.isWord = true;
     }
 
