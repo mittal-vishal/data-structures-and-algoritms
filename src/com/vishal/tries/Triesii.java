@@ -1,6 +1,6 @@
 package com.vishal.tries;
 
-class Tries2 {
+class Triesii {
 
     class TrieNode{
         TrieNode childrens[];
@@ -13,7 +13,7 @@ class Tries2 {
     }
 
     private TrieNode root;
-    public Tries2() {
+    public Triesii() {
         root = new TrieNode();
     }
 
