@@ -3,46 +3,41 @@ package com.vishal.linkedlist;
 public class ReverseFromLeftToRight {
 
     public SinglyNode reverseBetween(SinglyNode head, int left, int right) {
-
-        if(head == null){
-            return head;
-        }else if(left == right){
+        if(left >= right || head == null || head.next == null){
             return head;
         }
-
-        SinglyNode start = null;
-        SinglyNode prev = null;
-        SinglyNode temp = null;
-        SinglyNode kPrev = null;
         SinglyNode curr = head;
+        SinglyNode prev = null;
 
         right = right - left + 1;
-
-        while(curr != null && (--left > 0)){
+        while(--left > 0){
             prev = curr;
             curr = curr.next;
         }
 
-        start = prev;
-        prev = null;
-        kPrev = curr;
+        SinglyNode justPrev = null;
+        SinglyNode temp = null;
+        SinglyNode start = null;
 
-        while(curr != null && (right-- > 0)){
+        while(right-- > 0){
             temp = curr.next;
-            curr.next = prev;
-            prev = curr;
+            curr.next = justPrev;
+            if(justPrev == null){
+                justPrev = curr;
+                start = justPrev;
+            }else{
+                justPrev = curr;
+            }
             curr = temp;
         }
 
-        if(start != null){
-            start.next = prev;
+        if(prev != null){
+            prev.next = justPrev;
         }else{
-            head = prev;
+            head = justPrev;
         }
-        kPrev.next = curr;
-
+        start.next = curr;
         return head;
-
     }
 
 }

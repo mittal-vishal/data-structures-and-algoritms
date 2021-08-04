@@ -134,26 +134,41 @@ public class SinglyLinkedList {
 		return slow;
 	}
 
-	private static void reverseIteratively() {
-		SinglyNode currNode = head;
-		SinglyNode prevNode = null;
-		SinglyNode temp = null;
-		while (currNode != null) {
-			temp = currNode.getNext();
-			currNode.setNext(prevNode);
-			prevNode = currNode;
-			currNode = temp;
+	public static SinglyNode reverseList(SinglyNode head) {
+		if(head == null || head.next == null){
+			return head;
 		}
-		head = prevNode;
+		SinglyNode prev = null;
+		SinglyNode curr = head;
+		SinglyNode temp = null;
+
+		while(curr != null){
+			temp = curr.next;
+			curr.next = prev;
+			prev = curr;
+			curr = temp;
+		}
+
+		head = prev;
+		return head;
 	}
 
-	private static SinglyNode reverseRecursively(SinglyNode curr, SinglyNode prev) {
-		if(curr == null)
+	public static SinglyNode reverseListRecursively(SinglyNode head) {
+		if(head == null || head.next == null){
+			return head;
+		}
+		return reverseListRecursively(head, null);
+	}
+
+	private static SinglyNode reverseListRecursively(SinglyNode curr, SinglyNode prev){
+		if(curr == null){
 			return prev;
-		SinglyNode temp = null;
-		temp = curr.getNext();
-		curr.setNext(prev);
-		return reverseRecursively(temp, curr);
+		}
+		SinglyNode temp = curr.next;
+		curr.next = prev;
+		prev = curr;
+		curr = temp;
+		return reverseListRecursively(curr, prev);
 	}
 
 	public static boolean hasCycle(SinglyNode head) {
@@ -354,12 +369,12 @@ public class SinglyLinkedList {
 		System.out.println("nth node = " + findNthNodeFromLast(3));
 		middleNode(head);
 		print();
-		reverseRecursively(head, null);
+		reverseListRecursively(head);
 		System.out.println();
 		System.out.println("cycle = " + hasCycle(head));
 		System.out.println("cycle = " + hasCycleUsingSet(head));
 		print();
-		reverseIteratively();
+		reverseList(head);
 		insertAtEnd(7);
 		insertAtBegin(7);
 		insertAtBegin(7);
