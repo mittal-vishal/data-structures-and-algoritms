@@ -119,14 +119,19 @@ public class SinglyLinkedList {
 		return currNode.getData();
 	}
 
-	private static int findMiddle() {
-		SinglyNode currNode = head;
-		SinglyNode doubleNode = head;
-		while (doubleNode != null && (doubleNode != null && doubleNode.getNext() != null)) {
-			currNode = currNode.getNext();
-			doubleNode = doubleNode.getNext().getNext();
+	public static SinglyNode middleNode(SinglyNode head) {
+		if(head == null || head.next == null){
+			return head;
 		}
-		return currNode.getData();
+		SinglyNode slow = head;
+		SinglyNode fast = head;
+
+		while(fast != null && fast.next != null){
+			slow = slow.next;
+			fast = fast.next.next;
+		}
+
+		return slow;
 	}
 
 	private static void reverseIteratively() {
@@ -151,29 +156,28 @@ public class SinglyLinkedList {
 		return reverseRecursively(temp, curr);
 	}
 
-	private static boolean isCycle() {
+	public static boolean hasCycle(SinglyNode head) {
 		SinglyNode slow = head;
 		SinglyNode fast = head;
-		while (fast != null && fast.getNext() != null) {
-			slow = slow.getNext();
-			fast = fast.getNext().getNext();
-			if (slow == fast) {
+		while(fast != null && fast.next != null){
+			slow = slow.next;
+			fast = fast.next.next;
+			if(slow == fast){
 				return true;
 			}
 		}
 		return false;
 	}
 
-	private static boolean isCycleExist() {
-		SinglyNode currNode = head;
-		Set<SinglyNode> hashSet = new LinkedHashSet<>();
-		while (currNode != null) {
-			if (!hashSet.contains(currNode)) {
-				hashSet.add(currNode);
-			} else {
+	public static boolean hasCycleUsingSet(SinglyNode head) {
+		Set<SinglyNode> nodeSet = new HashSet<>();
+		SinglyNode curr = head;
+		while(curr != null){
+			if(nodeSet.contains(curr)){
 				return true;
 			}
-			currNode = currNode.getNext();
+			nodeSet.add(curr);
+			curr = curr.next;
 		}
 		return false;
 	}
@@ -348,12 +352,12 @@ public class SinglyLinkedList {
 		deleteAtEnd();
 		deleteAtSpecificElement(5);
 		System.out.println("nth node = " + findNthNodeFromLast(3));
-		System.out.println("middle node is = " + findMiddle());
+		middleNode(head);
 		print();
 		reverseRecursively(head, null);
 		System.out.println();
-		System.out.println("cycle = " + isCycle());
-		System.out.println("cycle = " + isCycleExist());
+		System.out.println("cycle = " + hasCycle(head));
+		System.out.println("cycle = " + hasCycleUsingSet(head));
 		print();
 		reverseIteratively();
 		insertAtEnd(7);
