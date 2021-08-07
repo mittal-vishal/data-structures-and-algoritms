@@ -3,15 +3,12 @@ package com.vishal.linkedlist;
 public class RotateRight {
 
     public SinglyNode rotateRight(SinglyNode head, int k) {
-        if(head == null || head.next == null || k < 1){
+        if(head == null || head.next == null){
             return head;
         }
-
         SinglyNode curr = head;
         SinglyNode tail = null;
-
         int size = 0;
-
         while(curr != null){
             tail = curr;
             curr = curr.next;
@@ -19,19 +16,25 @@ public class RotateRight {
         }
 
         k = k % size;
-        curr = head;
+
+        if(k == 0){
+            return head;
+        }
+
         int count = size - k - 1;
 
-        while(curr != null && count-- > 0 ){
+        curr = head;
+        while(count-- > 0 && curr != null){
             curr = curr.next;
         }
 
-        SinglyNode start = curr.next;
-        tail.next = head;
+        SinglyNode kStart = curr.next;
+
         curr.next = null;
-        if(start != null){
-            head = start;
-        }
+
+        tail.next = head;
+        head = kStart;
+
         return head;
     }
 
