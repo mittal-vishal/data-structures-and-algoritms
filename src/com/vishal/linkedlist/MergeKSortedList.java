@@ -1,5 +1,7 @@
 package com.vishal.linkedlist;
 
+import java.util.PriorityQueue;
+
 public class MergeKSortedList {
 
     public SinglyNode mergeKLists(SinglyNode[] lists) {
@@ -51,6 +53,34 @@ public class MergeKSortedList {
             }
         }
         return start.next;
+    }
+
+    public SinglyNode mergeKListsUsingHeap(SinglyNode[] lists) {
+        if(lists == null || lists.length == 0){
+            return null;
+        }
+        if(lists.length == 1){
+            return lists[0];
+        }
+        PriorityQueue<SinglyNode> pq = new PriorityQueue<>((a, b) -> a.data - b.data);
+        for(SinglyNode node: lists){
+            if(node != null){
+                pq.offer(node);
+            }
+        }
+        SinglyNode dummy = new SinglyNode(-1);
+        SinglyNode curr = dummy;
+        while(!pq.isEmpty()){
+            SinglyNode topNode = pq.poll();
+            SinglyNode nextNode = topNode.next;
+            topNode.next = null;
+            curr.next = topNode;
+            curr = curr.next;
+            if(nextNode != null){
+                pq.offer(nextNode);
+            }
+        }
+        return dummy.next;
     }
 
 }
