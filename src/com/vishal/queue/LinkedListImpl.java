@@ -4,43 +4,51 @@ import com.vishal.linkedlist.SinglyNode;
 
 public class LinkedListImpl {
 
-	private static SinglyNode front = null;
-	private static SinglyNode rear = null;
-	
-	public static void main(String[] args) {
-		push(10);
-		push(5);
-		push(12);
-		push(20);
-		display();
-		pop();
-		display();
+	private SinglyNode front;
+	private SinglyNode rear;
+
+	public LinkedListImpl(){
+		this.front = null;
+		this.rear = null;
 	}
 	
-	private static void push(int item) {
+	public static void main(String[] args) {
+		LinkedListImpl queueList = new LinkedListImpl();
+		queueList.push(10);
+		queueList.push(5);
+		queueList.push(12);
+		queueList.push(20);
+		queueList.display();
+		queueList.pop();
+		queueList.display();
+	}
+	
+	private void push(int item) {
 		SinglyNode temp = new SinglyNode(item);
-		if(front == null) {
+		if(rear == null) {
 			front = temp;
 			rear = temp;
 		}else {
-			rear.setNext(temp);
-			rear = temp;
+			rear.next = temp;
+			rear = rear.next;
 		}
 	}
 	
-	private static int pop() {
+	private int pop() {
 		if(front == null) {
+			System.out.print("Underflow");
 			return -1;
 		}
-		int item = front.getData();
-		front = front.getNext();
-		return item;
+		SinglyNode temp = front;
+		front = front.next;
+		temp.next = null;
+		return temp.data;
 	}
 	
-	private static void display() {
+	private void display() {
 		SinglyNode currNode = front;
 		while(currNode != null) {
-			System.out.print(currNode.getData() + " ");
+			System.out.print(currNode.data + " ");
 			currNode = currNode.getNext();
 		}
 	}
