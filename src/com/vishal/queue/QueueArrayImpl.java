@@ -1,6 +1,5 @@
 package com.vishal.queue;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
@@ -16,25 +15,6 @@ public class QueueArrayImpl {
 		this.front = -1;
 		this.rear = -1;
 		queue = new int[QUEUE_SIZE];
-	}
-	
-	public static void main(String[] args) {
-		QueueArrayImpl queueImpl = new QueueArrayImpl();
-		queueImpl.enQueue(10);
-		queueImpl.enQueue(5);
-		queueImpl.enQueue(12);
-		queueImpl.enQueue(20);
-		queueImpl.deQueue();
-		queueImpl.display();
-		System.out.println();
-		Queue<Integer> queue = new LinkedList<Integer>();
-		queue.add(1);
-		queue.add(2);
-		queue.add(4);
-		queueImpl.reverseIteratively(queue);
-		System.out.println(queue);
-		queueImpl.reverseRecursively(queue);
-		System.out.println(queue);
 	}
 	
 	private void enQueue(int item) {
@@ -84,6 +64,25 @@ public class QueueArrayImpl {
 			reverseRecursively(queue);
 			queue.add(item);
 		}
+	}
+
+	public static void main(String[] args) {
+		QueueArrayImpl queueImpl = new QueueArrayImpl();
+		queueImpl.enQueue(10);
+		queueImpl.enQueue(5);
+		queueImpl.enQueue(12);
+		queueImpl.enQueue(20);
+		queueImpl.deQueue();
+		queueImpl.display();
+		System.out.println();
+		Queue<Integer> queue = new LinkedList<>();
+		queue.add(1);
+		queue.add(2);
+		queue.add(4);
+		queueImpl.reverseIteratively(queue);
+		System.out.println(queue);
+		queueImpl.reverseRecursively(queue);
+		System.out.println(queue);
 	}
 
 }
