@@ -1,31 +1,35 @@
 package com.vishal.queue;
 
 import java.util.LinkedList;
+import java.util.Queue;
 
 public class AnimalQueue {
 
-    private LinkedList<Dog> dogList = new LinkedList<>();
-    private LinkedList<Cat> catList = new LinkedList<>();
+    private Queue<Dog> dogQueue;
+    private Queue<Cat> catQueue;
+    private int ts;
+
+    public AnimalQueue(){
+        ts = 0;
+        dogQueue = new LinkedList<>();
+        catQueue = new LinkedList<>();
+    }
 
     public void enqueue(Animal animal){
-        animal.setTs(animal.getTs());
-        animal.setTs(animal.getTs() + 1);
+        animal.ts = ts++;
         if(animal instanceof Dog){
-            dogList.add((Dog)animal);
+            dogQueue.offer((Dog)animal);
         }else{
-            catList.add((Cat)animal);
+            catQueue.offer((Cat)animal);
         }
     }
 
     public Animal dequeueAny(){
-        if(dogList.size() == 0){
+        if(dogQueue.isEmpty()){
             return dequeueCat();
-        }else if(catList.size() == 0){
+        }else if(catQueue.isEmpty()){
             return dequeueDog();
-        }
-        Cat firstCat = catList.peek();
-        Dog firstDog = dogList.peek();
-        if(firstCat.getTs() < firstDog.getTs()){
+        }else if(catQueue.peek().ts < dogQueue.peek().ts){
             return dequeueCat();
         }else{
             return dequeueDog();
@@ -33,16 +37,16 @@ public class AnimalQueue {
     }
 
     public Animal dequeueDog(){
-        if(!dogList.isEmpty()){
-            return dogList.removeFirst();
+        if(!dogQueue.isEmpty()){
+            return dogQueue.poll();
         }else{
             return null;
         }
     }
 
     public Animal dequeueCat(){
-        if(!catList.isEmpty()){
-            return catList.removeFirst();
+        if(!catQueue.isEmpty()){
+            return catQueue.poll();
         }else{
             return null;
         }
@@ -51,16 +55,10 @@ public class AnimalQueue {
 }
 
 abstract class Animal{
-    protected String name;
-    private int ts = 0;
+    public String name;
+    public int ts;
     public Animal(String name){
         this.name = name;
-    }
-    public int getTs(){
-        return ts;
-    }
-    public void setTs(int ts){
-        this.ts = ts;
     }
 }
 
