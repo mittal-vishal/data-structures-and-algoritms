@@ -6,40 +6,40 @@ import java.util.TreeSet;
 
 class DinnerPlates {
 
-    private ArrayList<Stack> stackList;
-    private int capacity;
-    private TreeSet<Integer> pushable;
-    private TreeSet<Integer> popable;
+    ArrayList<Stack> stackList;
+    int capacity;
+    TreeSet<Integer> pushSet;
+    TreeSet<Integer> popSet;
 
     public DinnerPlates(int capacity) {
         this.capacity = capacity;
         stackList = new ArrayList<>();
-        pushable = new TreeSet<>();
-        popable = new TreeSet<>();
+        pushSet = new TreeSet<>();
+        popSet = new TreeSet<>();
     }
 
     public void push(int val) {
-        int index = pushable.isEmpty() ? -1: pushable.first();
+        int index = pushSet.isEmpty() ? -1: pushSet.first();
         if(index == -1){
             index = stackList.size();
-            pushable.add(stackList.size());
+            pushSet.add(index);
             stackList.add(new Stack<>());
         }
         Stack<Integer> currStack = stackList.get(index);
         if(currStack.isEmpty()){
-            popable.add(index);
+            popSet.add(index);
         }
-        currStack.add(val);
+        currStack.push(val);
         if(currStack.size() == capacity){
-            pushable.remove(index);
+            pushSet.remove(index);
         }
     }
 
     public int pop() {
-        if(popable.isEmpty()){
+        if(popSet.isEmpty()){
             return -1;
         }
-        int index = popable.last();
+        int index = popSet.last();
         return popAtStack(index);
     }
 
@@ -50,9 +50,9 @@ class DinnerPlates {
         }else{
             int item = currStack.pop();
             if(currStack.isEmpty()){
-                popable.remove(index);
+                popSet.remove(index);
             }
-            pushable.add(index);
+            pushSet.add(index);
             return item;
         }
     }
