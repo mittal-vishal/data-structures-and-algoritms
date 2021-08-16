@@ -36,7 +36,7 @@ public class ShortestPalin {
     }
 
     public static void main(String[] args) {
-        String s = "aaa"; //a a b b a # a b b a a
+        String s = "aabba"; //a a b b a # a b b a a
         System.out.print(shortestPalindrome(s));
     }
 
@@ -45,7 +45,7 @@ public class ShortestPalin {
             return s;
         }
         int max = 0;
-        for(int i = 0; i <= s.length()/2; i++){
+        for(int i = 0; i < s.length()/2; i++){
             int oddLength = expandAroundCenter(s, i, i);
             int evenLength = expandAroundCenter(s, i, i+1);
             int length = Math.max(oddLength, evenLength);
