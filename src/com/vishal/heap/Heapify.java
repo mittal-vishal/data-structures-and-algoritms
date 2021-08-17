@@ -44,18 +44,19 @@ public class Heapify {
 
 	public static void minHeapify(int[] heap, int pos) {
 		int min = pos;
-		if (getLeft(min) < size && heap[getLeft(min)] < heap[min]) {
-			min = getLeft(min);
+		int left = getLeft(pos);
+		int right = getRight(pos);
+		if (left < size && heap[left] < heap[min]) {
+			min = left;
 		}
-		if (getRight(min) < size && heap[getRight(min)] < heap[min]) {
-			min = getRight(min);
+		if (right < size && heap[right] < heap[min]) {
+			min = right;
 		}
 		if (min != pos) {
 			int temp = heap[pos];
 			heap[pos] = heap[min];
 			heap[min] = temp;
-			pos = min;
-			minHeapify(heap, pos);
+			minHeapify(heap, min);
 		}
 	}
 
