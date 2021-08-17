@@ -27,9 +27,7 @@ class FileSystem {
                     return false;
                 }
                 curr.childrens[index] = new TrieNode();
-                if(index != 26){
-                    isCreated = true;
-                }
+                isCreated = true;
             }
             if(i != 0 && index == 26 && curr.value == -1){
                 return false;
