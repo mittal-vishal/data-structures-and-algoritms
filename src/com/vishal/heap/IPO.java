@@ -2,10 +2,10 @@ package com.vishal.heap;
 
 import java.util.PriorityQueue;
 
-class CapitalPair{
+class Capital{
     int cap;
     int index;
-    public CapitalPair(int cap, int index){
+    public Capital(int cap, int index){
         this.cap = cap;
         this.index = index;
     }
@@ -15,21 +15,21 @@ class IPO {
         if(w < 0){
             return 0;
         }
-        PriorityQueue<Integer> maxProfitQueue = new PriorityQueue<>((a, b) -> b-a);
-        PriorityQueue<CapitalPair> minCapQueue = new PriorityQueue<>((a,b) -> a.cap - b.cap);
-
-        //Push all capital price in minCap queue
+        PriorityQueue<Capital> capitalQueue = new PriorityQueue<>((a,b) -> a.cap-b.cap);
+        PriorityQueue<Integer> profitQueue = new PriorityQueue<>((a,b) -> b-a);
+        //put all capital in capital queue to get minimum capital
         for(int i = 0; i < capital.length; i++){
-            minCapQueue.offer(new CapitalPair(capital[i], i));
+            capitalQueue.offer(new Capital(capital[i], i));
         }
-
-        int maxRetCap = w;
+        //for K transaction, maximize the profit with existing initial capital
+        int maxCap = w;
         for(int i = 0; i < k; i++){
-            while(!minCapQueue.isEmpty() && maxRetCap >= minCapQueue.peek().cap){
-                maxProfitQueue.offer(profits[minCapQueue.poll().index]);
+            while(!capitalQueue.isEmpty() && maxCap >= capitalQueue.peek().cap){
+                Capital leastCap = capitalQueue.poll();
+                profitQueue.add(profits[leastCap.index]);
             }
-            maxRetCap += !maxProfitQueue.isEmpty() ? maxProfitQueue.poll() : 0;
+            maxCap += !profitQueue.isEmpty() ? profitQueue.poll(): 0;
         }
-        return maxRetCap;
+        return maxCap;
     }
 }
