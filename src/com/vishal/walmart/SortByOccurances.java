@@ -2,38 +2,33 @@ package com.vishal.walmart;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 public class SortByOccurances {
 
-	private static void sortByOccurances(int[] array) {
-		Map<Integer, Integer> arrayMap = new HashMap<>();
-		for (int i : array) {
-			if (arrayMap.containsKey(i)) {
-				int arrayMapValue = arrayMap.get(i);
-				arrayMap.remove(i);
-				arrayMap.put(i, ++arrayMapValue);
-			} else {
-				arrayMap.put(i, 1);
+	private static int[] sortByOccurances(int[] nums) {
+		HashMap<Integer, Integer> numOccurMap = new HashMap<>();
+		for(int i = 0; i < nums.length; i++){
+			numOccurMap.put(nums[i], numOccurMap.getOrDefault(nums[i], 0) + 1);
+		}
+		List<Map.Entry<Integer, Integer>> entryList = new ArrayList(numOccurMap.entrySet());
+		Collections.sort(entryList, (a,b) -> {
+			if(a.getValue() != b.getValue()){
+				return a.getValue() - b.getValue();
+			}else{
+				return b.getKey() - a.getKey();
+			}
+		});
+		int[] res = new int[nums.length];
+		int index = 0;
+		for(Map.Entry<Integer, Integer> entry: entryList){
+			for(int i = 0; i < entry.getValue(); i++){
+				res[index++] = entry.getKey();
 			}
 		}
-		
-		List<Entry<Integer, Integer>> arrayList = new ArrayList<>(arrayMap.entrySet());
-		Comparator<Entry<Integer, Integer>> customComparator = (Entry<Integer, Integer> o1,
-				Entry<Integer, Integer> o2) -> o1.getValue().compareTo(o2.getValue()) > 0 ? -1 : 1;
-		Collections.sort(arrayList, customComparator);
-		
-		for (Entry<Integer, Integer> entry : arrayList) {
-			int count = entry.getValue();
-			while (count > 0) {
-				System.out.print(entry.getKey() + " ");
-				count--;
-			}
-		}
+		return res;
 	}
 
 	public static void main(String args[]) {

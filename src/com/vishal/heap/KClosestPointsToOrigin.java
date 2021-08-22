@@ -1,47 +1,45 @@
 package com.vishal.heap;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.PriorityQueue;
 
-public class KClosestPointsToOrigin {
+class PointCustom{
+    int x;
+    int y;
+    int dist;
+    public PointCustom(int x, int y, int dist){
+        this.x = x;
+        this.y = y;
+        this.dist = dist;
+    }
+}
 
-    class Pair{
+class KClosestPointsToOrigin {
+
+    class Point{
         int x;
         int y;
-        int dist;
-        public Pair(int x, int y, int dist){
+        public Point(int x, int y){
             this.x = x;
             this.y = y;
-            this.dist = dist;
         }
     }
 
-    class Solution {
-        public int[][] kClosest(int[][] points, int k) {
-
-            PriorityQueue<Pair> pq = new PriorityQueue<Pair>((a, b) -> a.dist - b.dist);
-            int srcX = 0;
-            int srcY = 0;
-
-            for(int i = 0; i < points.length; i++){
-                int x = points[i][0];
-                int y = points[i][1];
-                int num = ((x - srcX)*(x - srcX)) + ((y - srcY)*(y - srcY));
-                pq.offer(new Pair(x, y, num));
+    public List<Point> findClosestPoints(Point[] points, int k) {
+        ArrayList<Point> result = new ArrayList<>();
+        PriorityQueue<PointCustom> minHeap = new PriorityQueue<>((a, b) -> b.dist - a.dist);
+        for (int i = 0; i < points.length; i++) {
+            int distFromOrigin = (points[i].x * points[i].x) + (points[i].y * points[i].y);
+            minHeap.offer(new PointCustom(points[i].x, points[i].y, distFromOrigin));
+            if (minHeap.size() > k) {
+                minHeap.poll();
             }
-
-            int[][] res = new int[k][2];
-            int index = 0;
-
-            while(!pq.isEmpty() && k > 0){
-                Pair poppedPair = pq.poll();
-                k--;
-                res[index][0] = poppedPair.x;
-                res[index][1] = poppedPair.y;
-                index++;
-            }
-
-            return res;
         }
+        while (!minHeap.isEmpty()) {
+            PointCustom polledPoint = minHeap.poll();
+            result.add(new Point(polledPoint.x, polledPoint.y));
+        }
+        return result;
     }
-
 }
