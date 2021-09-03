@@ -6,7 +6,7 @@ public class SmallestLetterGreaterThanTarget {
         int start = 0;
         int end = letters.length - 1;
 
-        if(target > letters[end]){
+        if(target >= letters[end]){
             return letters[0];
         }else if(target < letters[0]){
             return letters[0];
@@ -21,7 +21,7 @@ public class SmallestLetterGreaterThanTarget {
             }
         }
 
-        return letters[start % (letters.length)];
+        return letters[start];
     }
 
 }
