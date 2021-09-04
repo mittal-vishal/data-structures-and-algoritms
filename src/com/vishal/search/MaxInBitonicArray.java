@@ -1,6 +1,6 @@
 package com.vishal.search;
 
-class MaxInRotatedArray {
+class MaxInBitonicArray {
 
     public static int findMax(int[] arr) {
         int start = 0;
@@ -19,7 +19,7 @@ class MaxInRotatedArray {
     }
 
     public static void main(String[] args) {
-        MaxInRotatedArray rotatedArray = new MaxInRotatedArray();
+        MaxInBitonicArray rotatedArray = new MaxInBitonicArray();
         System.out.println(rotatedArray.findMax(new int[] { 5, 1, 3 }));
         System.out.println(rotatedArray.findMax(new int[] { 3, 8, 3, 1 }));
         System.out.println(rotatedArray.findMax(new int[] { 1, 3, 8, 12 }));
