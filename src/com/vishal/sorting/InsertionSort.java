@@ -12,13 +12,13 @@ public class InsertionSort {
 
 	private static int[] sort(int[] a) {
 		for (int i = 1; i < a.length; i++) {
-			int j = i - 1;
-			int item = a[i];
-			while (j >= 0 && item < a[j]) {
-				a[j + 1] = a[j];
+			int j = i;
+			int element = a[i];
+			while (j >= 1 && a[j] < a[j - 1]) {
+				a[j] = a[j - 1];
 				j--;
 			}
-			a[j + 1] = item;
+			a[j] = element;
 		}
 		return a;
 	}
