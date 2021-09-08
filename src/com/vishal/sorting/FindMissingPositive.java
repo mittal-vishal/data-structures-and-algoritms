@@ -12,19 +12,12 @@ public class FindMissingPositive {
                 i--;
             }
         }
-        Set<Integer> existedNumSet = new HashSet<>();
         for(int i = 0; i < nums.length; i++){
-            if(i + 1 != nums[i] && !existedNumSet.contains(i+1)){
+            if(i + 1 != nums[i]){
                 return i + 1;
-            }else{
-                existedNumSet.add(nums[i]);
             }
         }
-        int nextSmallestNum = nums.length + 1;
-        while(existedNumSet.contains(nextSmallestNum)){
-            nextSmallestNum++;
-        }
-        return nextSmallestNum;
+        return nums.length + 1;
     }
 
     private void swap(int[] nums, int i, int j){
