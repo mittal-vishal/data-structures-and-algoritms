@@ -2,25 +2,27 @@ package com.vishal.google;
 
 public class RotateImageBy90 {
 
-    public void rotateMatrixByLayers(int[][] matrix){
+    public void rotateByLayers(int[][] matrix) {
+
         int n = matrix.length;
-        int layers = n/2;
-        for(int i = 0; i < layers; i++){
-            int start = i;
-            int end = n - i - 1;
-            for(int j = start; j < end; j++){
-                //Store Top
-                int temp = matrix[start][j];
-                //Left to Top
-                matrix[start][j] = matrix[n-1-j][start];
-                //Bottom to Left
-                matrix[n-1-j][start] = matrix[end][n-1-j];
-                //Right to Bottom
-                matrix[end][n-1-j] = matrix[j][end];
-                //Top to Right
-                matrix[j][end] = temp;
+
+        for(int layer = 0; layer < n/2; layer++){
+
+            for(int j = layer; j < n-layer-1; j++){
+                //Save top right
+                int temp = matrix[j][n-1-layer];
+                //Top left to top right
+                matrix[j][n-1-layer] = matrix[layer][j];
+                //Bottom left to top left
+                matrix[layer][j] = matrix[n-1-j][layer];
+                //Bottom right to bottom left
+                matrix[n-1-j][layer] = matrix[n-1-layer][n-1-j];
+                //Top right to bottom right
+                matrix[n-1-layer][n-1-j] = temp;
             }
+
         }
+
     }
 
     public void rotate(int[][] matrix) {
