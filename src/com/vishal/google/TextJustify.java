@@ -8,7 +8,6 @@ public class TextJustify {
     public List<String> fullJustify(String[] words, int maxWidth) {
         List<String> fullJustifyList = new ArrayList<>();
         List<String> lineWordsList = new ArrayList<>();
-        int start = 0;
 
         int maxChars = maxWidth;
         int lineLength = 0;
@@ -48,8 +47,6 @@ public class TextJustify {
     private String doLeftJustify(List<String> lineWordsList, int maxWidth, int lineLength){
         StringBuilder justifiedContent = new StringBuilder();
         int totalSpaces = maxWidth - lineLength;
-        int spacePerWord = totalSpaces / lineWordsList.size();
-        int extraSpaces = totalSpaces % lineWordsList.size();
         for(int i = 0; i < lineWordsList.size(); i++){
             if(i < lineWordsList.size() - 1){
                 justifiedContent.append(lineWordsList.get(i)).append(" ");
