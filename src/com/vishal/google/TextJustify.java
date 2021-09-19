@@ -13,19 +13,27 @@ public class TextJustify {
         int lineLength = 0;
         for(int i = 0; i < words.length; i++){
             String currWord = words[i];
+            //count 1 space between each words except for last word
             int spaceBtwWords = (i == words.length - 1) ? 0: 1;
+            //if words per line is less or equal to maxChars per line
             if(currWord.length() <= maxChars){
+                //update line length with space between words
                 lineLength += (currWord.length() + spaceBtwWords);
                 lineWordsList.add(currWord);
                 maxChars -= (currWord.length() + spaceBtwWords);
                 if(i == words.length - 1 || maxChars < words[i+1].length()){
+                    //remove extra space for last word of line
                     if(i < words.length - 1){
                         lineLength--;
                     }
                     String justifiedStr = doJustifyContent(lineWordsList, spaceBtwWords, maxWidth, lineLength);
+                    //add in resultant justified list
                     fullJustifyList.add(justifiedStr);
+                    //reset maxChars limit to original width
                     maxChars = maxWidth;
+                    //reset line length to zero
                     lineLength = 0;
+                    //reset number of words in line to empty
                     lineWordsList = new ArrayList<>();
                 }
             }
@@ -46,7 +54,8 @@ public class TextJustify {
 
     private String doLeftJustify(List<String> lineWordsList, int maxWidth, int lineLength){
         StringBuilder justifiedContent = new StringBuilder();
-        int totalSpaces = maxWidth - lineLength;
+        //calculate extra spaces
+        int extraSpaces = maxWidth - lineLength;
         for(int i = 0; i < lineWordsList.size(); i++){
             if(i < lineWordsList.size() - 1){
                 justifiedContent.append(lineWordsList.get(i)).append(" ");
@@ -54,7 +63,8 @@ public class TextJustify {
                 justifiedContent.append(lineWordsList.get(i));
             }
         }
-        for(int i = 0; i < totalSpaces; i++){
+        //append extra spaces at end of justfied content
+        for(int i = 0; i < extraSpaces; i++){
             justifiedContent.append(" ");
         }
         return justifiedContent.toString();
@@ -62,15 +72,19 @@ public class TextJustify {
 
     private String doFullJustify(List<String> lineWordsList, int maxWidth, int lineLength){
         StringBuilder justifiedContent = new StringBuilder();
-        int totalSpaces = maxWidth - lineLength;
-        int spacesPerWord = totalSpaces / (lineWordsList.size() - 1);
-        int extraSpaces = totalSpaces % (lineWordsList.size() - 1);
+        //calculate total spaces in line
+        int totalExtraSpaces = maxWidth - lineLength;
+        //extra spaces per word
+        int extraSpacesPerWord = totalExtraSpaces / (lineWordsList.size() - 1);
+        //additional extra spaces for inital words
+        int extraSpacesForInitialWords = totalExtraSpaces % (lineWordsList.size() - 1);
         for(int i = 0; i < lineWordsList.size(); i++){
             if(i < lineWordsList.size() - 1){
                 justifiedContent.append(lineWordsList.get(i)).append(" ");
-                int spacesCount = spacesPerWord;
-                if(extraSpaces > 0){
-                    extraSpaces--;
+                //totalSpaces contains sum of extraSpacesPerWord and extraSpacesForInitialWords
+                int spacesCount = extraSpacesPerWord;
+                if(extraSpacesForInitialWords > 0){
+                    extraSpacesForInitialWords--;
                     spacesCount += 1;
                 }
                 for(int j = 0; j < spacesCount; j++){
