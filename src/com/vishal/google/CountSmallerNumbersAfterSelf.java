@@ -38,29 +38,29 @@ public class CountSmallerNumbersAfterSelf {
         int i = beg; // current index for the left array
         int j = mid + 1; // current index for the right array
         // use temp to temporarily store sorted array
-        Element[] tempArr = new Element[end-beg+1];
+        Element[] sortedArr = new Element[end-beg+1];
         int idx = 0;
         int rightCounter = 0;
         while (i <= mid && j <= end) {
             if (elementArr[i].num > elementArr[j].num) {
                 rightCounter++;
-                tempArr[idx++] = elementArr[j++];
+                sortedArr[idx++] = elementArr[j++];
             } else {
                 res[elementArr[i].index] += rightCounter;
-                tempArr[idx++] = elementArr[i++];
+                sortedArr[idx++] = elementArr[i++];
             }
         }
         // when one of the subarrays is empty
         while (i <= mid) {
             res[elementArr[i].index] += rightCounter;
-            tempArr[idx++] = elementArr[i++];
+            sortedArr[idx++] = elementArr[i++];
         }
         while (j <= end) {
-            tempArr[idx++] = elementArr[j++];
+            sortedArr[idx++] = elementArr[j++];
         }
         // restore from temp
         for (int k = beg; k <= end; k++) {
-            elementArr[k] = tempArr[k-beg];
+            elementArr[k] = sortedArr[k-beg];
         }
     }
 

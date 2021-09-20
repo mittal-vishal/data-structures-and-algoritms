@@ -23,28 +23,28 @@ public class MergeSort {
 
 		int i = beg, j = mid + 1;
 
-		int temp[] = new int[end - beg + 1];
+		int sortedArr[] = new int[end - beg + 1];
 
 		int idx = 0;
 
 		while (i <= mid && j <= end) {
 			if (a[i] <= a[j]) {
-				temp[idx++] = a[i++];
+				sortedArr[idx++] = a[i++];
 			} else {
-				temp[idx++] = a[j++];
+				sortedArr[idx++] = a[j++];
 			}
 		}
 
 		while (i <= mid) {
-			temp[idx++] = a[i++];
+			sortedArr[idx++] = a[i++];
 		}
 
 		while (j <= end) {
-			temp[idx++] = a[j++];
+			sortedArr[idx++] = a[j++];
 		}
 
 		for(int k = beg; k <= end; k++){
-			a[k] = temp[k-beg];
+			a[k] = sortedArr[k-beg];
 		}
 	}
 
