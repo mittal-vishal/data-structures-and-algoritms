@@ -1,5 +1,10 @@
 package com.vishal.google;
 
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Set;
+
 public class JumpGameIII {
 
     public boolean canReach(int[] arr, int start) {
@@ -20,6 +25,32 @@ public class JumpGameIII {
         if(!visited[currIdx]){
             visited[currIdx] = true;
             return dfs(arr, currIdx - arr[currIdx], visited) || dfs(arr, currIdx + arr[currIdx], visited);
+        }
+        return false;
+    }
+
+    public boolean bfs(int[] arr, int start) {
+        if(arr == null || arr.length == 0){
+            return false;
+        }
+        Queue<Integer> queue = new LinkedList<>();
+        queue.offer(start);
+        Set<Integer> visitedSet = new HashSet<>();
+        visitedSet.add(start);
+        while(!queue.isEmpty()){
+            Integer polled = queue.poll();
+            if(arr[polled] == 0){
+                return true;
+            }
+            visitedSet.add(polled);
+            int leftElement = polled - arr[polled];
+            if(leftElement >= 0 && !visitedSet.contains(leftElement)){
+                queue.offer(leftElement);
+            }
+            int rightElement = polled + arr[polled];
+            if(rightElement < arr.length && !visitedSet.contains(rightElement)){
+                queue.offer(rightElement);
+            }
         }
         return false;
     }
