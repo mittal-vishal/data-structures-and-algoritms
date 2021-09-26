@@ -1,15 +1,12 @@
 package com.vishal.microsoft;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 
 public class AllOne {
 
     /** Initialize your data structure here. */
     private HashMap<String, Integer> countMap;
-    private TreeMap<Integer, List<String>> topFreqMap;
+    private TreeMap<Integer, Set<String>> topFreqMap;
 
     public AllOne() {
         countMap = new HashMap<>();
@@ -23,7 +20,7 @@ public class AllOne {
         countMap.put(key, count);
         // update freq map
         if(!topFreqMap.containsKey(count)){
-            topFreqMap.put(count, new ArrayList<>());
+            topFreqMap.put(count, new HashSet<>());
         }
         topFreqMap.get(count).add(key);
         if(count > 1){
@@ -53,7 +50,7 @@ public class AllOne {
         }
         if(count > 0){
             if(!topFreqMap.containsKey(count)){
-                topFreqMap.put(count, new ArrayList<>());
+                topFreqMap.put(count, new HashSet<>());
             }
             topFreqMap.get(count).add(key);
         }
@@ -62,7 +59,7 @@ public class AllOne {
     /** Returns one of the keys with maximal value. */
     public String getMaxKey() {
         if(topFreqMap.lastEntry() != null){
-            return topFreqMap.lastEntry().getValue().get(0);
+            return topFreqMap.lastEntry().getValue().iterator().next();
         }else{
             return "";
         }
@@ -71,7 +68,7 @@ public class AllOne {
     /** Returns one of the keys with Minimal value. */
     public String getMinKey() {
         if(topFreqMap.firstEntry() != null){
-            return topFreqMap.firstEntry().getValue().get(0);
+            return topFreqMap.firstEntry().getValue().iterator().next();
         }else{
             return "";
         }
