@@ -6,11 +6,11 @@ public class AllOne {
 
     /** Initialize your data structure here. */
     private HashMap<String, Integer> countMap;
-    private TreeMap<Integer, Set<String>> topFreqMap;
+    private TreeMap<Integer, Set<String>> freqMap;
 
     public AllOne() {
         countMap = new HashMap<>();
-        topFreqMap = new TreeMap<>();
+        freqMap = new TreeMap<>();
     }
 
     /** Inserts a new key <Key> with value 1. Or increments an existing key by 1. */
@@ -19,14 +19,14 @@ public class AllOne {
         int count = countMap.getOrDefault(key, 0) + 1;
         countMap.put(key, count);
         // update freq map
-        if(!topFreqMap.containsKey(count)){
-            topFreqMap.put(count, new HashSet<>());
+        if(!freqMap.containsKey(count)){
+            freqMap.put(count, new HashSet<>());
         }
-        topFreqMap.get(count).add(key);
-        if(count > 1){
-            topFreqMap.get(count - 1).remove(key);
-            if(topFreqMap.get(count - 1).size() == 0){
-                topFreqMap.remove(count - 1);
+        freqMap.get(count).add(key);
+        if(freqMap.containsKey(count - 1)){
+            freqMap.get(count - 1).remove(key);
+            if(freqMap.get(count - 1).size() == 0){
+                freqMap.remove(count - 1);
             }
         }
     }
@@ -44,22 +44,22 @@ public class AllOne {
         }
         int count = countMap.containsKey(key) ? countMap.get(key) : 0;
         //Update freq map
-        topFreqMap.get(count + 1).remove(key);
-        if(topFreqMap.get(count + 1).size() == 0){
-            topFreqMap.remove(count + 1);
+        freqMap.get(count + 1).remove(key);
+        if(freqMap.get(count + 1).size() == 0){
+            freqMap.remove(count + 1);
         }
         if(count > 0){
-            if(!topFreqMap.containsKey(count)){
-                topFreqMap.put(count, new HashSet<>());
+            if(!freqMap.containsKey(count)){
+                freqMap.put(count, new HashSet<>());
             }
-            topFreqMap.get(count).add(key);
+            freqMap.get(count).add(key);
         }
     }
 
     /** Returns one of the keys with maximal value. */
     public String getMaxKey() {
-        if(topFreqMap.lastEntry() != null){
-            return topFreqMap.lastEntry().getValue().iterator().next();
+        if(freqMap.lastEntry() != null){
+            return freqMap.lastEntry().getValue().iterator().next();
         }else{
             return "";
         }
@@ -67,8 +67,8 @@ public class AllOne {
 
     /** Returns one of the keys with Minimal value. */
     public String getMinKey() {
-        if(topFreqMap.firstEntry() != null){
-            return topFreqMap.firstEntry().getValue().iterator().next();
+        if(freqMap.firstEntry() != null){
+            return freqMap.firstEntry().getValue().iterator().next();
         }else{
             return "";
         }
