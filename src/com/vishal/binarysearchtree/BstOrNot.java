@@ -2,24 +2,24 @@ package com.vishal.binarysearchtree;
 
 public class BstOrNot {
 
-	private static Node rootNode = null;
+	private static TreeNode rootNode = null;
 	
 	static class Previous{
-        private Node prev;
+        private TreeNode prev;
     }
 
 	public static void main(String[] args) {
-		rootNode = new Node(5);
-		rootNode.setLeft(new Node(5));
+		rootNode = new TreeNode(5);
+		rootNode.setLeft(new TreeNode(5));
 		System.out.println(isValidBST(rootNode));
 		System.out.println(findUsingRange(rootNode, Integer.MIN_VALUE, Integer.MAX_VALUE));
 	}
 
-	private static boolean isValidBST(Node root) {
+	private static boolean isValidBST(TreeNode root) {
         return isValidBST(root, new Previous());
     }
     
-    private static boolean isValidBST(Node root, Previous previous){
+    private static boolean isValidBST(TreeNode root, Previous previous){
         if(root != null){
             if(!isValidBST(root.getLeft(), previous))
                 return false;
@@ -33,7 +33,7 @@ public class BstOrNot {
         return true;
     }
 
-	private static boolean findUsingRange(Node root, int min, int max) {
+	private static boolean findUsingRange(TreeNode root, int min, int max) {
 		if (root == null) {
 			return true;
 		}

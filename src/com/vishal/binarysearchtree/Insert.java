@@ -2,23 +2,23 @@ package com.vishal.binarysearchtree;
 
 public class Insert {
 
-	private static Node rootNode = null;
+	private static TreeNode rootNode = null;
 
 	public static void main(String[] args) {
-		rootNode = new Node(5);
-		rootNode.setLeft(new Node(2));
-		rootNode.setRight(new Node(20));
-		rootNode.getLeft().setRight(new Node(4));
-		rootNode.getRight().setLeft(new Node(10));
-		rootNode.getRight().setRight(new Node(40));
-		rootNode.getRight().getRight().setLeft(new Node(30));
+		rootNode = new TreeNode(5);
+		rootNode.setLeft(new TreeNode(2));
+		rootNode.setRight(new TreeNode(20));
+		rootNode.getLeft().setRight(new TreeNode(4));
+		rootNode.getRight().setLeft(new TreeNode(10));
+		rootNode.getRight().setRight(new TreeNode(40));
+		rootNode.getRight().getRight().setLeft(new TreeNode(30));
 		insert(rootNode, 15);
 		PreOrder.find(rootNode);
 	}
 
-	private static Node insert(Node root, int item) {
+	private static TreeNode insert(TreeNode root, int item) {
 		if (root == null) {
-			return new Node(item);
+			return new TreeNode(item);
 		}else if(item > root.getData()) {
 			root.setRight(insert(root.getRight(), item));
 		}else {

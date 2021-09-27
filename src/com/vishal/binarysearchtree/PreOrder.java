@@ -2,17 +2,17 @@ package com.vishal.binarysearchtree;
 
 public class PreOrder {
 
-	private static Node rootNode = null;
+	private static TreeNode rootNode = null;
 
 	public static void main(String[] args) {
-		rootNode = new Node(10);
-		rootNode.setLeft(new Node(4));
-		rootNode.setRight(new Node(6));
-		rootNode.getRight().setLeft(new Node(30));
+		rootNode = new TreeNode(10);
+		rootNode.setLeft(new TreeNode(4));
+		rootNode.setRight(new TreeNode(6));
+		rootNode.getRight().setLeft(new TreeNode(30));
 		find(rootNode);
 	}
 
-	public static void find(Node root) {
+	public static void find(TreeNode root) {
 		if(root != null){
 			System.out.print(root.getData() + " ");
 			find(root.getLeft());

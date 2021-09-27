@@ -2,20 +2,20 @@ package com.vishal.binarysearchtree;
 
 public class MinElementBST {
 
-	private static Node rootNode = null;
+	private static TreeNode rootNode = null;
 
 	public static void main(String[] args) {
-		rootNode = new Node(7);
-		rootNode.setLeft(new Node(5));
-		rootNode.setRight(new Node(10));
-		rootNode.getLeft().setLeft(new Node(3));
-		rootNode.getLeft().setRight(new Node(6));
-		rootNode.getRight().setLeft(new Node(8));
-		rootNode.getRight().setRight(new Node(12));
+		rootNode = new TreeNode(7);
+		rootNode.setLeft(new TreeNode(5));
+		rootNode.setRight(new TreeNode(10));
+		rootNode.getLeft().setLeft(new TreeNode(3));
+		rootNode.getLeft().setRight(new TreeNode(6));
+		rootNode.getRight().setLeft(new TreeNode(8));
+		rootNode.getRight().setRight(new TreeNode(12));
 		System.out.println(find(rootNode));
 	}
 	
-	private static int find(Node node) {
+	private static int find(TreeNode node) {
         while(node.getLeft() != null){
             node = node.getLeft();
         }
