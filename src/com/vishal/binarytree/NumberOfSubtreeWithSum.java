@@ -2,21 +2,21 @@ package com.vishal.binarytree;
 
 public class NumberOfSubtreeWithSum {
 	
-	private static Node rootNode = null;
+	private static TreeNode rootNode = null;
 	private static int count = 0;
 
 	public static void main(String[] args) {
-		rootNode = new Node(5);
-		rootNode.setLeft(new Node(-10));
-		rootNode.setRight(new Node(3));
-		rootNode.getLeft().setLeft(new Node(9));
-		rootNode.getLeft().setRight(new Node(8));
-		rootNode.getRight().setLeft(new Node(-4));
-		rootNode.getRight().setRight(new Node(7));
+		rootNode = new TreeNode(5);
+		rootNode.setLeft(new TreeNode(-10));
+		rootNode.setRight(new TreeNode(3));
+		rootNode.getLeft().setLeft(new TreeNode(9));
+		rootNode.getLeft().setRight(new TreeNode(8));
+		rootNode.getRight().setLeft(new TreeNode(-4));
+		rootNode.getRight().setRight(new TreeNode(7));
 		System.out.println(find(rootNode, 7));
 	}
 
-	private static int find(Node root, int sum) {
+	private static int find(TreeNode root, int sum) {
 		if(root != null) {
 			int leftT = find(root.getLeft(), sum);
 			int rightT = find(root.getRight(), sum);

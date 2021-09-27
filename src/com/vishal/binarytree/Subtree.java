@@ -2,7 +2,7 @@ package com.vishal.binarytree;
 
 public class Subtree {
 
-	public static boolean isSubtree(Node T, Node S) {
+	public static boolean isSubtree(TreeNode T, TreeNode S) {
         if(T == null){
             return false;
         }else if(isSame(T, S)){
@@ -14,7 +14,7 @@ public class Subtree {
         }
     }
     
-    private static boolean isSame(Node root1, Node root2){
+    private static boolean isSame(TreeNode root1, TreeNode root2){
         if(root1 == null && root2 == null){
             return true;
         }else if(root1 == null || root2 == null){

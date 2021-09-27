@@ -1,7 +1,5 @@
 package com.vishal.binarysearchtree;
 
-import com.vishal.binarytree.Node;
-
 public class BstOrNot {
 
 	private static Node rootNode = null;

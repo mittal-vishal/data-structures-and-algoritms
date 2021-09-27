@@ -2,32 +2,32 @@ package com.vishal.binarytree;
 
 public class InorderSuccessor {
 
-	private static Node rootNode = null;
+	private static TreeNode rootNode = null;
 
 	public static void main(String[] args) {
-		rootNode = new Node(1);
-		rootNode.setLeft(new Node(2));
-		rootNode.setRight(new Node(3));
-		rootNode.getLeft().setLeft(new Node(4));
-		rootNode.getLeft().setRight(new Node(5));
-		rootNode.getRight().setLeft(new Node(6));
-		rootNode.getRight().setRight(new Node(7));
+		rootNode = new TreeNode(1);
+		rootNode.setLeft(new TreeNode(2));
+		rootNode.setRight(new TreeNode(3));
+		rootNode.getLeft().setLeft(new TreeNode(4));
+		rootNode.getLeft().setRight(new TreeNode(5));
+		rootNode.getRight().setLeft(new TreeNode(6));
+		rootNode.getRight().setRight(new TreeNode(7));
 		int num = 1;
 		find(rootNode, num);
 	}
 	
 	static class PreviousNode{
-		Node prevNode;
+		TreeNode prevNode;
 		public PreviousNode() {
 			prevNode = null;
 		}
 	}
 
-	private static void find(Node root, int num) {
+	private static void find(TreeNode root, int num) {
 		find(root, num, new PreviousNode());
 	}
 
-	private static void find(Node root, int num, PreviousNode previousNode) {
+	private static void find(TreeNode root, int num, PreviousNode previousNode) {
 		if(root != null) {
 			find(root.getRight(), num, previousNode);
 			if(root.getData() == num) {

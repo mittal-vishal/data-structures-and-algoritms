@@ -2,23 +2,23 @@ package com.vishal.binarytree;
 
 public class PrintKLevel {
 
-	private static Node rootNode = null;
+	private static TreeNode rootNode = null;
 
 	public static void main(String[] args) {
-		rootNode = new Node(1);
-		rootNode.setLeft(new Node(2));
-		rootNode.setRight(new Node(3));
-		rootNode.getLeft().setLeft(new Node(34));
-		rootNode.getLeft().setRight(new Node(4));
-		rootNode.getRight().setLeft(new Node(13));
-		rootNode.getRight().setRight(new Node(40));
-		rootNode.getLeft().getLeft().setLeft(new Node(10));
-		rootNode.getLeft().getLeft().setRight(new Node(12));
+		rootNode = new TreeNode(1);
+		rootNode.setLeft(new TreeNode(2));
+		rootNode.setRight(new TreeNode(3));
+		rootNode.getLeft().setLeft(new TreeNode(34));
+		rootNode.getLeft().setRight(new TreeNode(4));
+		rootNode.getRight().setLeft(new TreeNode(13));
+		rootNode.getRight().setRight(new TreeNode(40));
+		rootNode.getLeft().getLeft().setLeft(new TreeNode(10));
+		rootNode.getLeft().getLeft().setRight(new TreeNode(12));
 		int k = 3;
 		find(rootNode, k);
 	}
 
-	private static void find(Node root, int k) {
+	private static void find(TreeNode root, int k) {
 		if(root == null){
 			System.out.print(-1);
 		}else if(k == 0) {

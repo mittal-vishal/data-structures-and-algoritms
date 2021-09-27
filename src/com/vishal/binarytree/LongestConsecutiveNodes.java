@@ -4,13 +4,13 @@ public class LongestConsecutiveNodes {
 
     int longest = 0;
 
-    public int longestConsecutive(Node root) {
+    public int longestConsecutive(TreeNode root) {
         dfs(root, null, 0);
         return longest;
     }
 
     //Top-down approach using DFS Traversal
-    private void dfs(Node root, Node parent, int length){
+    private void dfs(TreeNode root, TreeNode parent, int length){
         if(root == null){
             return;
         }
@@ -21,7 +21,7 @@ public class LongestConsecutiveNodes {
     }
 
     //Bottom-up approach using DFS Traversal
-    private int dfs(Node root){
+    private int dfs(TreeNode root){
         if(root == null){
             return 0;
         }

@@ -2,7 +2,7 @@ package com.vishal.binarytree;
 
 public class BalancedTreeOptimal {
 	
-	public boolean isBalanced(Node root) {
+	public boolean isBalanced(TreeNode root) {
         if(balancedFactor(root) > -1){
             return true;
         }else{
@@ -10,7 +10,7 @@ public class BalancedTreeOptimal {
         }
     }
     
-    private int balancedFactor(Node root) {
+    private int balancedFactor(TreeNode root) {
 		if(root == null)
 			return 0;
         int left = balancedFactor(root.getLeft());

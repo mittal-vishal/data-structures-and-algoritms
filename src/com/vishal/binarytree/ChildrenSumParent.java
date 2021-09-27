@@ -2,22 +2,22 @@ package com.vishal.binarytree;
 
 public class ChildrenSumParent {
 
-	private static Node rootNode = null;
+	private static TreeNode rootNode = null;
 
 	public static void main(String[] args) {
-		rootNode = new Node(12);
-		rootNode.setLeft(new Node(8));
-		rootNode.setRight(new Node(4));
-		rootNode.getLeft().setLeft(new Node(5));
-		rootNode.getLeft().setRight(new Node(3));
-		rootNode.getRight().setLeft(new Node(1));
-		rootNode.getRight().setRight(new Node(3));
-		rootNode.getLeft().getLeft().setLeft(new Node(3));
-		rootNode.getLeft().getLeft().setRight(new Node(2));
+		rootNode = new TreeNode(12);
+		rootNode.setLeft(new TreeNode(8));
+		rootNode.setRight(new TreeNode(4));
+		rootNode.getLeft().setLeft(new TreeNode(5));
+		rootNode.getLeft().setRight(new TreeNode(3));
+		rootNode.getRight().setLeft(new TreeNode(1));
+		rootNode.getRight().setRight(new TreeNode(3));
+		rootNode.getLeft().getLeft().setLeft(new TreeNode(3));
+		rootNode.getLeft().getLeft().setRight(new TreeNode(2));
 		System.out.println(find(rootNode));
 	}
 
-	private static boolean find(Node root) {
+	private static boolean find(TreeNode root) {
 		if (root == null || (root.getLeft() == null && root.getRight() == null)) {
 			return true;
 		}

@@ -2,7 +2,7 @@ package com.vishal.binarytree;
 
 public class PathSumRootToLeave {
 
-	public boolean hasPathSum(Node root, int sum) {
+	public boolean hasPathSum(TreeNode root, int sum) {
         if(root == null){
             return false;
         }

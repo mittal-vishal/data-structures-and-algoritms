@@ -6,7 +6,7 @@ import java.util.Stack;
 
 public class BoundaryOrderTraversal {
 
-    public void addLeaves(List<Integer> res, Node root) {
+    public void addLeaves(List<Integer> res, TreeNode root) {
         if(root != null) {
         	if (root.left == null && root.right == null) {
                 res.add(root.data);
@@ -16,7 +16,7 @@ public class BoundaryOrderTraversal {
         }
     }
 
-    public List<Integer> boundaryOfBinaryTree(Node root) {
+    public List<Integer> boundaryOfBinaryTree(TreeNode root) {
         List<Integer> res = new ArrayList<>();
         if (root == null) {
             return res;
@@ -24,7 +24,7 @@ public class BoundaryOrderTraversal {
         if (root.left != null && root.right != null) {
             res.add(root.data);
         }
-        Node t = root.left;
+        TreeNode t = root.left;
         while (t != null) {
             if (t.left != null && t.right != null) {
                 res.add(t.data);

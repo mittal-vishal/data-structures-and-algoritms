@@ -8,44 +8,44 @@ import java.util.AbstractMap.SimpleEntry;
 
 public class NodesAtKDistFromLeaf {
 
-	private static Node rootNode = null;
+	private static TreeNode rootNode = null;
 
 	public static void main(String[] args) {
-		rootNode = new Node(15);
-		rootNode.setLeft(new Node(10));
-		rootNode.setRight(new Node(20));
-		rootNode.getLeft().setLeft(new Node(8));
-		rootNode.getLeft().setRight(new Node(12));
-		rootNode.getRight().setLeft(new Node(16));
-		rootNode.getRight().setRight(new Node(25));
-		rootNode.getRight().getLeft().setRight(new Node(18));
+		rootNode = new TreeNode(15);
+		rootNode.setLeft(new TreeNode(10));
+		rootNode.setRight(new TreeNode(20));
+		rootNode.getLeft().setLeft(new TreeNode(8));
+		rootNode.getLeft().setRight(new TreeNode(12));
+		rootNode.getRight().setLeft(new TreeNode(16));
+		rootNode.getRight().setRight(new TreeNode(25));
+		rootNode.getRight().getLeft().setRight(new TreeNode(18));
 		find(rootNode, 1);
 	}
 
-	private static void find(Node root, int k) {
-		Set<Entry<Integer, Node>> set = backTrack(root, k);
-		for (Entry<Integer, Node> entry : set) {
+	private static void find(TreeNode root, int k) {
+		Set<Entry<Integer, TreeNode>> set = backTrack(root, k);
+		for (Entry<Integer, TreeNode> entry : set) {
 			if (entry.getKey() == k) {
 				System.out.println(entry.getValue().getData());
 			}
 		}
 	}
 
-	private static Set<Entry<Integer, Node>> backTrack(Node node, int k) {
+	private static Set<Entry<Integer, TreeNode>> backTrack(TreeNode node, int k) {
 		if (node == null) {
 			return new HashSet<>();
 		}
-		Set<Entry<Integer, Node>> leftT = backTrack(node.getLeft(), k);
-		Set<Entry<Integer, Node>> rightT = backTrack(node.getRight(), k);
-		Iterator<Entry<Integer, Node>> leftItr = leftT.iterator();
-		Entry<Integer, Node> entry = null;
+		Set<Entry<Integer, TreeNode>> leftT = backTrack(node.getLeft(), k);
+		Set<Entry<Integer, TreeNode>> rightT = backTrack(node.getRight(), k);
+		Iterator<Entry<Integer, TreeNode>> leftItr = leftT.iterator();
+		Entry<Integer, TreeNode> entry = null;
 		while (leftItr.hasNext()) {
 			entry = leftItr.next();
 			if (entry.getKey() == k) {
 				System.out.println(entry.getValue().getData());
 			}
 		}
-		Iterator<Entry<Integer, Node>> rightItr = rightT.iterator();
+		Iterator<Entry<Integer, TreeNode>> rightItr = rightT.iterator();
 		while (rightItr.hasNext()) {
 			entry = rightItr.next();
 			if (entry.getKey() == k) {
@@ -53,25 +53,25 @@ public class NodesAtKDistFromLeaf {
 			}
 		}
 		if (leftT.isEmpty()) {
-			leftT.add(new SimpleEntry<Integer, Node>(0, node));
+			leftT.add(new SimpleEntry<Integer, TreeNode>(0, node));
 		} else {
-			Iterator<Entry<Integer, Node>> itr = leftT.iterator();
+			Iterator<Entry<Integer, TreeNode>> itr = leftT.iterator();
 			leftT = new HashSet<>();
 			while (itr.hasNext()) {
-				leftT.add(new SimpleEntry<Integer, Node>(itr.next().getKey() + 1, node));
+				leftT.add(new SimpleEntry<Integer, TreeNode>(itr.next().getKey() + 1, node));
 			}
 		}
 		if (rightT.isEmpty()) {
-			rightT.add(new SimpleEntry<Integer, Node>(0, node));
+			rightT.add(new SimpleEntry<Integer, TreeNode>(0, node));
 		} else {
-			Iterator<Entry<Integer, Node>> itr = rightT.iterator();
+			Iterator<Entry<Integer, TreeNode>> itr = rightT.iterator();
 			rightT = new HashSet<>();
 			while (itr.hasNext()) {
-				rightT.add(new SimpleEntry<Integer, Node>(itr.next().getKey() + 1, node));
+				rightT.add(new SimpleEntry<Integer, TreeNode>(itr.next().getKey() + 1, node));
 			}
 		}
-		for (Entry<Integer, Node> entryRight : rightT) {
-			leftT.add(new SimpleEntry<Integer, Node>(entryRight.getKey(), entryRight.getValue()));
+		for (Entry<Integer, TreeNode> entryRight : rightT) {
+			leftT.add(new SimpleEntry<Integer, TreeNode>(entryRight.getKey(), entryRight.getValue()));
 		}
 		return leftT;
 	}

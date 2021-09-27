@@ -2,18 +2,18 @@ package com.vishal.binarytree;
 
 public class InorderSuccessor2 {
 
-	private static Node rootNode = null;
+	private static TreeNode rootNode = null;
 
 	public static void main(String[] args) {
-		rootNode = new Node(1);
-		rootNode.setLeft(new Node(2));
-		rootNode.setRight(new Node(3));
-		rootNode.getLeft().setLeft(new Node(4));
-		rootNode.getLeft().setRight(new Node(5));
-		rootNode.getRight().setLeft(new Node(6));
-		rootNode.getRight().setRight(new Node(7));
+		rootNode = new TreeNode(1);
+		rootNode.setLeft(new TreeNode(2));
+		rootNode.setRight(new TreeNode(3));
+		rootNode.getLeft().setLeft(new TreeNode(4));
+		rootNode.getLeft().setRight(new TreeNode(5));
+		rootNode.getRight().setLeft(new TreeNode(6));
+		rootNode.getRight().setRight(new TreeNode(7));
 		int num = 1;
-		Node node = find(rootNode, num);
+		TreeNode node = find(rootNode, num);
 		if(node != null) {
 			System.out.println(node.getData());
 		}else {
@@ -23,19 +23,19 @@ public class InorderSuccessor2 {
 	
 	static class Next{
 		boolean nextVal;
-		Node succ;
-		public Next(boolean nextVal, Node succ) {
+		TreeNode succ;
+		public Next(boolean nextVal, TreeNode succ) {
 			this.nextVal = nextVal;
 			this.succ = succ;
 		}
 	}
 
 
-	private static Node find(Node root, int num) {
+	private static TreeNode find(TreeNode root, int num) {
 		return find(root, num, new Next(false, null));
 	}
 
-	private static Node find(Node root, int num, Next next) {
+	private static TreeNode find(TreeNode root, int num, Next next) {
 		if(root == null)
 			return null;
 		else if(next.succ == null) {

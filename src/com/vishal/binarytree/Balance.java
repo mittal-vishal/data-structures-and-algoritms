@@ -2,16 +2,16 @@ package com.vishal.binarytree;
 
 public class Balance {
 
-private static Node rootNode = null;
+private static TreeNode rootNode = null;
 	
 	public static void main(String[] args) {
-		rootNode = new Node(1);
-		rootNode.setLeft(new Node(2));
-		rootNode.getLeft().setLeft(new Node(23));
+		rootNode = new TreeNode(1);
+		rootNode.setLeft(new TreeNode(2));
+		rootNode.getLeft().setLeft(new TreeNode(23));
 		System.out.println(find(rootNode));
 	}
 
-	private static boolean find(Node root) {
+	private static boolean find(TreeNode root) {
 		if((root == null) || (root.getLeft() == null && root.getRight() == null)){
 			return true;
 		}else {
@@ -28,7 +28,7 @@ private static Node rootNode = null;
 		}
 	}
 	
-	private static int height(Node node) {
+	private static int height(TreeNode node) {
 		if(node == null) {
 			return 0;
 		}else {

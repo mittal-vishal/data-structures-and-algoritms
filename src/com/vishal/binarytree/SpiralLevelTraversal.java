@@ -6,24 +6,24 @@ import java.util.Stack;
 
 public class SpiralLevelTraversal {
 	
-	private static Node rootNode = null;
+	private static TreeNode rootNode = null;
 
 	public static void main(String[] args) {
-		rootNode = new Node(1);
-		rootNode.setLeft(new Node(2));
-		rootNode.setRight(new Node(3));
-		rootNode.getLeft().setLeft(new Node(34));
-		rootNode.getLeft().setRight(new Node(4));
-		rootNode.getRight().setLeft(new Node(13));
-		rootNode.getRight().setRight(new Node(40));
-		rootNode.getLeft().getLeft().setLeft(new Node(10));
-		rootNode.getLeft().getLeft().setRight(new Node(12));
+		rootNode = new TreeNode(1);
+		rootNode.setLeft(new TreeNode(2));
+		rootNode.setRight(new TreeNode(3));
+		rootNode.getLeft().setLeft(new TreeNode(34));
+		rootNode.getLeft().setRight(new TreeNode(4));
+		rootNode.getRight().setLeft(new TreeNode(13));
+		rootNode.getRight().setRight(new TreeNode(40));
+		rootNode.getLeft().getLeft().setLeft(new TreeNode(10));
+		rootNode.getLeft().getLeft().setRight(new TreeNode(12));
 		find(rootNode);
 	}
 
-	private static void find(Node root) {
-		Queue<Node> queue = new LinkedList<>();
-		Stack<Node> stack = new Stack<>();
+	private static void find(TreeNode root) {
+		Queue<TreeNode> queue = new LinkedList<>();
+		Stack<TreeNode> stack = new Stack<>();
 		queue.add(root);
 		queue.add(null);
 		int level = 1;
@@ -33,7 +33,7 @@ public class SpiralLevelTraversal {
 			}
 			if (level % 2 == 1) {
 				if (queue.peek() != null) {
-					Node item = queue.poll();
+					TreeNode item = queue.poll();
 					stack.push(item);
 					if (item.getLeft() != null) {
 						queue.add(item.getLeft());
@@ -52,7 +52,7 @@ public class SpiralLevelTraversal {
 				}
 			} else {
 				if (queue.peek() != null) {
-					Node item = queue.poll();
+					TreeNode item = queue.poll();
 					System.out.print(item.getData() + " ");
 					if (item.getLeft() != null) {
 						queue.add(item.getLeft());

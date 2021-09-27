@@ -10,16 +10,16 @@ import java.util.Map.Entry;
 
 public class VerticalOrder {
 
-	private static Node rootNode = null;
+	private static TreeNode rootNode = null;
 	private static List<Integer> list = null;
 	private static Map<Integer, List<Integer>> map = null;
 
 	public static void main(String[] args) {
-		rootNode = new Node(1);
-		rootNode.setLeft(new Node(2));
-		rootNode.setRight(new Node(3));
-		rootNode.getLeft().setLeft(new Node(34));
-		rootNode.getLeft().setRight(new Node(4));
+		rootNode = new TreeNode(1);
+		rootNode.setLeft(new TreeNode(2));
+		rootNode.setRight(new TreeNode(3));
+		rootNode.getLeft().setLeft(new TreeNode(34));
+		rootNode.getLeft().setRight(new TreeNode(4));
 		
 		find(rootNode);
 
@@ -37,12 +37,12 @@ public class VerticalOrder {
 		}
 	}
 
-	private static void find(Node root) {
+	private static void find(TreeNode root) {
 		map = new HashMap<>();
 		find(root, 0);
 	}
 
-	private static void find(Node root, int value) {
+	private static void find(TreeNode root, int value) {
 		if (root != null) {
 			if (map.containsKey(value)) {
 				list = map.get(value);

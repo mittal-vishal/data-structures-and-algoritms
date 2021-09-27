@@ -3,12 +3,12 @@ package com.vishal.binarytree;
 public class LongestUnivaluePath {
 
     int max;
-    public int longestUnivaluePath(Node root) {
+    public int longestUnivaluePath(TreeNode root) {
         dfs(root);
         return max;
     }
 
-    private int dfs(Node root){
+    private int dfs(TreeNode root){
         if(root == null){
             return 0;
         }

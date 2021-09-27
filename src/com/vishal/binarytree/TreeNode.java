@@ -1,12 +1,12 @@
 package com.vishal.binarytree;
 
-public class Node {
+public class TreeNode {
 	
 	public int data;
-	public Node left;
-	public Node right;
+	public TreeNode left;
+	public TreeNode right;
 	
-	public Node(int item) {
+	public TreeNode(int item) {
 		data = item;
 	}
 
@@ -18,19 +18,19 @@ public class Node {
 		this.data = data;
 	}
 
-	public Node getLeft() {
+	public TreeNode getLeft() {
 		return left;
 	}
 
-	public void setLeft(Node left) {
+	public void setLeft(TreeNode left) {
 		this.left = left;
 	}
 
-	public Node getRight() {
+	public TreeNode getRight() {
 		return right;
 	}
 
-	public void setRight(Node right) {
+	public void setRight(TreeNode right) {
 		this.right = right;
 	}
 
