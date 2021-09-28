@@ -1,6 +1,8 @@
 package com.vishal.binarytree;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 public class LeftView {
@@ -17,29 +19,43 @@ public class LeftView {
 		rootNode.getRight().setRight(new TreeNode(40));
 		rootNode.getLeft().getLeft().setLeft(new TreeNode(10));
 		rootNode.getLeft().getLeft().setRight(new TreeNode(12));
-		find(rootNode);
+		LeftView leftView = new LeftView();
+		List<Integer>leftViewList = leftView.leftSideView(rootNode);
+		System.out.print(leftViewList);
 	}
 
-	private static void find(TreeNode root) {
+	private List<Integer> leftSideView(TreeNode root) {
+		List<Integer> leftViewList = new ArrayList<>();
+
+		if(root == null){
+			return leftViewList;
+		}
+
+		List<Integer> levelList = new ArrayList<>();
 		Queue<TreeNode> queue = new LinkedList<>();
-		if(root != null) {
-			TreeNode popped = null;
-			queue.add(root);
-			queue.add(null);
-			System.out.print(root.getData() + " ");
-			while(!queue.isEmpty()) {
-				popped = queue.poll();
-				if(popped != null) {
-					if(popped.getLeft() != null)
-						queue.add(popped.getLeft());
-					if(popped.getRight() != null)
-						queue.add(popped.getRight());
-				}else if(popped == null && queue.size() > 0) {
-					System.out.print(queue.peek().getData() + " ");
-					queue.add(null);
+		queue.offer(root);
+		queue.offer(null);
+
+		while(!queue.isEmpty()){
+			TreeNode polled = queue.poll();
+			if(polled == null){
+				leftViewList.add(levelList.get(0));
+				levelList = new ArrayList<>();
+				if(queue.size() > 0){
+					queue.offer(null);
+				}
+			}else{
+				levelList.add(polled.data);
+				if(polled.left != null){
+					queue.offer(polled.left);
+				}
+				if(polled.right != null){
+					queue.offer(polled.right);
 				}
 			}
 		}
+
+		return leftViewList;
 	}
 
 }
