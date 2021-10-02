@@ -1,13 +1,39 @@
 package com.vishal.binarytree;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class AverageLevelOrder {
 
     public List<Double> averageOfLevels(TreeNode root) {
+        List<Double> averageLevelList = new ArrayList<>();
+
+        if(root == null){
+            return averageLevelList;
+        }
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+
+        while(!queue.isEmpty()){
+            int qSize = queue.size();
+            double levelSum = 0;
+            for(int i = 0; i < qSize; i++){
+                TreeNode polled = queue.poll();
+                levelSum += polled.data;
+                if(polled.left != null){
+                    queue.offer(polled.left);
+                }
+                if(polled.right != null){
+                    queue.offer(polled.right);
+                }
+            }
+            double lineAvg = levelSum / qSize;
+            averageLevelList.add(lineAvg);
+        }
+        return averageLevelList;
+    }
+
+    public List<Double> averageOfLevelsUsineNull(TreeNode root) {
         List<Double> levelAverageList = new ArrayList<>();
         Queue<TreeNode> queue = new LinkedList<>();
         List<Integer> levelList = new ArrayList<>();
