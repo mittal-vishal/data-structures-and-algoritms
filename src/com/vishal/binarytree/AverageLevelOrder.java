@@ -19,7 +19,7 @@ public class AverageLevelOrder {
             double levelSum = 0;
             for(int i = 0; i < qSize; i++){
                 TreeNode polled = queue.poll();
-                levelSum += polled.data;
+                levelSum += polled.val;
                 if(polled.left != null){
                     queue.offer(polled.left);
                 }
@@ -56,7 +56,7 @@ public class AverageLevelOrder {
                     queue.offer(null);
                 }
             }else{
-                levelList.add(polled.data);
+                levelList.add(polled.val);
                 if(polled.left != null){
                     queue.offer(polled.left);
                 }

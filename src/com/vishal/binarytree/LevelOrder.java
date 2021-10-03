@@ -42,7 +42,7 @@ public class LevelOrder {
 				}
 			}
 			if(polled != null){
-				levelList.add(polled.data);
+				levelList.add(polled.val);
 				if(polled.left != null){
 					queue.offer(polled.left);
 				}

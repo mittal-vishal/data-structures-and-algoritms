@@ -23,12 +23,12 @@ public class ChildrenSumParent {
 		}
 		int sum = 0;
 		if (root.getLeft() != null) {
-			sum = sum + root.getLeft().getData();
+			sum = sum + root.getLeft().getVal();
 		}
 		if (root.getRight() != null) {
-			sum = sum + root.getRight().getData();
+			sum = sum + root.getRight().getVal();
 		}
-		if (root.getData() == sum && find(root.getLeft()) && find(root.getRight())) {
+		if (root.getVal() == sum && find(root.getLeft()) && find(root.getRight())) {
 			return true;
 		} else {
 			return false;

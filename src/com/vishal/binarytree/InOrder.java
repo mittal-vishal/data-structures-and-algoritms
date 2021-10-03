@@ -18,7 +18,7 @@ public class InOrder {
 	private static void find(TreeNode root) {
 		if(root != null){
 			find(root.getLeft());
-			System.out.print(root.getData() + " ");
+			System.out.print(root.getVal() + " ");
 			find(root.getRight());
 		}
 	}

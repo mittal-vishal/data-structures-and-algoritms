@@ -14,7 +14,7 @@ public class LongestConsecutiveNodes {
         if(root == null){
             return;
         }
-        length = parent != null && parent.data + 1 == root.data ? length + 1 : 1;
+        length = parent != null && parent.val + 1 == root.val ? length + 1 : 1;
         longest = Math.max(longest, length);
         dfs(root.left, root, length);
         dfs(root.right, root, length);
@@ -27,8 +27,8 @@ public class LongestConsecutiveNodes {
         }
         int left = dfs(root.left);
         int right = dfs(root.right);
-        left = root.left != null && root.left.data - 1 == root.data ? left + 1 : 1;
-        right = root.right != null && root.right.data - 1 == root.data ? right + 1 : 1;
+        left = root.left != null && root.left.val - 1 == root.val ? left + 1 : 1;
+        right = root.right != null && root.right.val - 1 == root.val ? right + 1 : 1;
         longest = Math.max(longest, Math.max(left, right));
         return Math.max(left, right);
     }

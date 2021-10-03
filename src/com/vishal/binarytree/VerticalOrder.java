@@ -1,65 +1,68 @@
 package com.vishal.binarytree;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 public class VerticalOrder {
 
-	private static TreeNode rootNode = null;
-	private static List<Integer> list = null;
-	private static Map<Integer, List<Integer>> map = null;
-
-	public static void main(String[] args) {
-		rootNode = new TreeNode(1);
-		rootNode.setLeft(new TreeNode(2));
-		rootNode.setRight(new TreeNode(3));
-		rootNode.getLeft().setLeft(new TreeNode(34));
-		rootNode.getLeft().setRight(new TreeNode(4));
-		
-		find(rootNode);
-
-		List<Entry<Integer, List<Integer>>> sortList = new LinkedList<>(map.entrySet());
-
-		Comparator<Entry<Integer, List<Integer>>> customComparator = (Entry<Integer, List<Integer>> o1,
-				Entry<Integer, List<Integer>> o2) -> o1.getKey().compareTo(o2.getKey());
-
-		Collections.sort(sortList, customComparator);
-
-		for (Entry<Integer, List<Integer>> entry : sortList) {
-			for (Integer i : entry.getValue()) {
-				System.out.print(i + " ");
-			}
+	static class Pair{
+		int level;
+		int data;
+		public Pair(int level, int data){
+			this.level = level;
+			this.data = data;
 		}
 	}
 
-	private static void find(TreeNode root) {
-		map = new HashMap<>();
-		find(root, 0);
+	public List<List<Integer>> verticalTraversal(TreeNode root) {
+		List<List<Integer>> verticalList = new ArrayList<>();
+		if(root == null){
+			return verticalList;
+		}
+		Map<Integer, List<Pair>> map = new HashMap<>();
+		dfs(root, 0, 0, map);
+		PriorityQueue<Integer> verticalPq = new PriorityQueue<>(map.keySet());
+		while(!verticalPq.isEmpty()){
+			int level = verticalPq.poll();
+			List<Pair> nodeList = map.get(level);
+			if(nodeList.size() > 1){
+				PriorityQueue<Pair> levelPq = new PriorityQueue<>((a,b) -> {
+					if(a.level != b.level){
+						return a.level - b.level;
+					}else{
+						return a.data - b.data;
+					}
+				});
+				levelPq.addAll(nodeList);
+				nodeList = new ArrayList<>();
+				while(!levelPq.isEmpty()){
+					nodeList.add(levelPq.poll());
+				}
+			}
+			List<Integer> resultList = new ArrayList<>();
+			for(Pair pair: nodeList){
+				resultList.add(pair.data);
+			}
+			verticalList.add(resultList);
+		}
+		return verticalList;
 	}
 
-	private static void find(TreeNode root, int value) {
-		if (root != null) {
-			if (map.containsKey(value)) {
-				list = map.get(value);
-				list.add(root.getData());
-				map.put(value, list);
-			} else {
-				list = new LinkedList<>();
-				list.add(root.getData());
-				map.put(value, list);
-			}
-			if (root.getLeft() != null) {
-				find(root.getLeft(), value - 1);
-			}
-			if (root.getRight() != null) {
-				find(root.getRight(), value + 1);
-			}
+	private void dfs(TreeNode root, int vertical, int level, Map<Integer, List<Pair>> map){
+		if(root == null){
+			return;
 		}
+		if(!map.containsKey(vertical)){
+			List<Pair> nodeList = new ArrayList<>();
+			nodeList.add(new Pair(level, root.data));
+			map.put(vertical, nodeList);
+		}else{
+			List<Pair> nodeList = map.get(vertical);
+			nodeList.add(new Pair(level, root.data));
+			map.put(vertical, nodeList);
+		}
+		dfs(root.left, vertical - 1, level + 1, map);
+		dfs(root.right, vertical + 1, level + 1, map);
 	}
 
 }

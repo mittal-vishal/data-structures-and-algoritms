@@ -17,7 +17,7 @@ public class PreOrder {
 
 	public static void find(TreeNode root) {
 		if(root != null){
-			System.out.print(root.getData() + " ");
+			System.out.print(root.getVal() + " ");
 			find(root.getLeft());
 			find(root.getRight());
 		}

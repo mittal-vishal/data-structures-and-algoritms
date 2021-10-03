@@ -23,15 +23,15 @@ public class MaxDiffNodeAndAncestor {
 			int leftT = find(root.getLeft());
 			int rightT = find(root.getRight());
 			if(root.getLeft() == null && root.getRight() == null) {
-				return root.getData();
+				return root.getVal();
 			}
-			if(root.getData() - Math.min(leftT, rightT) > max) {
-				max = root.getData() - Math.min(leftT, rightT);
+			if(root.getVal() - Math.min(leftT, rightT) > max) {
+				max = root.getVal() - Math.min(leftT, rightT);
 			}
 			if(root == rootNode)
 				return max;
 			else
-				return Math.min(root.getData(), Math.min(leftT, rightT));
+				return Math.min(root.getVal(), Math.min(leftT, rightT));
 		}
 		return Integer.MAX_VALUE;
 	}

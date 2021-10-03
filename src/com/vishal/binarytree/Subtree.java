@@ -19,7 +19,7 @@ public class Subtree {
             return true;
         }else if(root1 == null || root2 == null){
             return false;
-        }else if(root1.getData() == root2.getData()){
+        }else if(root1.getVal() == root2.getVal()){
             return isSame(root1.getLeft(), root2.getLeft()) &&
                    isSame(root1.getRight(), root2.getRight());
         }else{

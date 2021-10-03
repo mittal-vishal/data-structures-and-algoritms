@@ -19,7 +19,7 @@ public class PostOrder {
 		if(root != null) {
 			find(root.getLeft());
 			find(root.getRight());
-			System.out.print(root.getData() + " ");
+			System.out.print(root.getVal() + " ");
 		}
 	}
 

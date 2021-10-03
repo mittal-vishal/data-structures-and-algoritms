@@ -25,7 +25,7 @@ public class LevelOrderBottom {
                     queue.offer(null);
                 }
             }else{
-                levelList.add(polled.data);
+                levelList.add(polled.val);
                 if(polled.left != null){
                     queue.offer(polled.left);
                 }

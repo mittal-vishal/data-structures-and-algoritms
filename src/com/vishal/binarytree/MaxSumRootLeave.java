@@ -17,11 +17,11 @@ private static TreeNode rootNode = null;
 		if(root == null) {
 			return 0;
 		}else if(root.left == null && root.right == null){
-			return root.data;
+			return root.val;
 		}else {
 			int left = findMaxSum(root.left);
 			int right = findMaxSum(root.right);
-			return root.data + Math.max(left, right);
+			return root.val + Math.max(left, right);
 		}
 	}
 	

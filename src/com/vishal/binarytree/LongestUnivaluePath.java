@@ -14,12 +14,12 @@ public class LongestUnivaluePath {
         }
         int left = dfs(root.left);
         int right = dfs(root.right);
-        if(root.left != null && root.left.data == root.data){
+        if(root.left != null && root.left.val == root.val){
             left += 1;
         }else{
             left = 0;
         }
-        if(root.right != null && root.right.data == root.data){
+        if(root.right != null && root.right.val == root.val){
             right += 1;
         }else{
             right = 0;

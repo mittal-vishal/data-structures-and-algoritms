@@ -22,7 +22,7 @@ public class PrintKLevel {
 		if(root == null){
 			System.out.print(-1);
 		}else if(k == 0) {
-			System.out.print(root.getData() + " ");
+			System.out.print(root.getVal() + " ");
 		}else {
 			find(root.getLeft(), k-1);
 			find(root.getRight(), k-1);

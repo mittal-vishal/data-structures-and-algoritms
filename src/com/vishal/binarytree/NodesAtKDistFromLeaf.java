@@ -26,7 +26,7 @@ public class NodesAtKDistFromLeaf {
 		Set<Entry<Integer, TreeNode>> set = backTrack(root, k);
 		for (Entry<Integer, TreeNode> entry : set) {
 			if (entry.getKey() == k) {
-				System.out.println(entry.getValue().getData());
+				System.out.println(entry.getValue().getVal());
 			}
 		}
 	}
@@ -42,14 +42,14 @@ public class NodesAtKDistFromLeaf {
 		while (leftItr.hasNext()) {
 			entry = leftItr.next();
 			if (entry.getKey() == k) {
-				System.out.println(entry.getValue().getData());
+				System.out.println(entry.getValue().getVal());
 			}
 		}
 		Iterator<Entry<Integer, TreeNode>> rightItr = rightT.iterator();
 		while (rightItr.hasNext()) {
 			entry = rightItr.next();
 			if (entry.getKey() == k) {
-				System.out.println(entry.getValue().getData());
+				System.out.println(entry.getValue().getVal());
 			}
 		}
 		if (leftT.isEmpty()) {

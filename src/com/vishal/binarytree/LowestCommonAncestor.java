@@ -10,14 +10,14 @@ public class LowestCommonAncestor {
 		rootNode.setRight(null);
 		rootNode.getLeft().setLeft(new TreeNode(1));
 		rootNode.getLeft().setRight(new TreeNode(10));
-		System.out.println(find(rootNode, 1, 10).getData());
+		System.out.println(find(rootNode, 1, 10).getVal());
 	}
 
 	private static TreeNode find(TreeNode node, int n1, int n2) {
 		if (node == null)
 			return null;
 
-		if (node.getData() == n1 || node.getData() == n2)
+		if (node.getVal() == n1 || node.getVal() == n2)
 			return node;
 
 		TreeNode left = find(node.getLeft(), n1, n2);

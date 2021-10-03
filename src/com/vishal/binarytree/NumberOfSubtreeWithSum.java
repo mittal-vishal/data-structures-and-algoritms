@@ -20,17 +20,17 @@ public class NumberOfSubtreeWithSum {
 		if(root != null) {
 			int leftT = find(root.getLeft(), sum);
 			int rightT = find(root.getRight(), sum);
-			if(root.getLeft() == null && root.getRight() == null && root.getData() == sum) {
+			if(root.getLeft() == null && root.getRight() == null && root.getVal() == sum) {
 				count++;
 			}
 			if(root.getLeft() == null && root.getRight() == null) {
-				return root.getData();
+				return root.getVal();
 			}
-			if(leftT + rightT + root.getData() == sum) {
+			if(leftT + rightT + root.getVal() == sum) {
 				count++;
 			}
 			if(root != rootNode) {
-				return leftT + rightT + root.getData();
+				return leftT + rightT + root.getVal();
 			}
 		}
 		return count;

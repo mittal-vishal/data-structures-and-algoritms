@@ -16,7 +16,7 @@ public class LevelOrderSuccessor {
                 if(isSuccessor){
                     return polled;
                 }
-                if(polled.data == key){
+                if(polled.val == key){
                     isSuccessor = true;
                 }
                 if(polled.left != null){

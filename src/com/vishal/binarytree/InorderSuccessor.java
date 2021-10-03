@@ -30,8 +30,8 @@ public class InorderSuccessor {
 	private static void find(TreeNode root, int num, PreviousNode previousNode) {
 		if(root != null) {
 			find(root.getRight(), num, previousNode);
-			if(root.getData() == num) {
-				System.out.println(previousNode.prevNode.getData());
+			if(root.getVal() == num) {
+				System.out.println(previousNode.prevNode.getVal());
 			}
 			previousNode.prevNode = root;
 			find(root.getLeft(), num, previousNode);

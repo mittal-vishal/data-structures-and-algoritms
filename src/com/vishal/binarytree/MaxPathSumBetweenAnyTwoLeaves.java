@@ -31,14 +31,14 @@ public class MaxPathSumBetweenAnyTwoLeaves {
 		if(root == null)
 			return 0;
 		if(root.getLeft() == null && root.getRight() == null)
-			return root.getData();
+			return root.getVal();
 		int left = findMax(root.getLeft(), result);
 		int right = findMax(root.getRight(), result);
 		if(root.getLeft() != null && root.getRight() != null) {
-			result.res = Math.max(left + right + root.getData(), result.res);
-			return Math.max(left, right) + root.getData();
+			result.res = Math.max(left + right + root.getVal(), result.res);
+			return Math.max(left, right) + root.getVal();
 		}
-		return root.getLeft() != null ? left + root.getData() : right + root.getData();
+		return root.getLeft() != null ? left + root.getVal() : right + root.getVal();
 	}
 
 }

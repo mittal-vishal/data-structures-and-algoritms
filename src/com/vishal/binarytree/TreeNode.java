@@ -2,20 +2,20 @@ package com.vishal.binarytree;
 
 public class TreeNode {
 	
-	public int data;
+	public int val;
 	public TreeNode left;
 	public TreeNode right;
 	
 	public TreeNode(int item) {
-		data = item;
+		val = item;
 	}
 
-	public int getData() {
-		return data;
+	public int getVal() {
+		return val;
 	}
 
-	public void setData(int data) {
-		this.data = data;
+	public void setVal(int val) {
+		this.val = val;
 	}
 
 	public TreeNode getLeft() {

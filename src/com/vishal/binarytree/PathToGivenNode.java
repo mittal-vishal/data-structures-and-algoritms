@@ -21,12 +21,12 @@ public class PathToGivenNode {
 		if(root == null) {
 			return false;
 		}
-		if(root.getData() == n) {
-			System.out.print(root.getData() + " ");
+		if(root.getVal() == n) {
+			System.out.print(root.getVal() + " ");
 			return true;
 		}
 		if(find(root.getLeft(), n) || find(root.getRight(), n)) {
-			System.out.print(root.getData() + " ");
+			System.out.print(root.getVal() + " ");
 			return true;
 		}
 		return false;

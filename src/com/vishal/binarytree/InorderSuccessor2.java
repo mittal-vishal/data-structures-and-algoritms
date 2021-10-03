@@ -15,7 +15,7 @@ public class InorderSuccessor2 {
 		int num = 1;
 		TreeNode node = find(rootNode, num);
 		if(node != null) {
-			System.out.println(node.getData());
+			System.out.println(node.getVal());
 		}else {
 			System.out.println(-1);
 		}
@@ -44,7 +44,7 @@ public class InorderSuccessor2 {
 				next.succ = root;
 				next.nextVal = false;
 			}
-			if(root.getData() == num)
+			if(root.getVal() == num)
 				next.nextVal = true;
 			find(root.getRight(), num, next);
 			return next.succ;

@@ -6,11 +6,11 @@ public class PathSumRootToLeave {
         if(root == null){
             return false;
         }
-        if((sum - root.data) == 0 && root.left == null && root.right == null){
+        if((sum - root.val) == 0 && root.left == null && root.right == null){
             return true;
         }
-        boolean left = hasPathSum(root.left, sum - root.data);
-        boolean right = hasPathSum(root.right, sum - root.data);
+        boolean left = hasPathSum(root.left, sum - root.val);
+        boolean right = hasPathSum(root.right, sum - root.val);
         if(left || right){
             return true;
         }

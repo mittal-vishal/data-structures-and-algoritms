@@ -56,11 +56,11 @@ public class TopView {
         if (root != null) {
             if (map.containsKey(value)) {
                 List<DataNode> list = map.get(value);
-                list.add(new DataNode(root.data, level));
+                list.add(new DataNode(root.val, level));
                 map.put(value, list);
             } else {
             	List<DataNode> list = new LinkedList<>();
-                list.add(new DataNode(root.data, level));
+                list.add(new DataNode(root.val, level));
                 map.put(value, list);
             }
             if (root.left != null) {

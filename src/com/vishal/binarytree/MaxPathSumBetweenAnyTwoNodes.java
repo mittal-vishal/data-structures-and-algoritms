@@ -31,12 +31,12 @@ public class MaxPathSumBetweenAnyTwoNodes {
 		if(root == null)
 			return 0;
 		if(root.getLeft() == null && root.getRight() == null) {
-			return root.getData();
+			return root.getVal();
 		}
 		int left = findMax(root.getLeft(), result);
 		int right = findMax(root.getRight(), result);
-		int singleNodeMax = Math.max(Math.max(left + root.getData(), right + root.getData()), root.getData());
-		int doubleNodeMax = Math.max(singleNodeMax, left + right + root.getData());
+		int singleNodeMax = Math.max(Math.max(left + root.getVal(), right + root.getVal()), root.getVal());
+		int doubleNodeMax = Math.max(singleNodeMax, left + right + root.getVal());
 		result.res = Math.max(result.res, doubleNodeMax);
 		return singleNodeMax;
 	}
