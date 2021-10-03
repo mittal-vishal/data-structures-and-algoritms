@@ -54,11 +54,11 @@ public class VerticalOrder {
 		}
 		if(!map.containsKey(vertical)){
 			List<Pair> nodeList = new ArrayList<>();
-			nodeList.add(new Pair(level, root.data));
+			nodeList.add(new Pair(level, root.val));
 			map.put(vertical, nodeList);
 		}else{
 			List<Pair> nodeList = map.get(vertical);
-			nodeList.add(new Pair(level, root.data));
+			nodeList.add(new Pair(level, root.val));
 			map.put(vertical, nodeList);
 		}
 		dfs(root.left, vertical - 1, level + 1, map);
