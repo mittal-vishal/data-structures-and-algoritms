@@ -8,25 +8,24 @@ public class PathSumIII {
     private int count;
     public int pathSum(TreeNode root, int targetSum) {
         count = 0;
-        Map<Integer, Integer> prefixOccurMap = new HashMap<>();
-        prefixOccurMap.put(0, 1);
-        int currSum = 0;
-        getCountPathSum(root, targetSum, currSum, prefixOccurMap);
+        Map<Integer, Integer> prefixCountMap = new HashMap<>();
+        prefixCountMap.put(0, 1);
+        pathSum(root, 0, targetSum, prefixCountMap);
         return count;
     }
 
-    private void getCountPathSum(TreeNode root, int targetSum, int currSum, Map<Integer, Integer> prefixOccurMap){
+    private void pathSum(TreeNode root, int currSum, int targetSum, Map<Integer, Integer> prefixCountMap){
         if(root == null){
             return;
         }
         currSum += root.val;
-        if(prefixOccurMap.containsKey(currSum - targetSum)){
-            count += prefixOccurMap.get(currSum - targetSum);
+        if(prefixCountMap.containsKey(currSum - targetSum)){
+            count += prefixCountMap.get(currSum - targetSum);
         }
-        prefixOccurMap.put(currSum, prefixOccurMap.getOrDefault(currSum, 0) + 1);
-        getCountPathSum(root.left, targetSum, currSum, prefixOccurMap);
-        getCountPathSum(root.right, targetSum, currSum, prefixOccurMap);
-        prefixOccurMap.put(currSum, prefixOccurMap.get(currSum) - 1);
+        prefixCountMap.put(currSum, prefixCountMap.getOrDefault(currSum, 0) + 1);
+        pathSum(root.left, currSum, targetSum, prefixCountMap);
+        pathSum(root.right, currSum, targetSum, prefixCountMap);
+        prefixCountMap.put(currSum, prefixCountMap.get(currSum) - 1);
     }
 
 }
