@@ -3,64 +3,67 @@ package com.vishal.windowsliding;
 public class LongestSubstringWithAtLeastKRepeatingChars {
 
     public int longestSubstring(String s, int k) {
-        if(s == null || s.length() == 0 || k == 0){
-            return 0;
-        }
-
-        int uniqueCount = getUniqueCharsCount(s);
-        int max = Integer.MIN_VALUE;
-        int[] charArr;
-
-        for(int i = 1; i <= uniqueCount; i++){
-            int left = 0;
-            int right = 0;
-            charArr = new int[26];
-            int unique = 0;
-            int kCharCount = 0;
-            while(right < s.length()){
-                //Expand the window
-                if(unique <= i){
-                    char currChar = s.charAt(right++);
-                    charArr[currChar-'a']++;
-                    if(charArr[currChar-'a'] == 1){
-                        unique++;
-                    }
-                    if(charArr[currChar-'a'] == k){
-                        kCharCount++;
-                    }
-                }
-                //Shrink the window
-                if(unique > i){
-                    char leftChar = s.charAt(left++);
-                    if(charArr[leftChar-'a'] == 1){
-                        unique--;
-                    }
-                    if(charArr[leftChar-'a'] == k){
-                        kCharCount--;
-                    }
-                    charArr[leftChar-'a']--;
-                }
-                if(i == unique && unique == kCharCount){
-                    max = Math.max(max, right-left);
-                }
+        int totalUniqueChars = getUniqueCharsCount(s);
+        int longestLen = 0;
+        for(int i = 1; i <= totalUniqueChars; i++){
+            int possibleAns = getLongestSubstring(s, i, k);
+            if(possibleAns > longestLen){
+                longestLen = possibleAns;
             }
         }
+        return longestLen;
+    }
 
-        return max != Integer.MIN_VALUE ? max: 0;
+    private int getLongestSubstring(String s, int uniqueCountPossible, int k){
+        int left = 0;
+        int right = 0;
+        int[] charArr = new int[26];
+        int uniqueCount = 0;
+        int kCount = 0;
+        int maxLength = 0;
+        while(right < s.length()){
+            //Expand the window until cond satisfies
+            if(uniqueCount <= uniqueCountPossible){
+                char currentChar = s.charAt(right++);
+                charArr[currentChar-'a']++;
+                if(charArr[currentChar-'a'] == 1){
+                    uniqueCount++;
+                }
+                if(charArr[currentChar-'a'] == k){
+                    kCount++;
+                }
+            }
+            //Shrink the window untill cond violates
+            if(uniqueCount > uniqueCountPossible){
+                char removeChar = s.charAt(left++);
+                if(charArr[removeChar-'a'] == k){
+                    kCount--;
+                }
+                if(charArr[removeChar-'a'] == 1){
+                    uniqueCount--;
+                }
+                charArr[removeChar-'a']--;
+            }
+            //Evaluate answer
+            if(uniqueCount == uniqueCountPossible && kCount == uniqueCount){
+                maxLength = Math.max(maxLength, (right-left));
+            }
+        }
+        return maxLength;
     }
 
     private int getUniqueCharsCount(String s){
-        int[] charArr = new int[26];
-        for(char ch: s.toCharArray()){
-            charArr[ch-'a']++;
+        int[] chars = new int[26];
+        for(int i = 0; i < s.length(); i++){
+            chars[s.charAt(i) - 'a']++;
         }
-        int count = 0;
-        for(int i: charArr){
-            if(i != 0){
-                count++;
+        int uniqueCount = 0;
+        for(int i = 0; i < 26; i++){
+            if(chars[i] != 0){
+                uniqueCount++;
             }
         }
-        return count;
+        return uniqueCount;
     }
 
     public static void main(String[] args) {
