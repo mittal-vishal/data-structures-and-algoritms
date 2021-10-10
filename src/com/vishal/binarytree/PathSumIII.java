@@ -10,21 +10,21 @@ public class PathSumIII {
         count = 0;
         Map<Integer, Integer> prefixCountMap = new HashMap<>();
         prefixCountMap.put(0, 1);
-        pathSum(root, 0, targetSum, prefixCountMap);
+        getCountPathSum(root, targetSum, 0, prefixCountMap);
         return count;
     }
 
-    private void pathSum(TreeNode root, int currSum, int targetSum, Map<Integer, Integer> prefixCountMap){
+    private void getCountPathSum(TreeNode root, int targetSum, int currSum, Map<Integer, Integer> prefixCountMap){
         if(root == null){
             return;
         }
         currSum += root.val;
-        if(prefixCountMap.containsKey(currSum - targetSum)){
-            count += prefixCountMap.get(currSum - targetSum);
+        if(prefixCountMap.containsKey(currSum-targetSum)){
+            count += prefixCountMap.get(currSum-targetSum);
         }
         prefixCountMap.put(currSum, prefixCountMap.getOrDefault(currSum, 0) + 1);
-        pathSum(root.left, currSum, targetSum, prefixCountMap);
-        pathSum(root.right, currSum, targetSum, prefixCountMap);
+        getCountPathSum(root.left, targetSum, currSum, prefixCountMap);
+        getCountPathSum(root.right, targetSum, currSum, prefixCountMap);
         prefixCountMap.put(currSum, prefixCountMap.get(currSum) - 1);
     }
 
