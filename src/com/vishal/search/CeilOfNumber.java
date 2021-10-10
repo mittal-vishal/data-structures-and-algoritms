@@ -1,35 +1,30 @@
 package com.vishal.search;
 
-class CeilingOfANumber {
+class CeilOfNumber {
 
     public static int searchCeilingOfANumber(int[] arr, int key) {
-        if (key > arr[arr.length - 1]){
-            return -1;
-        }else if(key < arr[0]){
-            return 0;
-        }
-
         int start = 0;
-        int end = arr.length - 1;
-
+        int end = arr.length-1;
+        int ceil = -1;
         while(start <= end){
             int mid = start + (end - start)/2;
-            if(key == arr[mid]){
-                return mid;
+            if(arr[mid] == key){
+                ceil = mid;
+                break;
             }else if(key > arr[mid]){
-                start = mid + 1;
+                start = mid+1;
             }else{
+                ceil = mid;
                 end = mid - 1;
             }
         }
-
-        return start;
+        return ceil;
     }
 
     public static void main(String[] args) {
-        System.out.println(CeilingOfANumber.searchCeilingOfANumber(new int[] { 4, 6, 10 }, 6));
-        System.out.println(CeilingOfANumber.searchCeilingOfANumber(new int[] { 1, 3, 8, 10, 15 }, 12));
-        System.out.println(CeilingOfANumber.searchCeilingOfANumber(new int[] { 4, 6, 10 }, 17));
-        System.out.println(CeilingOfANumber.searchCeilingOfANumber(new int[] { 4, 6, 10 }, -1));
+        System.out.println(CeilOfNumber.searchCeilingOfANumber(new int[] { 4, 6, 10 }, 6));
+        System.out.println(CeilOfNumber.searchCeilingOfANumber(new int[] { 1, 3, 8, 10, 15 }, 12));
+        System.out.println(CeilOfNumber.searchCeilingOfANumber(new int[] { 4, 6, 10 }, 17));
+        System.out.println(CeilOfNumber.searchCeilingOfANumber(new int[] { 4, 6, 10 }, -1));
     }
 }

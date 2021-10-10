@@ -1,6 +1,6 @@
 package com.vishal.search;
 
-class MinimumDifference {
+class MinDifference {
 
     public static int searchMinDiffElement(int[] arr, int key) {
         int start = 0;
@@ -31,9 +31,9 @@ class MinimumDifference {
     }
 
     public static void main(String[] args) {
-        System.out.println(MinimumDifference.searchMinDiffElement(new int[] { 3, 8, 15, 70, 120, 150 }, 97));
-        System.out.println(MinimumDifference.searchMinDiffElement(new int[] { 4, 6, 10 }, 4));
-        System.out.println(MinimumDifference.searchMinDiffElement(new int[] { 1, 3, 8, 10, 15 }, 12));
-        System.out.println(MinimumDifference.searchMinDiffElement(new int[] { 4, 6, 10 }, 17));
+        System.out.println(MinDifference.searchMinDiffElement(new int[] { 3, 8, 15, 70, 120, 150 }, 97));
+        System.out.println(MinDifference.searchMinDiffElement(new int[] { 4, 6, 10 }, 4));
+        System.out.println(MinDifference.searchMinDiffElement(new int[] { 1, 3, 8, 10, 15 }, 12));
+        System.out.println(MinDifference.searchMinDiffElement(new int[] { 4, 6, 10 }, 17));
     }
 }
