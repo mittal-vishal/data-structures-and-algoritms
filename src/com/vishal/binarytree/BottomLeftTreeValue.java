@@ -7,25 +7,19 @@ public class BottomLeftTreeValue {
     public int findBottomLeftValue(TreeNode root) {
         bottomLeft = root.val;
         maxLevel = 0;
-        dfs(root, 0, false);
+        dfs(root, 0);
         return bottomLeft;
     }
 
-    private void dfs(TreeNode root, int level, boolean isLeft){
+    private void dfs(TreeNode root, int level){
         if(root == null){
             return;
         }
-        if(root.left == null && root.right == null && isLeft){
-            if(level > maxLevel){
-                bottomLeft = root.val;
-                maxLevel = level;
-            }
+        dfs(root.left, level + 1);
+        if(level > maxLevel){
+            bottomLeft = root.val;
+            maxLevel = level;
         }
-        dfs(root.left, level + 1, true);
-        if(root.left == null){
-            dfs(root.right, level + 1, true);
-        }else{
-            dfs(root.right, level + 1, false);
-        }
+        dfs(root.right, level + 1);
     }
 }
