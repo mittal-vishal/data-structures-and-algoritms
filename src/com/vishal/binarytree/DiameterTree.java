@@ -14,27 +14,28 @@ public class DiameterTree {
 		rootNode.getRight().setRight(new TreeNode(40));
 		rootNode.getLeft().getLeft().setLeft(new TreeNode(10));
 		rootNode.getLeft().getLeft().setRight(new TreeNode(12));
-		System.out.println(diameterOfBinaryTree(rootNode));
+		DiameterTree diameterTree = new DiameterTree();
+		System.out.println(diameterTree.diameterOfBinaryTree(rootNode));
 	}
-	
-    private static int diameterOfBinaryTree(TreeNode root){
-        if(root == null){
-            return 0;
-        }else{
-            int option1 = height(root.getLeft()) + height(root.getRight());
-            int option2 = diameterOfBinaryTree(root.getLeft());
-            int option3 = diameterOfBinaryTree(root.getRight());
-            return Math.max(option1, Math.max(option2, option3));
-        }
-    }
-    private static int height(TreeNode root) {
-		if(root == null) {
+
+	private int diameter;
+	public int diameterOfBinaryTree(TreeNode root) {
+		diameter = 0;
+		calculateHeight(root);
+		return diameter;
+	}
+
+	private int calculateHeight(TreeNode root){
+		if(root == null){
 			return 0;
-		}else {
-			int left = height(root.getLeft());
-			int right = height(root.getRight());
-			return Math.max(left, right) + 1;
 		}
+		int leftHeight = calculateHeight(root.left);
+		int rightHeight = calculateHeight(root.right);
+		if(leftHeight != 0 || rightHeight != 0){
+			int currDiameter = leftHeight + rightHeight;
+			diameter = Math.max(diameter, currDiameter);
+		}
+		return Math.max(leftHeight, rightHeight) + 1;
 	}
 	
 }

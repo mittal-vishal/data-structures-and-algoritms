@@ -26,4 +26,10 @@ public class PhoneNumberPermutation {
 		}
 	}
 
+	public static void main(String[] args) {
+		PhoneNumberPermutation phoneNumberPermutation = new PhoneNumberPermutation();
+		List<String> permuteList = phoneNumberPermutation.letterCombinations("23");
+		System.out.print(permuteList);
+	}
+
 }
