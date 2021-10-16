@@ -12,14 +12,15 @@ public class InOrder {
 		rootNode.getLeft().setRight(new TreeNode(5));
 		rootNode.getRight().setLeft(new TreeNode(6));
 		rootNode.getRight().setRight(new TreeNode(7));
-		find(rootNode);
+		InOrder inorder = new InOrder();
+		inorder.traverse(rootNode);
 	}
 
-	private static void find(TreeNode root) {
+	public void traverse(TreeNode root) {
 		if(root != null){
-			find(root.getLeft());
+			traverse(root.getLeft());
 			System.out.print(root.getVal() + " ");
-			find(root.getRight());
+			traverse(root.getRight());
 		}
 	}
 	
