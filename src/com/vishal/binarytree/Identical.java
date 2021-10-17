@@ -21,18 +21,22 @@ public class Identical {
 		rootNodeB.getLeft().setRight(new TreeNode(4));
 		rootNodeB.getRight().setLeft(new TreeNode(13));
 		rootNodeB.getRight().setRight(new TreeNode(40));
-
-		System.out.println(find(rootNodeA, rootNodeB));
+		Identical identical = new Identical();
+		boolean isSame = identical.isSameTree(rootNodeA, rootNodeB);
+		System.out.print(isSame);
 	}
 
-	private static boolean find(TreeNode rootA, TreeNode rootB) {
-		if (rootA == null || rootB == null) {
-			return rootA == null && rootB == null;
-		} else if(rootA.getVal() == rootB.getVal()){
+	public boolean isSameTree(TreeNode p, TreeNode q) {
+		if(p == null && q == null){
 			return true;
+		}else if(p == null || q == null){
+			return false;
+		}else if(p.val != q.val){
+			return false;
 		}else{
-			return find(rootA.getLeft(), rootB.getLeft())
-					&& find(rootA.getRight(), rootB.getRight());
+			boolean isLeftSame = isSameTree(p.left, q.left);
+			boolean isRightSame = isSameTree(p.right, q.right);
+			return isLeftSame && isRightSame;
 		}
 	}
 
