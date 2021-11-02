@@ -18,13 +18,11 @@ public class CarFleetII {
             }
 
             while(!stack.isEmpty()){
-                if(currCar[1] > cars[stack.peek()][1]){
-                    double speedDiff = currCar[1] - cars[stack.peek()][1];
-                    double collisionTime = (cars[stack.peek()][0] - currCar[0]) / speedDiff;
-                    if(res[stack.peek()] == -1 || collisionTime < res[stack.peek()]){
-                        res[i] = collisionTime;
-                        break;
-                    }
+                double speedDiff = currCar[1] - cars[stack.peek()][1];
+                double collisionTime = (cars[stack.peek()][0] - currCar[0]) / speedDiff;
+                if(res[stack.peek()] == -1 || collisionTime < res[stack.peek()]){
+                    res[i] = collisionTime;
+                    break;
                 }
                 stack.pop();
             }

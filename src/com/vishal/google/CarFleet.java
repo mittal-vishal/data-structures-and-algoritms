@@ -32,7 +32,7 @@ public class CarFleet {
                 totalFleet++;
                 currTimeToReach = timeToReachList.get(i);
             }else{
-                currTimeToReach = Math.max(currTimeToReach, timeToReachList.get(i));;
+                currTimeToReach = Math.max(currTimeToReach, timeToReachList.get(i));
             }
         }
         return totalFleet;
