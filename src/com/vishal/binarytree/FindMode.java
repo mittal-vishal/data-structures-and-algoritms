@@ -8,18 +8,18 @@ import java.util.Map;
 public class FindMode {
 
     private int max;
-
     public int[] findMode(TreeNode root) {
         Map<Integer, Integer> modeMap = new HashMap<>();
+        max = 0;
         dfs(root, modeMap);
         List<Integer> modeList = new ArrayList<>();
+        int index = 0;
         for(Map.Entry<Integer, Integer> entry: modeMap.entrySet()){
             if(entry.getValue() == max){
                 modeList.add(entry.getKey());
             }
         }
         int[] modes = new int[modeList.size()];
-        int index = 0;
         for(int mode: modeList){
             modes[index++] = mode;
         }
@@ -30,15 +30,11 @@ public class FindMode {
         if(root == null){
             return;
         }
-        int count = modeMap.getOrDefault(root.val, 0) + 1;
-        max = Math.max(max, count);
-        modeMap.put(root.val, count);
-        if(root.left != null){
-            dfs(root.left, modeMap);
-        }
-        if(root.right != null){
-            dfs(root.right, modeMap);
-        }
+        int currNodeCount = modeMap.getOrDefault(root.val, 0) + 1;
+        max = Math.max(max, currNodeCount);
+        modeMap.put(root.val, currNodeCount);
+        dfs(root.left, modeMap);
+        dfs(root.right, modeMap);
     }
 
 }
