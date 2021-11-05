@@ -6,21 +6,21 @@ public class PrintBSTRange {
 
 	public static void main(String[] args) {
 		rootNode = new TreeNode(10);
-		rootNode.setLeft(new TreeNode(5));
-		rootNode.setRight(new TreeNode(50));
-		rootNode.getLeft().setLeft(new TreeNode(1));
-		rootNode.getRight().setLeft(new TreeNode(40));
-		rootNode.getRight().setRight(new TreeNode(100));
+		rootNode.left = new TreeNode(5);
+		rootNode.right = new TreeNode(50);
+		rootNode.left.left = new TreeNode(1);
+		rootNode.right.left = new TreeNode(40);
+		rootNode.right.right = new TreeNode(100);
 		find(rootNode, 5, 45);
 	}
 
 	private static void find(TreeNode root, int i, int j) {
 		if(root != null) {
-			find(root.getLeft(), i, j);
-			if(root.getData() >= i && root.getData() <= j) {
-				System.out.print(root.getData() + " ");
+			find(root.left, i, j);
+			if(root.val >= i && root.val <= j) {
+				System.out.print(root.val + " ");
 			}
-			find(root.getRight(), i, j);
+			find(root.right, i, j);
 		}
 	}
 	

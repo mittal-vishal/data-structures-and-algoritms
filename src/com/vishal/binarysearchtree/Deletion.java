@@ -6,41 +6,40 @@ public class Deletion {
 
 	public static void main(String[] args) {
 		rootNode = new TreeNode(5);
-		rootNode.setLeft(new TreeNode(2));
-		rootNode.setRight(new TreeNode(20));
-		rootNode.getRight().setLeft(new TreeNode(10));
-		rootNode.getRight().setRight(new TreeNode(40));
+		rootNode.left = new TreeNode(2);
+		rootNode.right = new TreeNode(20);
+		rootNode.right.left = new TreeNode(10);
+		rootNode.right.right = new TreeNode(40);
 		find(rootNode, 20);
-		PreOrder.find(rootNode);
 	}
 
 	private static TreeNode find(TreeNode root, int item) {
 		if (root == null) {
 			return null;
-		}else if(item > root.getData()) {
-			root.setRight(find(root.getRight(), item));
-		}else if(item < root.getData()){
-			root.setLeft(find(root.getLeft(), item));
+		}else if(item > root.val) {
+			root.right = find(root.right, item);
+		}else if(item < root.val){
+			root.left = find(root.left, item);
 		}else {
-			if(root.getLeft()==null && root.getRight() == null) {
+			if(root.left == null && root.right == null) {
 				return null;
-			}else if(root.getLeft() == null) {
-				return root.getRight();
-			}else if(root.getRight() == null) {
-				return root.getLeft();
+			}else if(root.left == null) {
+				return root.right;
+			}else if(root.right == null) {
+				return root.left;
 			}else {
 				TreeNode successor = getInorderSuccessor(root);
-				root.setData(successor.getData());
-				root.setRight(find(root.getRight(), successor.getData()));
+				root.val = successor.val;
+				root.right =  find(root.right, successor.val);
 			}
 		}
 		return root;
 	}
 
 	private static TreeNode getInorderSuccessor(TreeNode root) {
-		TreeNode currNode = root.getRight();
-		while(currNode.getLeft() != null) {
-			currNode = currNode.getLeft();
+		TreeNode currNode = root.right;
+		while(currNode.left != null) {
+			currNode = currNode.left;
 		}
 		return currNode;
 	}

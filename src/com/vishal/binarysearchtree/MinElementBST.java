@@ -6,20 +6,20 @@ public class MinElementBST {
 
 	public static void main(String[] args) {
 		rootNode = new TreeNode(7);
-		rootNode.setLeft(new TreeNode(5));
-		rootNode.setRight(new TreeNode(10));
-		rootNode.getLeft().setLeft(new TreeNode(3));
-		rootNode.getLeft().setRight(new TreeNode(6));
-		rootNode.getRight().setLeft(new TreeNode(8));
-		rootNode.getRight().setRight(new TreeNode(12));
+		rootNode.left = new TreeNode(5);
+		rootNode.right = new TreeNode(10);
+		rootNode.left.left = new TreeNode(3);
+		rootNode.left.right  = new TreeNode(6);
+		rootNode.right.left = new TreeNode(8);
+		rootNode.right.right = new TreeNode(12);
 		System.out.println(find(rootNode));
 	}
 	
 	private static int find(TreeNode node) {
-        while(node.getLeft() != null){
-            node = node.getLeft();
+        while(node.left != null){
+            node = node.left;
         }
-        return node.getData();
+        return node.val;
     }
 	
 }

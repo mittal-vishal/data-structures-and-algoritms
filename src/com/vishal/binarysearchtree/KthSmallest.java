@@ -7,23 +7,23 @@ public class KthSmallest {
 
 	public static void main(String[] args) {
 		rootNode = new TreeNode(7);
-		rootNode.setLeft(new TreeNode(5));
-		rootNode.setRight(new TreeNode(10));
-		rootNode.getLeft().setLeft(new TreeNode(3));
-		rootNode.getLeft().setRight(new TreeNode(6));
-		rootNode.getRight().setLeft(new TreeNode(8));
-		rootNode.getRight().setRight(new TreeNode(12));
+		rootNode.left = new TreeNode(5);
+		rootNode.right = new TreeNode(10);
+		rootNode.left.left = new TreeNode(3);
+		rootNode.left.right = new TreeNode(6);
+		rootNode.right.left = new TreeNode(8);
+		rootNode.right.right = new TreeNode(12);
 		find(rootNode, 2);
 	}
 	
 	private static void find(TreeNode root, int k) {
 		if(root != null){
-			find(root.getLeft(), k);
+			find(root.left, k);
 			if(counter == k){
-				System.out.print(root.getData());
+				System.out.print(root.val);
 			}
 			counter++;
-			find(root.getRight(), k);
+			find(root.right, k);
 		}
     }
 	

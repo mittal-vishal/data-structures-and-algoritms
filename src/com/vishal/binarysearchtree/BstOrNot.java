@@ -10,38 +10,55 @@ public class BstOrNot {
 
 	public static void main(String[] args) {
 		rootNode = new TreeNode(5);
-		rootNode.setLeft(new TreeNode(5));
-		System.out.println(isValidBST(rootNode));
-		System.out.println(findUsingRange(rootNode, Integer.MIN_VALUE, Integer.MAX_VALUE));
+		rootNode.left = new TreeNode(5);
+		BstOrNot bstOrNot = new BstOrNot();
+		System.out.println(bstOrNot.isValidBST(rootNode));
+		System.out.println(bstOrNot.isValidBSTree(rootNode));
 	}
 
-	private static boolean isValidBST(TreeNode root) {
-        return isValidBST(root, new Previous());
-    }
-    
-    private static boolean isValidBST(TreeNode root, Previous previous){
-        if(root != null){
-            if(!isValidBST(root.getLeft(), previous))
-                return false;
-            if(previous.prev != null && root.getData() <= previous.prev.getData()){
-                return false;
-            }
-            previous.prev = root;
-            if(!isValidBST(root.getRight(), previous))
-                return false;
-        }
-        return true;
-    }
+	private TreeNode prev;
 
-	private static boolean findUsingRange(TreeNode root, int min, int max) {
-		if (root == null) {
+	public boolean isValidBST(TreeNode root) {
+		prev = null;
+		return isValid(root);
+	}
+
+	private boolean isValid(TreeNode root){
+		if(root == null){
 			return true;
 		}
-		if (root.getData() < min || root.getData() > max) {
+
+		if(!isValid(root.left)){
 			return false;
 		}
-		return (findUsingRange(root.getLeft(), min, root.getData())
-				&& findUsingRange(root.getRight(), root.getData(), max));
+
+		if(prev != null && prev.val >= root.val){
+			return false;
+		}
+
+		prev = root;
+
+		if(!isValid(root.right)){
+			return false;
+		}
+
+		return true;
+	}
+
+	public boolean isValidBSTree(TreeNode root) {
+		return validate(root, null, null);
+	}
+
+	private boolean validate(TreeNode root, Integer leftVal, Integer rightVal){
+		if(root == null){
+			return true;
+		}
+		if((leftVal != null && root.val <= leftVal) || (rightVal != null && root.val >= rightVal)){
+			return false;
+		}
+		boolean isLeftBST = validate(root, leftVal, root.val);
+		boolean isRightBST = validate(root.right, root.val, rightVal);
+		return isLeftBST && isRightBST;
 	}
 
 }
