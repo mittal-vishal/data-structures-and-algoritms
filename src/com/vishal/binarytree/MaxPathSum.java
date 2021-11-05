@@ -16,8 +16,8 @@ public class MaxPathSum {
 		}
 		int maxPathSumFromLeft = postOrderTraversal(root.left);
 		int maxPathSumFromRight = postOrderTraversal(root.right);
-		maxPathSumFromLeft = Math.max(maxPathSumFromLeft, 0);
-		maxPathSumFromRight = Math.max(maxPathSumFromRight, 0);
+		maxPathSumFromLeft = maxPathSumFromLeft < 0 ? 0: maxPathSumFromLeft;
+		maxPathSumFromRight = maxPathSumFromRight < 0 ? 0: maxPathSumFromRight;
 		int currPathSum = maxPathSumFromLeft + maxPathSumFromRight + root.val;
 		maxPathSum = Math.max(maxPathSum, currPathSum);
 		return Math.max(maxPathSumFromLeft, maxPathSumFromRight) + root.val;

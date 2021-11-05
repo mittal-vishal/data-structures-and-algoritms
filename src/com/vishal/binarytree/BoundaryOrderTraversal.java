@@ -23,50 +23,48 @@ public class BoundaryOrderTraversal {
     }
 
     public List<Integer> boundaryOfBinaryTree(TreeNode root) {
-        List<Integer> nodes = new ArrayList<>();
-        if(root == null){
-            return nodes;
+        List<Integer> boundaryList = new ArrayList<>();
+        boundaryList.add(root.val);
+        leftTraversal(root.left, boundaryList);
+        if(root.left != null || root.right != null){
+            bottomTraversal(root, boundaryList);
         }
-        nodes.add(root.val);
-        getLeftBoundary(root.left, nodes);
-        getLeaves(root.left, nodes);
-        getLeaves(root.right, nodes);
-        getRightBoundary(root.right, nodes);
-        return nodes;
+        rightTraversal(root.right, boundaryList);
+        return boundaryList;
     }
 
-    private void getLeftBoundary(TreeNode root, List<Integer> nodes){
+    private void leftTraversal(TreeNode root, List<Integer> boundaryList){
         if(root == null || (root.left == null && root.right == null)){
             return;
         }
-        nodes.add(root.val);
+        boundaryList.add(root.val);
         if(root.left != null){
-            getLeftBoundary(root.left, nodes);
+            leftTraversal(root.left, boundaryList);
         }else{
-            getLeftBoundary(root.right, nodes);
+            leftTraversal(root.right, boundaryList);
         }
     }
 
-    private void getRightBoundary(TreeNode root, List<Integer> nodes){
+    private void rightTraversal(TreeNode root, List<Integer> boundaryList){
         if(root == null || (root.left == null && root.right == null)){
             return;
         }
         if(root.right != null){
-            getRightBoundary(root.right, nodes);
+            rightTraversal(root.right, boundaryList);
         }else{
-            getRightBoundary(root.left, nodes);
+            rightTraversal(root.left, boundaryList);
         }
-        nodes.add(root.val);
+        boundaryList.add(root.val);
     }
 
-    private void getLeaves(TreeNode root, List<Integer> nodes){
+    private void bottomTraversal(TreeNode root, List<Integer> boundaryList){
         if(root == null){
             return;
         }
         if(root.left == null && root.right == null){
-            nodes.add(root.val);
+            boundaryList.add(root.val);
         }
-        getLeaves(root.left, nodes);
-        getLeaves(root.right, nodes);
+        bottomTraversal(root.left, boundaryList);
+        bottomTraversal(root.right, boundaryList);
     }
 }

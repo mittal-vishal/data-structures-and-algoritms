@@ -4,49 +4,51 @@ import java.util.*;
 
 public class NodesAtKDistanceFromTarget {
 
-    public List<Integer> distanceK(TreeNode root, TreeNode target, int K) {
-        if(K == 0){
+    public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
+        if(k < 0){
+            return new ArrayList<>();
+        }else if(k == 0){
             return new ArrayList<>(Arrays.asList(target.val));
         }
         Map<TreeNode, TreeNode> parentMap = new HashMap<>();
-        dfs(root, null, parentMap);
+        getParent(root, null, parentMap);
         Queue<TreeNode> queue = new LinkedList<>();
         queue.offer(target);
-        List<Integer> retList = new ArrayList<>();
-        Set<TreeNode> seen = new HashSet<>();
 
-        while(!queue.isEmpty() && K >= 0){
+        List<Integer> kNodeList = new ArrayList<>();
+        Set<TreeNode> visitedSet = new HashSet<>();
+
+        while(!queue.isEmpty() && k >= 0){
             int queueSize = queue.size();
-            TreeNode polled = null;
             for(int i = 0; i < queueSize; i++){
-                polled = queue.poll();
-                if(K == 0){
-                    retList.add(polled.val);
+                TreeNode polled = queue.poll();
+                if(k == 0){
+                    kNodeList.add(polled.val);
                 }
-                if(polled.left != null && !seen.contains(polled.left)){
+                if(polled.left != null && !visitedSet.contains(polled.left)){
                     queue.offer(polled.left);
                 }
-                if(polled.right != null && !seen.contains(polled.right)){
+                if(polled.right != null && !visitedSet.contains(polled.right)){
                     queue.offer(polled.right);
                 }
-                if(parentMap.get(polled) != null && !seen.contains(parentMap.get(polled))){
-                    queue.offer(parentMap.get(polled));
+                TreeNode parent = parentMap.get(polled);
+                if(parent != null && !visitedSet.contains(parent)){
+                    queue.offer(parent);
                 }
-                seen.add(polled);
+                visitedSet.add(polled);
             }
-            K--;
+            k--;
         }
-
-        return retList;
+        return kNodeList;
     }
 
-    private void dfs(TreeNode root, TreeNode parent, Map<TreeNode, TreeNode> parentMap){
+    private void getParent(TreeNode root, TreeNode parent, Map<TreeNode, TreeNode> parentMap){
         if(root == null){
             return;
         }
         parentMap.put(root, parent);
-        dfs(root.left, root, parentMap);
-        dfs(root.right, root, parentMap);
+        getParent(root.left, root, parentMap);
+        getParent(root.right, root, parentMap);
     }
 
 }

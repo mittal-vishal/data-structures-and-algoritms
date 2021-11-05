@@ -3,7 +3,7 @@ package com.vishal.binarytree;
 public class NumberOfSubtreeWithSum {
 	
 	private static TreeNode rootNode = null;
-	private static int count = 0;
+	private  int count;
 
 	public static void main(String[] args) {
 		rootNode = new TreeNode(5);
@@ -13,27 +13,31 @@ public class NumberOfSubtreeWithSum {
 		rootNode.getLeft().setRight(new TreeNode(8));
 		rootNode.getRight().setLeft(new TreeNode(-4));
 		rootNode.getRight().setRight(new TreeNode(7));
-		System.out.println(find(rootNode, 7));
+		NumberOfSubtreeWithSum subtree = new NumberOfSubtreeWithSum();
+		System.out.println(subtree.countSubtree(rootNode, 7));
 	}
 
-	private static int find(TreeNode root, int sum) {
-		if(root != null) {
-			int leftT = find(root.getLeft(), sum);
-			int rightT = find(root.getRight(), sum);
-			if(root.getLeft() == null && root.getRight() == null && root.getVal() == sum) {
-				count++;
-			}
-			if(root.getLeft() == null && root.getRight() == null) {
-				return root.getVal();
-			}
-			if(leftT + rightT + root.getVal() == sum) {
-				count++;
-			}
-			if(root != rootNode) {
-				return leftT + rightT + root.getVal();
-			}
+	public int countSubtree(TreeNode root, int k){
+		int leftSum = getSum(root.left, k);
+		int rightSum = getSum(root.right, k);
+		int sum = leftSum + rightSum + root.val;
+		if(sum == k){
+			count++;
 		}
 		return count;
 	}
-	
+
+	private int getSum(TreeNode root, int k){
+		if(root == null){
+			return 0;
+		}
+		int leftSum = getSum(root.left, k);
+		int rightSum = getSum(root.right, k);
+		int sum = leftSum + rightSum + root.val;
+		if(sum == k){
+			count++;
+		}
+		return sum;
+	}
+
 }
