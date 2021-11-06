@@ -3,7 +3,8 @@ package com.vishal.binarysearchtree;
 public class KthSmallest {
 
 	private static TreeNode rootNode = null;
-	private static int counter = 1;
+	private int kSmallest;
+	private int kCount;
 
 	public static void main(String[] args) {
 		rootNode = new TreeNode(7);
@@ -13,18 +14,26 @@ public class KthSmallest {
 		rootNode.left.right = new TreeNode(6);
 		rootNode.right.left = new TreeNode(8);
 		rootNode.right.right = new TreeNode(12);
-		find(rootNode, 2);
+		KthSmallest smallest = new KthSmallest();
+		smallest.kthSmallest(rootNode, 2);
 	}
-	
-	private static void find(TreeNode root, int k) {
-		if(root != null){
-			find(root.left, k);
-			if(counter == k){
-				System.out.print(root.val);
-			}
-			counter++;
-			find(root.right, k);
+
+	public int kthSmallest(TreeNode root, int k) {
+		kCount = k;
+		inorder(root);
+		return kSmallest;
+	}
+
+	private void inorder(TreeNode root){
+		if(root == null){
+			return;
 		}
-    }
+		inorder(root.left);
+		if(kCount == 1){
+			kSmallest = root.val;
+		}
+		kCount--;
+		inorder(root.right);
+	}
 	
 }
