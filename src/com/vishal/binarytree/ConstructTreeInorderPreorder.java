@@ -3,7 +3,7 @@ package com.vishal.binarytree;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ConstructTree {
+public class ConstructTreeInorderPreorder {
 
     private int preorderIdx;
     private Map<Integer, Integer> inorderMap;
@@ -21,12 +21,6 @@ public class ConstructTree {
             return null;
         }
         TreeNode currNode = new TreeNode(preorder[preorderIdx++]);
-        if(currNode == null){
-            return null;
-        }
-        if(inorderStart == inorderEnd){
-            return currNode;
-        }
         int inorderCurrIdx = inorderMap.get(currNode.val);
         currNode.left = buildTree(preorder, inorder, inorderStart, inorderCurrIdx - 1);
         currNode.right = buildTree(preorder, inorder, inorderCurrIdx + 1, inorderEnd);
@@ -34,7 +28,7 @@ public class ConstructTree {
     }
 
     public static void main(String[] args) {
-        ConstructTree tree = new ConstructTree();
+        ConstructTreeInorderPreorder tree = new ConstructTreeInorderPreorder();
         int[] preorder = {3,9,20,15,7};
         int[] inorder = {9,3,15,20,7};
         TreeNode root = tree.buildTree(preorder, inorder);
