@@ -4,30 +4,36 @@ import java.util.*;
 
 public class MergeIntervals {
 
-    public int[][] mergeOptimized(int[][] intervals) {
-        if(intervals == null || intervals.length < 2){
-            return intervals;
+    public int[][] mergeOptimal(int[][] intervals) {
+        LinkedList<int[]> intervalList = new LinkedList<>();
+        if(intervals == null || intervals.length == 0){
+            return new int[0][0];
         }
 
-        Arrays.sort(intervals, (int[] a, int[] b) -> a[0] - b[0]);
+        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
 
-        LinkedList<LinkedList<Integer>> intervalList = new LinkedList<>();
+        intervalList.addLast(intervals[0]);
 
-        for(int[] interval: intervals){
-            if(intervalList.size() == 0 || intervalList.getLast().get(1) < interval[0]){
-                intervalList.add(new LinkedList(Arrays.asList(interval[0], interval[1])));
+        for(int i = 1; i < intervals.length; i++){
+            int[] prevInterval = intervalList.removeLast();
+            int[] currInterval = intervals[i];
+            if(prevInterval[1] >= currInterval[0]){
+                prevInterval[0] = Math.min(prevInterval[0], currInterval[0]);
+                prevInterval[1] = Math.max(prevInterval[1], currInterval[1]);
+                intervalList.addLast(prevInterval);
             }else{
-                List<Integer> last = intervalList.removeLast();
-                intervalList.add(new LinkedList(Arrays.asList(last.get(0), Math.max(last.get(1), interval[1]))));
+                intervalList.addLast(prevInterval);
+                intervalList.addLast(currInterval);
             }
         }
 
-        int[][] resultant = new int[intervalList.size()][2];
+        int[][] mergeIntervals = new int[intervalList.size()][2];
+        int index = 0;
         for(int i = 0; i < intervalList.size(); i++){
-            resultant[i][0] = intervalList.get(i).get(0);
-            resultant[i][1] = intervalList.get(i).get(1);
+            mergeIntervals[index++] = intervalList.get(i);
         }
-        return resultant;
+
+        return mergeIntervals;
     }
 
     public int[][] merge(int[][] intervals) {
