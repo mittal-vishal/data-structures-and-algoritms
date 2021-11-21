@@ -1,6 +1,6 @@
 package com.vishal.search;
 
-class SearchInRotatedArray {
+class RotatedArray {
     public int search(int[] nums, int target) {
         int minIndex = findMin(nums);
         int searchFirst = binarySearch(nums, 0, minIndex - 1, target);
