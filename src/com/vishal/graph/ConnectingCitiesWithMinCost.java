@@ -49,7 +49,7 @@ class ConnectingCitiesWithMinCost {
             visited[polledRoute.city] = true;
             minCost += polledRoute.cost;
             for(Route adjRoute: inputRouteList.get(polledRoute.city)){
-                if(visited[adjRoute.city] == false){
+                if(!visited[adjRoute.city]){
                     pq.offer(new Route(polledRoute.city, adjRoute.city, adjRoute.cost));
                 }
             }
