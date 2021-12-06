@@ -2,6 +2,13 @@ package com.vishal.google;
 
 public class KMP {
 
+    public static void main(String[] args) {
+        KMP kmp = new KMP();
+        String text = "adsgwadsxdsgwadsgz";
+        String pattern = "dsgwadsgz";
+        System.out.println(kmp.strStr(text, pattern));
+    }
+
     public int strStr(String haystack, String needle) {
         if(haystack == null || needle == null || haystack.length() < needle.length()){
             return -1;

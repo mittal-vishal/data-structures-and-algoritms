@@ -41,12 +41,12 @@ public class CycleUnidirectedGraph {
 		visited[src] = true;
 		for(int i : adj.get(src)) {
 			if(!visited[i]) {
-				if(dfs(adj, visited, i, src)) {
-					return true;
-				}
+				return dfs(adj, visited, i, src);
 			}
-			else if((visited[i] && parent != i) &&(visited[i] && parent == -1)) {
+			else if(visited[i] && parent == -1 && parent != i) {
 				return true;
+			}else if(visited[i] && (parent == i || parent == -1)) {
+				return false;
 			}
 		}
 		return false;

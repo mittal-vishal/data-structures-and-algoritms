@@ -76,7 +76,7 @@ class LRUCache {
         removeNode(newNode);
         addNode(newNode);
     }
-    
+
     private void removeNode(DoublyNode node) {
         if(node != head && node != tail){
             node.prev.next = node.next;
@@ -85,9 +85,11 @@ class LRUCache {
             head = head.next;
             head.prev.next = null;
             head.prev = null;
-        }else{
-            head.prev.next = null;
-            head.prev = null;
+        }else if(node == tail){
+            DoublyNode secondLastNode = tail.prev;
+            secondLastNode.next = null;
+            tail.prev = null;
+            tail = secondLastNode;
         }
     }
 }
