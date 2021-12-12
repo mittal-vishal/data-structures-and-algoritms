@@ -14,6 +14,18 @@ public class CoinsSumCombinations {
 		System.out.println(getCombinations(val, coins, coins.length));
 	}
 
+	//Bottom Up approach
+	public int change(int amount, int[] coins) {
+		int[] dp = new int[amount+1];
+		dp[0] = 1;
+		for(int i = 0; i < coins.length; i++){
+			for(int j = coins[i]; j < dp.length; j++){
+				dp[j] += dp[j - coins[i]];
+			}
+		}
+		return dp[amount];
+	}
+
 	private static int getCombinations(int val, int[] coins, int n) {
 		String key = n + "|" + val;
 		int result;

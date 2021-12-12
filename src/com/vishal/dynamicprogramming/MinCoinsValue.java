@@ -4,35 +4,34 @@ import java.util.Arrays;
 
 public class MinCoinsValue {
 
-	private static int[] memo;
-
-	public static void main(String[] args) {
-		int n = 30;
-		int[] coins = { 25, 10, 5 };
-		memo = new int[n];
+	public int coinChange(int[] coins, int amount) {
+		int[] memo = new int[amount+1];
 		Arrays.fill(memo, -1);
-		System.out.println(getMinCoins(n, coins));
+		int minCoins = getMinCoins(coins, amount, memo);
+		return minCoins != Integer.MAX_VALUE ? minCoins: -1;
 	}
 
-	private static int getMinCoins(int val, int[] coins) {
-		if (val == 0) {
+	private int getMinCoins(int[] coins, int amount, int[] memo){
+		if(amount == 0){
 			return 0;
-		}else {
-			int result = Integer.MAX_VALUE;
-			for (int i = 0; i < coins.length; i++) {
-				if (coins[i] <= val) {
-					if (memo[val - coins[i]] == -1) {
-						int subResult = getMinCoins(val - coins[i], coins);
-						if (subResult != Integer.MAX_VALUE) {
-							result = Math.min(result, subResult + 1);
-						}
-						memo[val - coins[i]] = result;
-					}
-					result = memo[val - coins[i]];
+		}
+		if(amount < 0){
+			return Integer.MAX_VALUE;
+		}
+		if(memo[amount] != -1){
+			return memo[amount];
+		}
+		int ans = Integer.MAX_VALUE;
+		for(int i = 0; i < coins.length; i++){
+			if(amount - coins[i] >= 0){
+				int subprob = getMinCoins(coins, amount - coins[i], memo);
+				if(subprob != Integer.MAX_VALUE && (subprob + 1) < ans){
+					ans = subprob + 1;
 				}
 			}
-			return result != Integer.MAX_VALUE ? result : -1;
 		}
+		memo[amount] = ans;
+		return ans;
 	}
 
 }
