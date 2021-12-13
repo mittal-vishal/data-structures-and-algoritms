@@ -1,85 +1,77 @@
 package com.vishal.graph;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
-public class RottenOranges {
+class RottenOranges {
 
-	public class Node {
-		private int i;
-		private int j;
+    class Cell{
+        int x;
+        int y;
+        public Cell(int x, int y){
+            this.x = x;
+            this.y = y;
+        }
+    }
 
-		public Node(int i, int j) {
-			this.i = i;
-			this.j = j;
-		}
-	}
-
-	public int orangesRotting(int[][] grid) {
-		Queue<Node> queue = new LinkedList<>();
-		for (int i = 0; i < grid.length; i++) {
-			for (int j = 0; j < grid[i].length; j++) {
-				if (grid[i][j] == 2) {
-					queue.add(new Node(i, j));
-				}
-			}
-		}
-		return bfs(grid, queue);
-	}
-
-	private int bfs(int[][] grid, Queue<Node> queue) {
-		int[] validI = { 0, 0, -1, 1 };
-		int[] validJ = { -1, 1, 0, 0 };
-		Node popped = null;
-		int count = 0;
-		boolean isChange = false;
-		queue.add(null);
-		while (!queue.isEmpty()) {
-			popped = queue.poll();
-			if(popped != null) {
-				for (int k = 0; k < validI.length; k++) {
-					if (isValid(popped.i + validI[k], popped.j + validJ[k], grid.length, grid[0].length)
-							&& grid[popped.i + validI[k]][popped.j + validJ[k]] == 1) {
-						grid[popped.i + validI[k]][popped.j + validJ[k]] = 2;
-						isChange = true;
-						queue.add(new Node(popped.i + validI[k], popped.j + validJ[k]));
-					}
-				}
-			}else if(popped == null && isChange){
-				isChange = false;
-                if(!queue.isEmpty()){
-                    queue.add(null);
-                    count++;
+    public int orangesRotting(int[][] grid) {
+        if(grid == null || grid.length == 0){
+            return -1;
+        }
+        Queue<Cell> queue = new LinkedList<>();
+        for(int i = 0; i < grid.length; i++){
+            for(int j = 0; j < grid[0].length; j++){
+                if(grid[i][j] == 2){
+                    queue.offer(new Cell(i, j));
                 }
             }
-		}
-		List<Integer> finalList = new ArrayList<>();
-		for(int[] a : grid) {
-			for(Integer b : a) {
-				finalList.add(b);
-			}
-		}
-		if(finalList.parallelStream().allMatch(p -> p == 0)) {
-			return 0;
-		}else {
-			return finalList.parallelStream().filter(p -> p == 1).count() == 0 ? count : -1;
-		}
-	}
+        }
 
-	private boolean isValid(int i, int j, int m, int n) {
-		if (i >= 0 && i < m && j >= 0 && j < n) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+        int minutes = 0;
+        int[][] dirs = {{0, -1}, {0, 1}, {1, 0}, {-1, 0}};
 
-	public static void main(String[] args) {
-		int[][] grid = { {2}, {1}, {1}, {1}, {2}, {1}, {1} };
-		System.out.println(new RottenOranges().orangesRotting(grid));
+        while(!queue.isEmpty()){
+            int size = queue.size();
+            boolean isRotten = false;
+            for(int i = 0; i < size; i++) {
+                Cell polled = queue.poll();
+                for (int j = 0; j < dirs.length; j++) {
+                    int[] currDir = dirs[j];
+                    int nx = polled.x + currDir[0];
+                    int ny = polled.y + currDir[1];
+                    if (isValid(nx, ny, grid) && grid[nx][ny] == 1) {
+                        grid[nx][ny] = 2;
+                        queue.offer(new Cell(nx, ny));
+                        isRotten = true;
+                    }
+                }
+            }
+            if(isRotten){
+                minutes++;
+            }
+        }
+        for(int i = 0; i < grid.length; i++){
+            for(int j = 0; j < grid[i].length; j++){
+                if(grid[i][j] == 1){
+                    return -1;
+                }
+            }
+        }
+        return minutes;
+    }
 
-	}
+    private boolean isValid(int x, int y, int[][] grid){
+        if(x >= 0 && x < grid.length && y >= 0 && y < grid[0].length){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
+    public static void main(String[] args) {
+        int[][] grid = {{2,1,1},{1,1,0},{0,1,1}};
+        RottenOranges rottenOranges = new RottenOranges();
+        int minutess = rottenOranges.orangesRotting(grid);
+        System.out.println(minutess);
+    }
 }
