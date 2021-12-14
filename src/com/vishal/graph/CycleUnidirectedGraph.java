@@ -37,18 +37,16 @@ public class CycleUnidirectedGraph {
 		return false;
 	}
 
-	private static boolean dfs(List<List<Integer>> adj, boolean[] visited, int src, int parent) {
+	private static boolean dfs(List<List<Integer>> adjList, boolean[] visited, int src, int parent) {
 		visited[src] = true;
-		for(int i : adj.get(src)) {
-			if(!visited[i]) {
-				return dfs(adj, visited, i, src);
-			}
-			else if(visited[i] && parent == -1 && parent != i) {
+
+		for (int adj: adjList.get(src)) {
+
+			if ((visited[adj] && parent != adj) || (!visited[adj] && dfs(adjList, visited, adj, src))){
 				return true;
-			}else if(visited[i] && (parent == i || parent == -1)) {
-				return false;
 			}
 		}
+
 		return false;
 	}
 
