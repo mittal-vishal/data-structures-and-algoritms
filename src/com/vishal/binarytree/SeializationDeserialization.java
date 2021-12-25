@@ -31,13 +31,13 @@ public class SeializationDeserialization {
     }
 
     private TreeNode constructTree(LinkedList<String> nodes){
-        if(nodes.size() == 0 || nodes.get(0).equals("null")){
-            nodes.remove(0);
+        if(nodes.getFirst().equals("null")){
+            nodes.removeFirst();
             return null;
         }
-        int data = Integer.valueOf(nodes.get(0));
-        TreeNode root = new TreeNode(data);
-        nodes.remove(0);
+        int rootVal = Integer.parseInt(nodes.getFirst());
+        TreeNode root = new TreeNode(rootVal);
+        nodes.removeFirst();
         root.left = constructTree(nodes);
         root.right = constructTree(nodes);
         return root;

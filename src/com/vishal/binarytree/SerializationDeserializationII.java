@@ -47,24 +47,18 @@ public class SerializationDeserializationII {
         }
         String[] nodes = data.split(",");
         LinkedList<Node> nodeList = new LinkedList<>();
-        for(int i = 0; i < nodes.length - 1; i++){
-            String nodeData = nodes[i];
-            if(nodeData.equals("null")){
-                Node polledNode = nodeList.removeFirst();
-                Node topNode = nodeList.get(0);
-                topNode.children.add(polledNode);
+        for(int i = 0; i < nodes.length-1; i++){
+            String rootVal = nodes[i];
+            if(rootVal.equals("null")){
+                Node polled = nodeList.removeFirst();
+                nodeList.getFirst().children.add(polled);
             }else{
-                int nodeVal = Integer.parseInt(nodeData);
-                Node newNode = new Node(nodeVal);
-                newNode.children = new LinkedList<>();
-                nodeList.addFirst(newNode);
+                Node currNode = new Node(Integer.parseInt(rootVal));
+                currNode.children = new LinkedList<>();
+                nodeList.addFirst(currNode);
             }
         }
-        Node root = nodeList.removeFirst();
-        StringBuilder sb = new StringBuilder();
-        preorder(root, sb);
-        System.out.print(sb.toString());
-        return root;
+        return nodeList.removeFirst();
     }
 
 }
