@@ -2,83 +2,74 @@ package com.vishal.tries;
 
 class Triesii {
 
-    class TrieNode{
-        TrieNode childrens[];
-        boolean isWord;
-        int wordCount;
-        int prefixCount;
-        public TrieNode(){
-            childrens = new TrieNode[26];
-        }
-    }
+    private Node root;
 
-    private TrieNode root;
     public Triesii() {
-        root = new TrieNode();
+        root = new Node();
     }
 
     public void insert(String word) {
-        TrieNode curr = root;
+        Node curr = root;
         for(int i = 0; i < word.length(); i++){
             char currChar = word.charAt(i);
             if(curr.childrens[currChar-'a'] == null){
-                curr.childrens[currChar-'a'] = new TrieNode();
+                curr.childrens[currChar-'a'] = new Node();
             }
             curr = curr.childrens[currChar-'a'];
-            curr.prefixCount += 1;
+            curr.prefixCount++;
         }
-        curr.wordCount += 1;
-        curr.isWord = true;
+        curr.wordCount++;
     }
 
     public int countWordsEqualTo(String word) {
-        TrieNode prefixNode = getNode(word);
-        if(prefixNode != null && prefixNode.isWord){
-            return prefixNode.wordCount;
-        }else{
-            return 0;
-        }
-    }
-
-    private TrieNode getNode(String word){
-        TrieNode curr = root;
+        Node curr = root;
         for(int i = 0; i < word.length(); i++){
             char currChar = word.charAt(i);
-            if(curr.childrens[currChar-'a'] != null){
-                curr = curr.childrens[currChar-'a'];
-            }else{
-                return null;
+            if(curr.childrens[currChar-'a'] == null){
+                return 0;
             }
+            curr = curr.childrens[currChar-'a'];
         }
-        return curr;
+        return curr.wordCount;
     }
 
     public int countWordsStartingWith(String prefix) {
-        TrieNode prefixNode = getNode(prefix);
-        if(prefixNode != null){
-            return prefixNode.prefixCount;
-        }else{
-            return 0;
+        Node curr = root;
+        for(int i = 0; i < prefix.length(); i++){
+            char currChar = prefix.charAt(i);
+            if(curr.childrens[currChar-'a'] == null){
+                return 0;
+            }
+            curr = curr.childrens[currChar-'a'];
         }
+        return curr.prefixCount;
     }
 
     public void erase(String word) {
-        TrieNode curr = root;
-        for(int i = 0;i < word.length();i++){
-            char c = word.charAt(i);
-            TrieNode child = curr.childrens[c-'a'];
-
-            child.prefixCount -= 1;
-            if(child.prefixCount == 0){
-                curr.childrens[c-'a'] = null;
+        Node curr = root;
+        for(int i = 0; i < word.length(); i++){
+            char currChar = word.charAt(i);
+            if(curr.childrens[currChar-'a'] == null){
+                return;
             }
-            curr = child;
+            curr = curr.childrens[currChar-'a'];
+            if(curr.prefixCount > 0){
+                curr.prefixCount--;
+            }
         }
         if(curr.wordCount > 0){
             curr.wordCount--;
         }
-        if(curr.wordCount == 0){
-            curr.isWord = false;
+    }
+
+    class Node{
+        Node[] childrens;
+        int wordCount;
+        int prefixCount;
+        public Node(){
+            childrens = new Node[26];
+            wordCount = 0;
+            prefixCount = 0;
         }
     }
 }
