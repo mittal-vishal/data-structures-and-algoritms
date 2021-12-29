@@ -2,6 +2,17 @@ package com.vishal.tries;
 
 class Triesii {
 
+    static class Node{
+        Node[] childrens;
+        int wordCount;
+        int prefixCount;
+        public Node(){
+            childrens = new Node[26];
+            wordCount = 0;
+            prefixCount = 0;
+        }
+    }
+
     private Node root;
 
     public Triesii() {
@@ -59,17 +70,6 @@ class Triesii {
         }
         if(curr.wordCount > 0){
             curr.wordCount--;
-        }
-    }
-
-    class Node{
-        Node[] childrens;
-        int wordCount;
-        int prefixCount;
-        public Node(){
-            childrens = new Node[26];
-            wordCount = 0;
-            prefixCount = 0;
         }
     }
 }
