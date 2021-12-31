@@ -11,7 +11,7 @@ public class CourseScheduleII {
             courseList.add(new ArrayList<>());
         }
         for(int[] course: prerequisites){
-            courseList.get(course[0]).add(course[1]);
+            courseList.get(course[1]).add(course[0]);
         }
         //Initialize indegrees
         int[] indegree = new int[numCourses];
@@ -26,10 +26,10 @@ public class CourseScheduleII {
                 queue.offer(i);
             }
         }
-        Stack<Integer> stack = new Stack<>();
+        int i = 0;
         while(!queue.isEmpty()){
             int polled = queue.poll();
-            stack.push(polled);
+            orderedCourse[i++] = polled;
             for(int neighbour: courseList.get(polled)){
                 indegree[neighbour]--;
                 if(indegree[neighbour] == 0){
@@ -37,12 +37,8 @@ public class CourseScheduleII {
                 }
             }
         }
-        int i = 0;
-        if(stack.isEmpty() || stack.size() != numCourses){
-            return new int[]{};
-        }
-        while(!stack.isEmpty()){
-            orderedCourse[i++] = stack.pop();
+        if(i != numCourses){
+            return new int[0];
         }
         return orderedCourse;
     }
