@@ -4,6 +4,13 @@ import java.util.*;
 
 public class SnakeLadder {
 
+    public static void main(String[] args) {
+        int[][] board = {{-1,-1,-1,-1,-1,-1},{-1,-1,-1,-1,-1,-1},{-1,-1,-1,-1,-1,-1},{-1,35,-1,-1,13,-1},{-1,-1,-1,-1,-1,-1},{-1,15,-1,-1,-1,-1}};
+        SnakeLadder snakeLadder = new SnakeLadder();
+        int steps = snakeLadder.snakesAndLadders(board);
+        System.out.println(steps);
+    }
+
     public int snakesAndLadders(int[][] board) {
         if(board == null || board.length == 0 || board[0].length == 0){
             return 0;
