@@ -37,12 +37,17 @@ public class NumberWaysToReachDestinationShortestDist {
             adjList.get(road[0]).add(new Node(road[1], road[2]));
             adjList.get(road[1]).add(new Node(road[0], road[2]));
         }
+        boolean[] visited = new boolean[n];
         while(!pq.isEmpty()){
             Node polled = pq.poll();
+            visited[polled.id] = true;
             if(polled.dist > dist[polled.id]){
                 continue;
             }
             for(Node neighbour: adjList.get(polled.id)){
+                if(visited[neighbour.id]){
+                    continue;
+                }
                 if((dist[polled.id] + neighbour.dist) < dist[neighbour.id]){
                     dist[neighbour.id] = dist[polled.id] + neighbour.dist;
                     pq.offer(new Node(neighbour.id, dist[neighbour.id]));
