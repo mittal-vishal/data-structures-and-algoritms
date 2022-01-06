@@ -30,6 +30,7 @@ public class FlightWithinKStops {
         int[] stops = new int[n];
         Arrays.fill(stops, Integer.MAX_VALUE);
         dist[src] = 0;
+        stops[src] = 0;
         PriorityQueue<Node> pq = new PriorityQueue<>((a,b) -> a.cost-b.cost);
         pq.offer(new Node(src, 0, 0));
         boolean[] visited = new boolean[n];
