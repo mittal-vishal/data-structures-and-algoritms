@@ -8,8 +8,8 @@ public class NumberOfClosedIslands {
             return 0;
         }
         int closedIslands = 0;
-        for(int i = 0; i < grid.length; i++){
-            for(int j = 0; j < grid[0]. length; j++){
+        for(int i = 1; i < grid.length - 1; i++){
+            for(int j = 1; j < grid[0]. length - 1; j++){
                 if(grid[i][j] == 0){
                     this.isClosed = true;
                     dfs(grid, i, j);
@@ -41,6 +41,13 @@ public class NumberOfClosedIslands {
             return true;
         }
         return false;
+    }
+
+    public static void main(String[] args) {
+        int[][] grid = {{1,1,1,1,1,1,1,0},{1,0,0,0,0,1,1,0},{1,0,1,0,1,1,1,0},{1,0,0,0,0,1,0,1},{1,1,1,1,1,1,1,0}};
+        NumberOfClosedIslands closedIslands = new NumberOfClosedIslands();
+        int islands = closedIslands.closedIsland(grid);
+        System.out.println(islands);
     }
 
 }
