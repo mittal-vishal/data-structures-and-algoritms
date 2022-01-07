@@ -7,54 +7,55 @@ import java.util.PriorityQueue;
 
 public class NetworkDelayTime {
 
-    static  class GraphNode{
-        int src;
-        int dest;
-        int cost;
-        public GraphNode(int src, int dest, int cost){
-            this.src = src;
-            this.dest = dest;
-            this.cost = cost;
+    static class Node{
+        int label;
+        int time;
+        public Node(int label, int time){
+            this.label = label;
+            this.time = time;
         }
     }
 
+
     public int networkDelayTime(int[][] times, int n, int k) {
-        if(times == null || times.length == 0){
+        if(times == null || times.length == 0 || k == -1){
             return -1;
         }
-        //build the graph
-        List<List<GraphNode>> adjList = new ArrayList<>();
-        for(int i = 0; i < n; i++){
-            adjList.add(new ArrayList<>());
-        }
-        for(int i = 0; i < times.length; i++){
-            int[] node = times[i];
-            adjList.get(node[0]-1).add(new GraphNode(node[0]-1, node[1]-1, node[2]));
-        }
-        //Disjkstra
-        PriorityQueue<GraphNode> pq = new PriorityQueue<>((a, b) -> a.cost - b.cost);
+        List<List<Node>> adjList = new ArrayList<>();
+        buildGraph(adjList, times, n);
+        PriorityQueue<Node> pq = new PriorityQueue<>((a, b)->a.time-b.time);
+        pq.offer(new Node(k-1, 0));
         int[] dist = new int[n];
         Arrays.fill(dist, Integer.MAX_VALUE);
         dist[k-1] = 0;
-        pq.add(new GraphNode(-1, k-1, 0));
         boolean[] visited = new boolean[n];
         while(!pq.isEmpty()){
-            GraphNode polledNode = pq.poll();
-            visited[polledNode.dest] = true;
-            List<GraphNode> neighbourList = adjList.get(polledNode.dest);
-            for(GraphNode neighbour: neighbourList){
-                if(!visited[neighbour.dest] && dist[neighbour.dest] > dist[polledNode.dest] + neighbour.cost){
-                    dist[neighbour.dest] = dist[polledNode.dest] + neighbour.cost;
-                    neighbour.cost = dist[neighbour.dest];
-                    pq.offer(neighbour);
+            Node curr = pq.poll();
+            visited[curr.label] = true;
+            for(Node neighbour: adjList.get(curr.label)){
+                if(!visited[neighbour.label] && (dist[curr.label] + neighbour.time) < dist[neighbour.label]){
+                    dist[neighbour.label] = dist[curr.label] + neighbour.time;
+                    pq.offer(new Node(neighbour.label, dist[neighbour.label]));
                 }
             }
         }
-        int max = -1;
-        for(int weight: dist){
-            max = Math.max(max, weight);
+        int delay = -1;
+        for(int distance: dist){
+            if(distance == Integer.MAX_VALUE){
+                return -1;
+            }
+            delay = Math.max(delay, distance);
         }
-        return max;
+        return delay;
+    }
+
+    private void buildGraph(List<List<Node>> adjList, int[][] times, int n){
+        for(int i = 0; i < n; i++){
+            adjList.add(new ArrayList<>());
+        }
+        for(int[] time: times){
+            adjList.get(time[0]-1).add(new Node(time[1]-1, time[2]));
+        }
     }
 
     public static void main(String[] args) {

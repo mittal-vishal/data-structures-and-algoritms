@@ -13,48 +13,53 @@ class ConnectingCitiesWithMinCost {
         System.out.println(minCost.minimumCost(n, connections));
     }
 
-    public static class Route{
-        int srcCity;
-        int city;
+    static class Route{
+        int src;
+        int dest;
         int cost;
-        public Route(int srcCity, int city, int cost){
-            this.srcCity = srcCity;
-            this.city = city;
+        public Route(int src, int dest, int cost){
+            this.src = src;
+            this.dest = dest;
             this.cost = cost;
         }
     }
 
     public int minimumCost(int n, int[][] connections) {
-        List<List<Route>> inputRouteList = new ArrayList<>();
-        for(int i = 0; i < n; i++){
-            inputRouteList.add(new ArrayList<>());
+        if(n == 0 || connections == null || connections.length == 0){
+            return -1;
         }
-        for(int i = 0; i < connections.length; i++){
-            int[] connection = connections[i];
-            inputRouteList.get(connection[0] - 1).add(new Route(connection[0] - 1, connection[1] - 1, connection[2]));
-            inputRouteList.get(connection[1] - 1).add(new Route(connection[1] - 1, connection[0] - 1, connection[2]));
-        }
-
-        PriorityQueue<Route> pq = new PriorityQueue<>((a, b) -> a.cost-b.cost);
-        pq.offer(new Route(-1, 0, 0));
+        List<List<Route>> adjList = new ArrayList<>();
+        //build graph
+        buildGraph(adjList, connections, n);
         boolean[] visited = new boolean[n];
+        PriorityQueue<Route> pq = new PriorityQueue<>((a,b) -> a.cost - b.cost);
+        pq.offer(new Route(-1, 0, 0));
         int minCost = 0;
         int totalCity = 0;
         while(!pq.isEmpty()){
-            Route polledRoute = pq.poll();
-            if(visited[polledRoute.city]){
+            Route curr = pq.poll();
+            if(visited[curr.dest]){
                 continue;
             }
             totalCity++;
-            visited[polledRoute.city] = true;
-            minCost += polledRoute.cost;
-            for(Route adjRoute: inputRouteList.get(polledRoute.city)){
-                if(!visited[adjRoute.city]){
-                    pq.offer(new Route(polledRoute.city, adjRoute.city, adjRoute.cost));
+            visited[curr.dest] = true;
+            minCost += curr.cost;
+            for(Route neighbour: adjList.get(curr.dest)){
+                if(!visited[neighbour.dest]){
+                    pq.offer(new Route(curr.dest, neighbour.dest, neighbour.cost));
                 }
             }
         }
-        minCost = totalCity == n ? minCost: -1;
-        return minCost;
+        return totalCity != n ? -1: minCost;
+    }
+
+    private void buildGraph(List<List<Route>> adjList, int[][] connections, int n){
+        for(int i = 0; i < n; i++){
+            adjList.add(new ArrayList<>());
+        }
+        for(int[] connection: connections){
+            adjList.get(connection[0] - 1).add(new Route(connection[0] - 1, connection[1] - 1, connection[2]));
+            adjList.get(connection[1] - 1).add(new Route(connection[1] - 1, connection[0] - 1, connection[2]));
+        }
     }
 }
