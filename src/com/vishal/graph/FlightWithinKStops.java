@@ -7,12 +7,16 @@ import java.util.PriorityQueue;
 
 public class FlightWithinKStops {
 
-    static class Node{
-        int city;
+    static class Flight{
+        int label;
         int cost;
         int stops;
-        public Node(int city, int cost, int stops){
-            this.city = city;
+        public Flight(int label, int cost){
+            this.label = label;
+            this.cost = cost;
+        }
+        public Flight(int label, int cost, int stops){
+            this.label = label;
             this.cost = cost;
             this.stops = stops;
         }
@@ -23,48 +27,43 @@ public class FlightWithinKStops {
             return -1;
         }
         //Build graph
-        List<List<Node>> adjList = new ArrayList<>();
-        buildGraph(adjList, flights, n);
+        List<List<Flight>> flightList = new ArrayList<>();
+        buildGraph(flightList, flights, n);
         int[] dist = new int[n];
         Arrays.fill(dist, Integer.MAX_VALUE);
         int[] stops = new int[n];
         Arrays.fill(stops, Integer.MAX_VALUE);
         dist[src] = 0;
         stops[src] = 0;
-        PriorityQueue<Node> pq = new PriorityQueue<>((a,b) -> a.cost-b.cost);
-        pq.offer(new Node(src, 0, 0));
-        boolean[] visited = new boolean[n];
+        PriorityQueue<Flight> pq = new PriorityQueue<>((a,b) -> a.cost-b.cost);
+        pq.offer(new Flight(src, 0, 0));
         while(!pq.isEmpty()){
-            Node current = pq.poll();
-            visited[current.city] = true;
-            if(current.city == dst){
-                return current.cost;
+            Flight curr = pq.poll();
+            if(curr.label == dst){
+                return curr.cost;
             }
-            if(current.stops > k){
+            if(curr.stops > k){
                 continue;
             }
-            for(Node neighbour: adjList.get(current.city)){
-                if(visited[neighbour.city]){
-                    continue;
+            for(Flight neighbour: flightList.get(curr.label)){
+                if((dist[curr.label] + neighbour.cost) < dist[neighbour.label]){
+                    dist[neighbour.label] = curr.cost + neighbour.cost;
+                    pq.offer(new Flight(neighbour.label, dist[neighbour.label], curr.stops + 1));
+                }else if(curr.stops < stops[neighbour.label]){
+                    pq.offer(new Flight(neighbour.label, curr.cost + neighbour.cost, curr.stops + 1));
                 }
-                if((dist[current.city] + neighbour.cost) < dist[neighbour.city]){
-                    dist[neighbour.city] = current.cost + neighbour.cost;
-                    pq.offer(new Node(neighbour.city, dist[neighbour.city], current.stops + 1));
-                }else if(current.stops < stops[neighbour.city]){
-                    pq.offer(new Node(neighbour.city, current.cost + neighbour.cost, current.stops + 1));
-                }
-                stops[neighbour.city] = current.stops;
+                stops[neighbour.label] = curr.stops;
             }
         }
         return dist[dst] == Integer.MAX_VALUE ? -1 : dist[dst];
     }
 
-    private void buildGraph(List<List<Node>> adjList, int[][] flights, int n){
+    private void buildGraph(List<List<Flight>> flightList, int[][] flights, int n){
         for(int i = 0; i < n; i++){
-            adjList.add(new ArrayList<>());
+            flightList.add(new ArrayList<>());
         }
         for(int [] flight: flights){
-            adjList.get(flight[0]).add(new Node(flight[1], flight[2], 0));
+            flightList.get(flight[0]).add(new Flight(flight[1], flight[2], 0));
         }
     }
 
