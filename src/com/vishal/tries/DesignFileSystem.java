@@ -2,7 +2,7 @@ package com.vishal.tries;
 
 public class DesignFileSystem {
 
-    class TrieNode{
+    static class TrieNode{
         TrieNode[] childrens;
         int value;
         public TrieNode(){
@@ -11,51 +11,54 @@ public class DesignFileSystem {
         }
     }
 
-    class FileSystem {
+    private TrieNode root;
 
-        private TrieNode root;
+    public DesignFileSystem() {
+        root = new TrieNode();
+    }
 
-        public FileSystem() {
-            root = new TrieNode();
-        }
-
-        public boolean createPath(String path, int value) {
-            TrieNode curr = root;
-            boolean isCreated = false;
-            for(int i = 0; i < path.length(); i++){
-                int index = path.charAt(i) != '/' ? path.charAt(i) - 'a': 26;
-                if(curr.childrens[index] == null){
-                    if(isCreated && index == 26){
-                        return false;
-                    }
-                    curr.childrens[index] = new TrieNode();
-                    isCreated = true;
-                }
-                if(i != 0 && index == 26 && curr.value == -1){
+    public boolean createPath(String path, int value) {
+        TrieNode curr = root;
+        boolean isCreated = false;
+        for(int i = 0; i < path.length(); i++){
+            int index = path.charAt(i) != '/' ? path.charAt(i) - 'a': 26;
+            if(curr.childrens[index] == null){
+                if(isCreated && index == 26){
                     return false;
                 }
-                curr = curr.childrens[index];
+                curr.childrens[index] = new TrieNode();
+                isCreated = true;
             }
-            if(curr.value == -1){
-                curr.value = value;
-                return true;
-            }else{
+            if(i != 0 && index == 26 && curr.value == -1){
                 return false;
             }
+            curr = curr.childrens[index];
         }
+        if(curr.value == -1){
+            curr.value = value;
+            return true;
+        }else{
+            return false;
+        }
+    }
 
-        public int get(String path) {
-            TrieNode curr = root;
-            for(int i = 0; i < path.length(); i++){
-                int index = path.charAt(i) != '/' ? path.charAt(i) - 'a': 26;
-                if(curr.childrens[index] != null){
-                    curr = curr.childrens[index];
-                }else{
-                    return -1;
-                }
+    public int get(String path) {
+        TrieNode curr = root;
+        for(int i = 0; i < path.length(); i++){
+            int index = path.charAt(i) != '/' ? path.charAt(i) - 'a': 26;
+            if(curr.childrens[index] != null){
+                curr = curr.childrens[index];
+            }else{
+                return -1;
             }
-            return curr.value;
         }
+        return curr.value;
+    }
+
+    public static void main(String[] args) {
+        DesignFileSystem fileSystem = new DesignFileSystem();
+        fileSystem.createPath("/a",1);
+        System.out.println(fileSystem.get("/a"));
     }
 
 }
