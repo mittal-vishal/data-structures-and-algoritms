@@ -2,6 +2,15 @@ package com.vishal.tries;
 
 class Trie {
 
+    static class Node{
+        Node[] childrens;
+        boolean isEnd;
+        Node(){
+            this.childrens = new Node[26];
+            this.isEnd = false;
+        }
+    }
+
     private Node root;
 
     public Trie() {
@@ -42,14 +51,5 @@ class Trie {
             curr = curr.childrens[currChar-'a'];
         }
         return true;
-    }
-}
-
-class Node{
-    Node[] childrens;
-    boolean isEnd;
-    Node(){
-        this.childrens = new Node[26];
-        this.isEnd = false;
     }
 }
