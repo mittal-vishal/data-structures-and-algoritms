@@ -23,8 +23,6 @@ public class LargestSubArrayStringWithKDistinctChars {
             if(occuranceMap.size() <= k){
                 char currentChar = s.charAt(right++);
                 occuranceMap.put(currentChar, occuranceMap.getOrDefault(currentChar, 0) + 1);
-            }
-            if(occuranceMap.size() <= k){
                 max = Math.max(max, (right-left));
             }
             //Shrink the window until condition satisfies
