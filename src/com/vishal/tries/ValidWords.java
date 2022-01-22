@@ -8,10 +8,6 @@ public class ValidWords {
         Map<Character,TrieNode> children;
         boolean isWord;
 
-        public TrieNode(char c){
-            children = new HashMap<>();
-        }
-
         public TrieNode(){
             children = new HashMap<>();
         }
@@ -67,7 +63,7 @@ public class ValidWords {
             TrieNode curr = root;
             for(char c : s.toCharArray()){
                 Map<Character,TrieNode> children = curr.children;
-                children.putIfAbsent(c,new TrieNode(c));
+                children.putIfAbsent(c,new TrieNode());
                 curr = children.get(c);
             }
             curr.isWord = true;
