@@ -9,9 +9,29 @@ public class GreenDistrict {
     private int electricityPending;
 
     public static void main(String[] args) {
-        int[] electricity = {2,2,1,2,2};
-        int X = 2;
-        int Y = 3;
+//        int[] electricity = {5, 3};
+//        int X = 2;
+//        int Y = 3;
+
+//        int[] electricity = {5, 1};
+//        int X = 1;
+//        int Y = 3;
+
+//        int[] electricity = {2,2,1,2,2};
+//        int X = 2;
+//        int Y = 3;
+
+//        int[] electricity = {5,3,8,3,2};
+//        int X = 2;
+//        int Y = 5;
+
+//        int[] electricity = {4,2,7};
+//        int X = 4;
+//        int Y = 100;
+
+        int[] electricity = {4,1,5,3};
+        int X = 5;
+        int Y = 2;
         GreenDistrict district = new GreenDistrict();
         int minCost = district.getMinCost(electricity, X, Y);
         System.out.println(minCost);
@@ -34,7 +54,8 @@ public class GreenDistrict {
             if(currUnit <= 0){
                 break;
             }
-            if(X >= Y || ((Y - X) < currUnit && electricityPending - (2*currUnit) >= 0 && maxPq.size() > 1)){
+            electricityPending -= currUnit;
+            if(X >= Y || ((Y - X) < currUnit && electricityPending > (Y-X))){
                 //Use type Y
                 cost += Y;
                 consumeElectricity(false);
