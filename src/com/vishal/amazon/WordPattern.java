@@ -5,23 +5,25 @@ import java.util.HashMap;
 public class WordPattern {
 
     public boolean wordPattern(String pattern, String s) {
-        String[] words = s.split(" ");
-        HashMap<Character, String> charStringMap = new HashMap<>();
-        HashMap<String, Character> stringCharMap = new HashMap<>();
-        if(pattern.length() != words.length){
+        HashMap<String, Character> strCharMap = new HashMap<>();
+        HashMap<Character, String> charStrMap = new HashMap<>();
+        String[] strArr = s.split(" ");
+        if(pattern.length() != strArr.length){
             return false;
         }
         for(int i = 0; i < pattern.length(); i++){
             char currChar = pattern.charAt(i);
-            if(!charStringMap.containsKey(currChar)){
-                charStringMap.put(currChar, words[i]);
-            }else if(!charStringMap.get(currChar).equals(words[i])){
+            String currWord = strArr[i];
+            if(!charStrMap.containsKey(currChar)){
+                charStrMap.put(currChar, currWord);
+            }
+            if(!strCharMap.containsKey(currWord)){
+                strCharMap.put(currWord, currChar);
+            }
+            if(!charStrMap.get(currChar).equals(currWord)){
                 return false;
             }
-            String currStr = words[i];
-            if(!stringCharMap.containsKey(currStr)){
-                stringCharMap.put(currStr, currChar);
-            }else if(stringCharMap.get(currStr) != currChar){
+            if(strCharMap.get(currWord) != currChar){
                 return false;
             }
         }
