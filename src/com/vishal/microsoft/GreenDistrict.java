@@ -1,12 +1,8 @@
 package com.vishal.microsoft;
 
-import java.util.PriorityQueue;
+import java.util.Arrays;
 
 public class GreenDistrict {
-
-    private PriorityQueue<Integer> maxPq;
-    private PriorityQueue<Integer> minPq;
-    private int electricityPending;
 
     public static void main(String[] args) {
         GreenDistrict district = new GreenDistrict();
@@ -62,65 +58,37 @@ public class GreenDistrict {
         int[] electricity8 = {30,10,2,7};
         int X8 = 2;
         int Y8 = 10;
-        //res = 3
+        //res = 8
         int minCost8 = district.getMinCost(electricity8, X8, Y8);
         System.out.println(minCost8);
 
+        int[] electricity9 = {10,10,2,7};
+        int X9 = 2;
+        int Y9 = 7;
+        //res = 8
+        int minCost9 = district.getMinCost(electricity9, X9, Y9);
+        System.out.println(minCost9);
     }
 
-    /*
-    * */
     private int getMinCost(int[] electricity, int X, int Y){
-        int cost = 0;
-        this.electricityPending = 0;
-        maxPq = new PriorityQueue<>((a,b) -> b - a);
-        minPq = new PriorityQueue<>();
-        //Adding all units in priority queue
+        int sum = 0;
         for(int unit: electricity){
-            maxPq.offer(unit);
-            minPq.offer(unit);
-            electricityPending += unit;
+            sum += unit;
         }
-        while(!maxPq.isEmpty()){
-            int currUnit = maxPq.peek();
-            if(currUnit <= 0){
-                break;
-            }
-            electricityPending -= currUnit;
-            if(X >= Y || ((Y - X) < currUnit && electricityPending > (Y-X))){
-                //Use type Y
-                cost += Y;
-                consumeElectricity(false);
-            }else{
-                //Use type X
-                cost += X;
-                consumeElectricity(true);
-            }
-        }
-        return cost;
+        Arrays.sort(electricity);
+        return getMinCost(electricity, X, Y, electricity.length - 1, sum);
     }
 
-    private void consumeElectricity(boolean isTypeX){
-        if(isTypeX){
-            int removeUnit = maxPq.poll();
-            minPq.remove(removeUnit);
-            electricityPending -= removeUnit;
-        }else{
-            int extraUnits = maxPq.poll();
-            minPq.remove(extraUnits);
-            while(extraUnits > 0 && !minPq.isEmpty()){
-                int removeUnit = minPq.poll();
-                maxPq.remove(removeUnit);
-                if(extraUnits >= removeUnit){
-                    extraUnits -= removeUnit;
-                    electricityPending -= removeUnit;
-                }else{
-                    minPq.offer(removeUnit - extraUnits);
-                    maxPq.offer(removeUnit - extraUnits);
-                    break;
-                }
-            }
+    private int getMinCost(int[] electricity, int x, int y, int i, int sum) {
+        if(i < 0){
+            return 0;
         }
+        if(sum <= 0){
+            return 0;
+        }
+        int selectX = x + getMinCost(electricity, x, y, i-1, sum-electricity[i]);
+        int selecty = y + getMinCost(electricity, x, y, i-1, sum-(2*electricity[i]));
+        return Math.min(selectX, selecty);
     }
 
 }
