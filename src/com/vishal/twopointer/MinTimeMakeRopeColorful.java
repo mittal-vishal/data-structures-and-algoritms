@@ -3,24 +3,25 @@ package com.vishal.twopointer;
 public class MinTimeMakeRopeColorful {
 
     public int minCost(String colors, int[] neededTime) {
+        int minCost = 0;
         int left = 0;
         int right = 1;
-        int totalTime = 0;
-
         while(right < colors.length()){
-            if(colors.charAt(left) == colors.charAt(right)){
-                if(neededTime[left] < neededTime[right]){
-                    totalTime += neededTime[left];
-                    left = right;
-                }else{
-                    totalTime += neededTime[right];
-                }
-            }else{
+            if(colors.charAt(left) != colors.charAt(right)){
                 left = right;
+                right++;
+            }else{
+                if(neededTime[left] < neededTime[right]){
+                    minCost += neededTime[left];
+                    left = right;
+                    right++;
+                }else{
+                    minCost += neededTime[right];
+                    right++;
+                }
             }
-            right = right + 1;
         }
-        return totalTime;
+        return minCost;
     }
 
 }
