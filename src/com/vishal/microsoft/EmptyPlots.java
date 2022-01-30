@@ -19,7 +19,7 @@ public class EmptyPlots {
         for(int i = 0; i < A.length; i++){
             for(int j = 0; j < A[0].length; j++){
                 //Add existing neighbours in target set
-                //so that we can remove, lookup in contant time
+                //so that we can remove, lookup in constant time
                 if(A[i][j] == 1){
                     targetSet.add(i + "," + j);
                 }else{
