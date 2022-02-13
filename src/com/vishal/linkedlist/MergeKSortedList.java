@@ -59,28 +59,29 @@ public class MergeKSortedList {
         if(lists == null || lists.length == 0){
             return null;
         }
-        if(lists.length == 1){
-            return lists[0];
-        }
         PriorityQueue<SinglyNode> pq = new PriorityQueue<>((a, b) -> a.data - b.data);
-        for(SinglyNode node: lists){
-            if(node != null){
-                pq.offer(node);
+        for(int i = 0; i < lists.length; i++){
+            if(lists[i] != null){
+                pq.offer(lists[i]);
             }
         }
-        SinglyNode dummy = new SinglyNode(-1);
-        SinglyNode curr = dummy;
+        SinglyNode curr = null;
+        SinglyNode start = null;
         while(!pq.isEmpty()){
-            SinglyNode topNode = pq.poll();
-            SinglyNode nextNode = topNode.next;
-            topNode.next = null;
-            curr.next = topNode;
-            curr = curr.next;
-            if(nextNode != null){
-                pq.offer(nextNode);
+            SinglyNode polled = pq.poll();
+            if(curr == null){
+                curr = polled;
+                start = curr;
+            }else{
+                curr.next = polled;
+                curr = curr.next;
+            }
+            polled = polled.next;
+            if(polled != null){
+                pq.offer(polled);
             }
         }
-        return dummy.next;
+        return start;
     }
 
 }

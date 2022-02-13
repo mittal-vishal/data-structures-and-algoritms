@@ -5,35 +5,26 @@ import java.util.*;
 public class MergeIntervals {
 
     public int[][] mergeOptimal(int[][] intervals) {
-        LinkedList<int[]> intervalList = new LinkedList<>();
         if(intervals == null || intervals.length == 0){
-            return new int[0][0];
+            return new int[][]{};
         }
-
-        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
-
-        intervalList.addLast(intervals[0]);
-
+        Arrays.sort(intervals, (a,b) -> a[0] - b[0]);
+        LinkedList<int[]> mergeIntervals = new LinkedList<>();
+        mergeIntervals.add(intervals[0]);
         for(int i = 1; i < intervals.length; i++){
-            int[] prevInterval = intervalList.removeLast();
-            int[] currInterval = intervals[i];
-            if(prevInterval[1] >= currInterval[0]){
-                prevInterval[0] = Math.min(prevInterval[0], currInterval[0]);
-                prevInterval[1] = Math.max(prevInterval[1], currInterval[1]);
-                intervalList.addLast(prevInterval);
+            int[] curr = intervals[i];
+            //If overlapping
+            if(curr[0] <= mergeIntervals.getLast()[1]){
+                mergeIntervals.getLast()[1] = Math.max(mergeIntervals.getLast()[1], curr[1]);
             }else{
-                intervalList.addLast(prevInterval);
-                intervalList.addLast(currInterval);
+                mergeIntervals.add(curr);
             }
         }
-
-        int[][] mergeIntervals = new int[intervalList.size()][2];
-        int index = 0;
-        for(int i = 0; i < intervalList.size(); i++){
-            mergeIntervals[index++] = intervalList.get(i);
+        int[][] res = new int[mergeIntervals.size()][2];
+        for(int i = 0; i < mergeIntervals.size(); i++){
+            res[i] = mergeIntervals.get(i);
         }
-
-        return mergeIntervals;
+        return res;
     }
 
     public int[][] merge(int[][] intervals) {
