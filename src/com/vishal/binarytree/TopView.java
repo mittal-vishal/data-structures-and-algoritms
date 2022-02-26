@@ -33,7 +33,7 @@ public class TopView {
 	}
 
 	private static void topView(TreeNode root) {
-		Map<Integer, List<DataNode>> map = new TreeMap<>();
+		TreeMap<Integer, List<DataNode>> map = new TreeMap<>();
 		
 		topView(root, 0, 0, map);
 		
@@ -52,17 +52,16 @@ public class TopView {
 		}
 	}
 
-	public static void topView(TreeNode root, int value, int level, Map<Integer, List<DataNode>> map) {
+	public static void topView(TreeNode root, int value, int level, TreeMap<Integer, List<DataNode>> map) {
         if (root != null) {
+			List<DataNode> list = null;
             if (map.containsKey(value)) {
-                List<DataNode> list = map.get(value);
-                list.add(new DataNode(root.val, level));
-                map.put(value, list);
+            	list = map.get(value);
             } else {
-            	List<DataNode> list = new LinkedList<>();
-                list.add(new DataNode(root.val, level));
-                map.put(value, list);
+            	list = new LinkedList<>();
             }
+			list.add(new DataNode(root.val, level));
+			map.put(value, list);
             if (root.left != null) {
                 topView(root.left, value - 1, level + 1, map);
             }

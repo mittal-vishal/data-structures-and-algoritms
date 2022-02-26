@@ -10,22 +10,18 @@ public class MinMeetingRoom {
             return 0;
         }
         Arrays.sort(intervals, (a,b) -> a[0] - b[0]);
-        PriorityQueue<int[]> meetingQueue = new PriorityQueue<>((a, b) -> a[1]-b[1]);
-
-        meetingQueue.offer(intervals[0]);
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a,b) -> a[1] - b[1]);
+        pq.offer(intervals[0]);
         for(int i = 1; i < intervals.length; i++){
-            int[] currentInterval = intervals[i];
-            int[] prevInterval = meetingQueue.poll();
-            if(prevInterval[1] <= currentInterval[0]){
-                prevInterval[1] = currentInterval[1];
-                meetingQueue.offer(prevInterval);
+            int[] curr = intervals[i];
+            if(pq.isEmpty() || curr[0] < pq.peek()[1]){
+                pq.offer(curr);
             }else{
-                meetingQueue.offer(prevInterval);
-                meetingQueue.offer(currentInterval);
+                pq.poll();
+                pq.offer(curr);
             }
         }
-
-        return meetingQueue.size();
+        return pq.size();
     }
 
 }

@@ -45,8 +45,7 @@ public class CycleDirectedGraph {
 				if(dfs(adj, visited, recStack, i)) {
 					return true;
 				}
-			}
-			else if(visited[i] && recStack[i]) {
+			} else if(visited[i] && recStack[i]) {
 				return true;
 			}
 		}

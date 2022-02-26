@@ -63,6 +63,48 @@ public class ThreeBanner {
         return profit;
     }
 
+    /*
+    int solution(int[] sizes, int[] prices, int[] requestedSize) {
+        int[][] requestedSizeArr = new int[requestedSize.length][2];
+        PriorityQueue<Pair<Integer, Integer>> pq = new PriorityQueue<Pair<Integer, Integer>>(prices.length, (a, b)->b.getKey()-a.getKey());
+
+        for(int i=0; i<requestedSize.length; i++) {
+            requestedSizeArr[i][0] = requestedSize[i]/10;
+            requestedSizeArr[i][1] = requestedSize[i]%10;
+            pq.add(new Pair(prices[i]*requestedSizeArr[i][0], i));
+        }
+
+        int totalProfit = 0;
+
+        while(!pq.isEmpty()) {
+            Pair pair = pq.poll();
+            int amount = (int) pair.getKey();
+            int index = (int) pair.getValue();
+
+            int shopQuantity = requestedSizeArr[index][0];
+            int shopBannerSize = requestedSizeArr[index][1];
+
+            int available = 0;
+            for(int i=shopBannerSize; i>=0; i--)
+                available += sizes[i];
+
+            if(available>=shopQuantity) {
+                totalProfit += amount;
+
+                for(int i=shopBannerSize; i>=0 && shopQuantity>0; i--) {
+                    while(sizes[i]>0 && shopQuantity>0) {
+                        sizes[i]--;
+                        shopQuantity--;
+                    }
+                }
+            }
+        }
+
+        return totalProfit;
+    }
+    */
+
+
     public static void main(String[] args) {
         int[] A = {1,2,3};
         int[] B = {4,5,6};

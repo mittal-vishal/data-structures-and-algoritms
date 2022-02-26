@@ -56,4 +56,25 @@ public class RoadPotholes {
         System.out.println(x);
     }
 
+    private static int solve(String[] strs) {
+        int l = strs[0].length();
+        int sum1 = 0, sum2 = 0;
+        for(int i=0;i<l;i++){
+            if(strs[0].charAt(i) == 'X')
+                sum1++;
+            if(strs[1].charAt(i) == 'X')
+                sum2++;
+        }
+        int tmp1 = 0, tmp2 = 0, min = Integer.MAX_VALUE;
+        for(int i=0;i<l;i++){
+            if(strs[0].charAt(i) == 'X')
+                tmp1++;
+            if(strs[1].charAt(i) == 'X')
+                tmp2++;
+            int change = Math.min(tmp1 + sum2 - tmp2 , tmp2 + sum1 - tmp1) + (strs[1].charAt(i) == 'X' ? 1 : 0) + (strs[0].charAt(i) == 'X' ? 1 : 0);
+            min = Math.min(min, Math.min(sum1, Math.min(sum2, change)));
+        }
+        return sum1 + sum2 - min;
+    }
+
 }

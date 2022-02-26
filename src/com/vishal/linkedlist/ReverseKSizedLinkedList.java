@@ -3,50 +3,38 @@ package com.vishal.linkedlist;
 public class ReverseKSizedLinkedList {
 
 	public SinglyNode reverseKGroup(SinglyNode head, int k) {
-		if(head == null || head.next == null || k == 1){
-			return head;
-		}
 		SinglyNode curr = head;
-		SinglyNode prev = head;
 		SinglyNode start = null;
-		SinglyNode justPrev = null;
-		SinglyNode kStart = null;
+		SinglyNode kStart = curr;
+		SinglyNode kPrev = curr;
 		SinglyNode temp = null;
 		int size = 0;
 		while(curr != null){
-			curr = curr.next;
 			size++;
+			curr = curr.next;
 		}
 		curr = head;
-
-		while(curr != null){
-
-			if(size >= k){
-
-				for(int i = 0; i < k; i++){
-					temp = curr.next;
-					curr.next = justPrev;
-					justPrev = curr;
-					curr = temp;
-				}
-
-				size -= k;
-
-				if(start == null){
-					start = justPrev;
-				}
-
-				if(kStart != null){
-					prev.next = justPrev;
-					prev = kStart;
-				}
-				kStart = curr;
-				justPrev = null;
-			}else{
-				prev.next = curr;
-				break;
+		size = size - (size % k);
+		for(int i = 0; i < size;){
+			SinglyNode prev = null;
+			for(int j = 0; j < k; j++){
+				//reverse K nodes
+				temp = curr.next;
+				curr.next = prev;
+				prev = curr;
+				curr = temp;
 			}
-
+			if(start == null){
+				start = prev;
+			}else{
+				kPrev.next = prev;
+				kPrev = kStart;
+			}
+			kStart = curr;
+			i += k;
+		}
+		if(kPrev != null){
+			kPrev.next = curr;
 		}
 		return start;
 	}
