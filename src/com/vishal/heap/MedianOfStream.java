@@ -1,42 +1,41 @@
 package com.vishal.heap;
 
-import java.util.Collections;
 import java.util.PriorityQueue;
 
 public class MedianOfStream {
+	private static PriorityQueue<Integer> leftMaxHeap;
+	private static PriorityQueue<Integer> rightMinHeap;
+
 
 	public static void main(String[] args) {
-		int a[] = { 25, 7, 10, 15, 20 };
-		find(a);
+		rightMinHeap = new PriorityQueue<>();
+		leftMaxHeap = new PriorityQueue<>((a,b) -> b-a);
+		addNum(1);
+		addNum(2);
+		System.out.println(findMedian());
+		addNum(3);
+		System.out.println(findMedian());
 	}
 
-	private static void find(int[] a) {
-		PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
-		PriorityQueue<Integer> minHeap = new PriorityQueue<>();
-		for (int i : a) {
-			if (maxHeap.size() <= minHeap.size()) {
-				if (maxHeap.isEmpty() || i < minHeap.peek()) {
-					maxHeap.add(i);
-				} else {
-					maxHeap.add(minHeap.poll());
-					minHeap.add(i);
-				}
-			} else {
-				if ((minHeap.isEmpty() && i < maxHeap.peek()) || ((!minHeap.isEmpty()) && i < minHeap.peek())) {
-					minHeap.add(maxHeap.poll());
-					maxHeap.add(i);
-				} else {
-					minHeap.add(i);
-				}
-			}
-			if ((minHeap.size() + maxHeap.size()) % 2 == 1) {
-				System.out.println(maxHeap.peek());
-			} else {
-				double median = (maxHeap.peek() + minHeap.peek()) / 2;
-				System.out.println(median);
-			}
+	public static void addNum(int num) {
+		if(leftMaxHeap.isEmpty() || num <= leftMaxHeap.peek()){
+			leftMaxHeap.add(num);
+		}else{
+			rightMinHeap.add(num);
 		}
-
+		if(leftMaxHeap.size() > rightMinHeap.size() + 1){
+			rightMinHeap.add(leftMaxHeap.poll());
+		}else if(rightMinHeap.size() > leftMaxHeap.size()){
+			leftMaxHeap.add(rightMinHeap.poll());
+		}
 	}
 
+	public static double findMedian() {
+		if(leftMaxHeap.size() == rightMinHeap.size()){
+			double median = (leftMaxHeap.peek() + rightMinHeap.peek()) / 2d;
+			return median;
+		}else{
+			return leftMaxHeap.peek();
+		}
+	}
 }

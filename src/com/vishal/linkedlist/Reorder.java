@@ -53,4 +53,57 @@ public class Reorder {
         return prev;
     }
 
+    public void reorderList1(SinglyNode head) {
+        if(head == null || head.next == null){
+            return;
+        }
+        int size = 0;
+        SinglyNode curr = head;
+        while(curr != null){
+            curr = curr.next;
+            size++;
+        }
+        if(size % 2 == 0){
+            size = size / 2;
+        }else{
+            size = (size / 2) + 1;
+        }
+        SinglyNode dummy = new SinglyNode(0);
+        dummy.next = head;
+        curr = dummy;
+        while(curr != null && size-- > 0){
+            curr = curr.next;
+        }
+        SinglyNode start2 = curr.next;
+        curr.next = null;
+        start2 = reverse(start2);
+        SinglyNode start1 = dummy.next;
+        SinglyNode temp1 = null;
+        SinglyNode temp2 = null;
+        while(start1 != null && start2 != null){
+            temp1 = start1.next;
+            start1.next = start2;
+            temp2 = start2.next;
+            start2.next = temp1;
+            start1 = temp1;
+            start2 = temp2;
+        }
+    }
+
+    private SinglyNode reverse1(SinglyNode head){
+        if(head == null || head.next == null){
+            return head;
+        }
+        SinglyNode curr = head;
+        SinglyNode prev = null;
+        SinglyNode temp = null;
+        while(curr != null){
+            temp = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = temp;
+        }
+        return prev;
+    }
+
 }

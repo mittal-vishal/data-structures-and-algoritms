@@ -1,11 +1,25 @@
 package com.vishal.walmart;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class TopKFrequent {
+
+    public int[] topKFrequentUsingHeap(int[] nums, int k) {
+        int[] result = new int[k];
+        PriorityQueue<Map.Entry<Integer, Integer>> maxHeap = new PriorityQueue<>((a, b) -> b.getValue() - a.getValue());
+        Map<Integer, Integer> occurances = new HashMap<>();
+        for(int i = 0; i < nums.length; i++){
+            occurances.put(nums[i], occurances.getOrDefault(nums[i], 0) + 1);
+        }
+        for(Map.Entry<Integer, Integer> entry: occurances.entrySet()){
+            maxHeap.offer(entry);
+        }
+        int index = 0;
+        while(k-- > 0){
+            result[index++] = maxHeap.poll().getKey();
+        }
+        return result;
+    }
 
     public int[] topKFrequent(int[] nums, int k) {
         int[] res = new int[k];
