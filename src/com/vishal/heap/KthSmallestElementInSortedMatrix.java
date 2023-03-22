@@ -2,30 +2,32 @@ package com.vishal.heap;
 
 import java.util.PriorityQueue;
 
-class MatrixElement{
-    int val;
-    int row;
-    int col;
-    public MatrixElement(int val, int row, int col){
-        this.val = val;
-        this.row = row;
-        this.col = col;
-    }
-}
-
 class KthSmallestElementInSortedMatrix {
-    public int kthSmallest(int[][] matrix, int k) {
-        PriorityQueue<MatrixElement> pq = new PriorityQueue<>((a, b) -> a.val - b.val);
-        for(int i = 0; i < matrix.length; i++){
-            pq.offer(new MatrixElement(matrix[i][0], i, 0));
+
+    class Element{
+        int row;
+        int col;
+        int val;
+        public Element(int row, int col, int val){
+            this.row = row;
+            this.col = col;
+            this.val = val;
         }
-        while(!pq.isEmpty() && k-- > 0){
-            MatrixElement lowestElement = pq.poll();
-            if(k == 0){
-                return lowestElement.val;
+    }
+
+    public int kthSmallest(int[][] matrix, int k) {
+        PriorityQueue<Element> pq = new PriorityQueue<>((a,b) -> a.val - b.val);
+        for(int i = 0; i < matrix.length; i++){
+            pq.offer(new Element(i, 0, matrix[i][0]));
+        }
+        while(!pq.isEmpty()){
+            Element polled = pq.poll();
+            if(k == 1){
+                return polled.val;
             }
-            if(matrix[0].length > lowestElement.col + 1){
-                pq.offer(new MatrixElement(matrix[lowestElement.row][lowestElement.col + 1], lowestElement.row, lowestElement.col + 1));
+            k--;
+            if((polled.col + 1) < matrix[0].length){
+                pq.offer(new Element(polled.row, polled.col+1, matrix[polled.row][polled.col+1]));
             }
         }
         return -1;

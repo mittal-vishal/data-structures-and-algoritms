@@ -1,16 +1,53 @@
 package com.vishal.heap;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.PriorityQueue;
-import java.util.Set;
 
 public class RearrangeChars {
 
     public static void main(String[] args) {
         String str = "geeksforgeeks";
         System.out.println(reArrange(str));
+    }
+
+    public String reorganizeString(String s) {
+        if(s == null || s.length() < 3){
+            return s;
+        }
+        Map<Character, Integer> charOccurances = new HashMap<>();
+        for(int i = 0; i < s.length(); i++){
+            char currChar = s.charAt(i);
+            charOccurances.put(currChar, charOccurances.getOrDefault(currChar, 0) + 1);
+        }
+        PriorityQueue<Map.Entry<Character, Integer>> pq = new PriorityQueue<>((a,b) -> b.getValue() - a.getValue());
+        for(Map.Entry<Character, Integer> entry: charOccurances.entrySet()){
+            pq.offer(entry);
+        }
+        StringBuilder result = new StringBuilder();
+        if(pq.size() == 1){
+            return "";
+        }
+        while(!pq.isEmpty()){
+            Map.Entry<Character, Integer> polledA = pq.poll();
+            //base case
+            if(pq.isEmpty() && polledA.getValue() > 1){
+                return "";
+            }else if(pq.isEmpty() && polledA.getValue() == 1){
+                result.append(polledA.getKey());
+                return result.toString();
+            }
+
+            Map.Entry<Character, Integer> polledB = pq.poll();
+            result.append(polledA.getKey());
+            result.append(polledB.getKey());
+            if(polledA.getValue() > 1){
+                pq.offer(new AbstractMap.SimpleEntry<>(polledA.getKey(), polledA.getValue() - 1));
+            }
+            if(polledB.getValue() > 1){
+                pq.offer(new AbstractMap.SimpleEntry<Character,Integer>(polledB.getKey(), polledB.getValue() - 1));
+            }
+        }
+        return result.toString();
     }
 
     public static boolean reArrange(String str) {

@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 
-class PointCustom{
+class Point{
     int x;
     int y;
     int dist;
-    public PointCustom(int x, int y, int dist){
+    public Point(int x, int y, int dist){
         this.x = x;
         this.y = y;
         this.dist = dist;
@@ -16,29 +16,22 @@ class PointCustom{
 }
 
 class KClosestPointsToOrigin {
-
-    class Point{
-        int x;
-        int y;
-        public Point(int x, int y){
-            this.x = x;
-            this.y = y;
-        }
-    }
-
-    public List<Point> findClosestPoints(Point[] points, int k) {
-        ArrayList<Point> result = new ArrayList<>();
-        PriorityQueue<PointCustom> minHeap = new PriorityQueue<>((a, b) -> b.dist - a.dist);
-        for (int i = 0; i < points.length; i++) {
-            int distFromOrigin = (points[i].x * points[i].x) + (points[i].y * points[i].y);
-            minHeap.offer(new PointCustom(points[i].x, points[i].y, distFromOrigin));
-            if (minHeap.size() > k) {
-                minHeap.poll();
+    public int[][] kClosest(int[][] points, int k) {
+        PriorityQueue<Point> pq = new PriorityQueue<>((a,b) -> b.dist - a.dist);
+        for(int i = 0; i < points.length; i++){
+            int distance = (points[i][0]*points[i][0]) + (points[i][1]*points[i][1]);
+            pq.offer(new Point(points[i][0], points[i][1], distance));
+            if(pq.size() > k){
+                pq.poll();
             }
         }
-        while (!minHeap.isEmpty()) {
-            PointCustom polledPoint = minHeap.poll();
-            result.add(new Point(polledPoint.x, polledPoint.y));
+        int[][] result = new int[k][2];
+        int index = 0;
+        while(!pq.isEmpty()){
+            Point polled = pq.poll();
+            result[index][0] = polled.x;
+            result[index][1] = polled.y;
+            index++;
         }
         return result;
     }
