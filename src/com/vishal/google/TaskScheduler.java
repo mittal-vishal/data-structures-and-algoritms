@@ -5,33 +5,29 @@ import java.util.*;
 public class TaskScheduler {
 
     public int leastInterval(char[] tasks, int n) {
-        if(tasks == null || tasks.length == 0){
-            return 0;
+        Map<Character, Integer> charOccurances = new HashMap<>();
+        for(int i = 0; i < tasks.length; i++){
+            char currChar = tasks[i];
+            charOccurances.put(currChar, charOccurances.getOrDefault(currChar, 0) + 1);
         }
-
-        Map<Character, Integer> taskFreqMap = new HashMap<>();
-        for(char task: tasks){
-            taskFreqMap.put(task, taskFreqMap.getOrDefault(task, 0) + 1);
-        }
-
-        PriorityQueue<Integer> taskQueue = new PriorityQueue<>((a, b) -> b - a);
-        taskQueue.addAll(taskFreqMap.values());
-        List<Integer> taskList = null;
-        int unit = 0;
-        while(!taskQueue.isEmpty()){
-            taskList = new ArrayList<>();
-            for(int i = 0; i < n+1 && (!taskQueue.isEmpty()); i++){
-                taskList.add(taskQueue.poll());
-            }
-            for(int freq: taskList){
-                if(--freq > 0){
-                    taskQueue.offer(freq);
+        PriorityQueue<Integer> pq = new PriorityQueue<>((a,b) -> b-a);
+        pq.addAll(charOccurances.values());
+        int units = 0;
+        while(!pq.isEmpty()){
+            List<Integer> queue = new ArrayList<>();
+            for(int i = 0; i < n+1; i++){
+                if(!pq.isEmpty()){
+                    queue.add(pq.poll());
                 }
             }
-            unit += ((!taskQueue.isEmpty()) ? (n + 1) : (taskList.size()));
+            for(int unit: queue){
+                if(--unit > 0){
+                    pq.offer(unit);
+                }
+            }
+            units += pq.isEmpty()? queue.size(): n+1;
         }
-        return unit;
-
+        return units;
     }
 
 }
