@@ -1,6 +1,6 @@
 package com.vishal.subarray;
 
-public class MinSubarrayWithSum {
+public class MinSubarraySumK {
 	public static void main(String[] args) {
 		int arr1[] = { 1, 5, 45, 6, 10, 19 };
 		int item = 51;

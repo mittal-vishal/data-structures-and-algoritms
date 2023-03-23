@@ -49,4 +49,13 @@ public class SingleThreadCPU {
         return result;
     }
 
+    public static void main(String[] args) {
+        SingleThreadCPU singleThreadCPU = new SingleThreadCPU();
+        int[][] tasks = {{1,2},{2,4},{3,2},{4,1}};
+        int[] res = singleThreadCPU.getOrder(tasks);
+        for(int i: res){
+            System.out.print(i + " ");
+        }
+    }
+
 }
