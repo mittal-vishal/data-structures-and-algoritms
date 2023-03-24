@@ -18,13 +18,13 @@ public class EmployeeFreeTime {
 
     static class EmployeeInterval{
         private Interval interval;
-        private int employee;
-        private int intervalOrder;
+        private int empIndex;
+        private int intervalIndex;
 
-        public EmployeeInterval(Interval interval, int employee, int intervalOrder){
+        public EmployeeInterval(Interval interval, int empIndex, int intervalIndex){
             this.interval = interval;
-            this.employee = employee;
-            this.intervalOrder = intervalOrder;
+            this.empIndex = empIndex;
+            this.intervalIndex = intervalIndex;
         }
     }
 
@@ -72,22 +72,22 @@ public class EmployeeFreeTime {
         Interval prevInterval = null;
 
         while(!sortedIntervalQueue.isEmpty()){
-            EmployeeInterval topEmpInterval = sortedIntervalQueue.poll();
+            EmployeeInterval currentInterval = sortedIntervalQueue.poll();
             if(prevInterval == null){
-                prevInterval = topEmpInterval.interval;
-            }else if(prevInterval.end < topEmpInterval.interval.start){
+                prevInterval = currentInterval.interval;
+            }else if(prevInterval.end < currentInterval.interval.start){
                 //Free Employee Interval
-                freeIntervals.add(new Interval(prevInterval.end, topEmpInterval.interval.start));
-                prevInterval = topEmpInterval.interval;
+                freeIntervals.add(new Interval(prevInterval.end, currentInterval.interval.start));
+                prevInterval = currentInterval.interval;
             }else {
                 //Overlap
-                topEmpInterval.interval.end = Math.max(topEmpInterval.interval.end, prevInterval.end);
-                prevInterval = topEmpInterval.interval;
+                currentInterval.interval.end = Math.max(currentInterval.interval.end, prevInterval.end);
+                prevInterval = currentInterval.interval;
             }
-            if(topEmpInterval.intervalOrder + 1 < schedule.get(topEmpInterval.employee).size()){
-                sortedIntervalQueue.offer(new EmployeeInterval(schedule.get(topEmpInterval.employee).
-                        get(topEmpInterval.intervalOrder + 1), topEmpInterval.employee,
-                        topEmpInterval.intervalOrder + 1));
+            if(currentInterval.intervalIndex + 1 < schedule.get(currentInterval.empIndex).size()){
+                sortedIntervalQueue.offer(new EmployeeInterval(schedule.get(currentInterval.empIndex).
+                        get(currentInterval.intervalIndex + 1), currentInterval.empIndex,
+                        currentInterval.intervalIndex + 1));
             }
         }
 

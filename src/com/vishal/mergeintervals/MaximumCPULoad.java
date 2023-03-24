@@ -20,18 +20,21 @@ class MaximumCPULoad {
         if(jobs == null || jobs.size() == 0){
             return 0;
         }
-        Collections.sort(jobs, (Job a, Job b) -> a.start - b.start);
-        PriorityQueue<Job> jobQueue = new PriorityQueue<>((Job a, Job b) -> a.end - b.end);
-        int currentLoad = 0, maxLoad = 0;
+        Collections.sort(jobs, (a,b) -> a.start-b.start);
+        PriorityQueue<Job> pq = new PriorityQueue<>((a,b) -> a.end-b.end);
+        int currLoadTime = 0;
+        int maxLoadTime = 0;
         for(int i = 0; i < jobs.size(); i++){
-            currentLoad += jobs.get(i).cpuLoad;
-            jobQueue.offer(jobs.get(i));
-            while(jobs.get(i).start > jobQueue.peek().end && (!jobQueue.isEmpty())){
-                currentLoad -= jobQueue.poll().cpuLoad;
+            Job curr = jobs.get(i);
+            while (!pq.isEmpty() && curr.start > pq.peek().end){
+                currLoadTime -= pq.peek().cpuLoad;
+                pq.remove();
             }
-            maxLoad = Math.max(maxLoad, currentLoad);
+            currLoadTime += curr.cpuLoad;
+            maxLoadTime = Math.max(maxLoadTime, currLoadTime);
+            pq.offer(curr);
         }
-        return maxLoad;
+        return maxLoadTime;
     }
 
     public static void main(String[] args) {

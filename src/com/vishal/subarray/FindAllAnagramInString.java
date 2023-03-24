@@ -3,7 +3,7 @@ package com.vishal.subarray;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FindAllAnagraminString {
+public class FindAllAnagramInString {
 
     public List<Integer> findAnagrams(String s, String p) {
         List<Integer> result = new ArrayList<>();
