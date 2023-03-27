@@ -10,27 +10,24 @@ public class LongestSubStringWithUniqueChars {
     }
 
     public static int findLength(String s) {
-        if(s == null || s.length() == 0){
-            return 0;
-        }
-        int left = 0, right = 0;
-        int max = Integer.MIN_VALUE;
-        Set<Character> charsSet = new HashSet<>();
+        Set<Character> uniques = new HashSet<>();
+        int left = 0;
+        int right = 0;
+        int result = 0;
         while(right < s.length()){
-            //Expand the window, untill cond satisfies
-            char currChar = s.charAt(right);
-            if(!charsSet.contains(currChar)){
-                charsSet.add(currChar);
-                right++;
-                max = Math.max(max, (right - left));
+            char ch = s.charAt(right++);
+            if(!uniques.contains(ch)){
+                uniques.add(ch);
             }else{
-                //Shrinking the window until cond satisfies
-                while(left < right && charsSet.contains(currChar)){
-                    charsSet.remove(s.charAt(left++));
+                while(uniques.contains(ch) && left < right){
+                    char removeChar = s.charAt(left++);
+                    uniques.remove(removeChar);
                 }
+                uniques.add(ch);
             }
+            result = Math.max(result, (right-left));
         }
-        return max;
+        return result;
     }
 
 }

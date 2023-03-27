@@ -12,29 +12,23 @@ public class LargestSubArrayStringWithKDistinctChars {
     }
 
     public static int findLength(String s, int k) {
-        if(s == null || s.length() == 0 || k == 0){
-            return 0;
-        }
-        int left = 0, right = 0;
-        int max = Integer.MIN_VALUE;
-        Map<Character, Integer> occuranceMap = new HashMap<>();
+        Map<Character, Integer> occurances = new HashMap<>();
+        int left = 0;
+        int right = 0;
+        int longest = 0;
         while(right < s.length()){
-            //Expand the window until condition satisfies
-            if(occuranceMap.size() <= k){
-                char currentChar = s.charAt(right++);
-                occuranceMap.put(currentChar, occuranceMap.getOrDefault(currentChar, 0) + 1);
-                max = Math.max(max, (right-left));
-            }
-            //Shrink the window until condition satisfies
-            if(occuranceMap.size() > k){
-                char removedChar = s.charAt(left++);
-                if(occuranceMap.get(removedChar) > 1){
-                    occuranceMap.put(removedChar, occuranceMap.get(removedChar) - 1);
+            char ch = s.charAt(right++);
+            occurances.put(ch, occurances.getOrDefault(ch, 0) + 1);
+            while(occurances.size() > k && left < right){
+                char removeChar = s.charAt(left++);
+                if(occurances.get(removeChar) > 1){
+                    occurances.put(removeChar, occurances.get(removeChar) - 1);
                 }else{
-                    occuranceMap.remove(removedChar);
+                    occurances.remove(removeChar);
                 }
             }
+            longest = Math.max(longest, (right-left));
         }
-        return max;
+        return longest;
     }
 }

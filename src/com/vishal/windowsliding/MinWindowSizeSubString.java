@@ -5,41 +5,46 @@ import java.util.Map;
 
 public class MinWindowSizeSubString {
 
-    public static String findSubstring(String str, String pattern) {
-        Map<Character, Integer> freqMap = new HashMap<>();
-        for(char ch: pattern.toCharArray()){
-            freqMap.put(ch, freqMap.getOrDefault(ch, 0) + 1);
+    public static String findSubstring(String s, String t) {
+        Map<Character,Integer> subOccurances = new HashMap<>();
+        int left = 0;
+        int right = 0;
+        for(int i = 0; i < t.length(); i++){
+            char ch = t.charAt(i);
+            subOccurances.put(ch, subOccurances.getOrDefault(ch, 0) + 1);
         }
-        String returnStr = "";
-        int start = 0, end = 0;
-        int matchedCount = 0;
-        while(end < str.length()){
-            //Expand the window until condition met
-            while(end < str.length() && matchedCount < freqMap.size()){
-                char rightChar = str.charAt(end++);
-                if(freqMap.containsKey(rightChar)){
-                    freqMap.put(rightChar, freqMap.get(rightChar) - 1);
-                    if(freqMap.get(rightChar) == 0){
-                        matchedCount++;
-                    }
+        Map<Character, Integer> strOccurances = new HashMap<>();
+        int maxLength = Integer.MAX_VALUE;
+        String result = "";
+        while(right < s.length()){
+            //expand
+            char ch = s.charAt(right++);
+            strOccurances.put(ch, strOccurances.getOrDefault(ch, 0) + 1);
+            //shrink
+            while(isSubset(subOccurances, strOccurances) && left < right){
+                char removeChar = s.charAt(left);
+                if(maxLength > (right-left)){
+                    maxLength = right-left;
+                    result = s.substring(left, right);
                 }
-            }
-            //Shrink the window with condition satisfied
-            while(start < end && matchedCount == freqMap.size()){
-                if(returnStr == "" || returnStr.length() > (end-start)){
-                    returnStr = str.substring(start, end);
+                if(strOccurances.get(removeChar) > 1){
+                    strOccurances.put(removeChar, strOccurances.get(removeChar) - 1);
+                }else{
+                    strOccurances.remove(removeChar);
                 }
-                char leftChar = str.charAt(start);
-                if(freqMap.containsKey(leftChar)){
-                    if(freqMap.get(leftChar) == 0){
-                        matchedCount--;
-                    }
-                    freqMap.put(leftChar, freqMap.get(leftChar) + 1);
-                }
-                start++;
+                left++;
             }
         }
-        return returnStr;
+        return result;
+    }
+
+    private static boolean isSubset(Map<Character, Integer> subOccurances, Map<Character, Integer> strOccurances){
+        for(Map.Entry<Character, Integer> entry: subOccurances.entrySet()){
+            if(!strOccurances.containsKey(entry.getKey()) || strOccurances.get(entry.getKey()) < entry.getValue()){
+                return false;
+            }
+        }
+        return true;
     }
 
 }

@@ -47,8 +47,8 @@ class SubarrayProductLessThanK {
     }
 
     public static void main(String[] args) {
-        int[] arr = {2, 5, 3, 10};
-        int target = 30;
+        int[] arr = {10,5,3,6};
+        int target = 100;
         System.out.print(findSubarrays(arr, target));
     }
 }
