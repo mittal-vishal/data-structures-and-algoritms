@@ -3,49 +3,30 @@ package com.vishal.twopointer;
 public class LongestMountain {
 
     public int longestMountain(int[] arr) {
-        int left = 0;
-        int right = 1;
-        int longestMountainSize = 0;
-        boolean isIncl = true;
-        boolean isDecl = false;
-        int declStart = -1;
-        int declSize = -1;
-        while(right < arr.length){
-            if(isIncl){
-                if(arr[right] > arr[right-1]){
-                    right++;
-                }else{
-                    int inclSize = right - left - 1;
-                    if(inclSize > 0){
-                        isDecl = true;
-                        declStart = right - 1;
-                        isIncl = false;
-                    }else{
-                        left = right++;
-                    }
-                }
+        int result = 0;
+        int n = arr.length;
+        for(int i = 1; i < n; i++){
+            int j = i;
+            int count = 1;
+            boolean isDecl = false;
+            //increasing
+            while(j < n && arr[j] > arr[j-1]){
+                count++;
+                j++;
             }
-            if(isDecl){
-                if(right < arr.length && arr[right] < arr[right - 1]){
-                    right++;
-                }else{
-                    declSize = right - declStart - 1;
-                    if(declSize > 0 && !isIncl){
-                        isIncl = true;
-                        longestMountainSize = Math.max(longestMountainSize, right - left);
-                    }
-                    left = right - 1;
-                    isIncl = true;
-                    isDecl = false;
-                }
+            //decreasing
+            while(i != j && j < n && arr[j] < arr[j-1]){
+                count++;
+                j++;
+                isDecl = true;
             }
+            if(count >= 3 && isDecl){
+                result = Math.max(result, count);
+                j--;
+            }
+            i = j;
         }
-        declSize = right - declStart;
-        if(declSize > 0 && !isIncl){
-            isIncl = true;
-            longestMountainSize = Math.max(longestMountainSize, right - left);
-        }
-        return longestMountainSize;
+        return result;
     }
 
 }

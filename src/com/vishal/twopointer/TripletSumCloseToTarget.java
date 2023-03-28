@@ -4,29 +4,28 @@ import java.util.Arrays;
 
 class TripletSumCloseToTarget {
 
-    public static int searchTriplet(int[] arr, int targetSum) {
-        Arrays.sort(arr);
-        int left = -1, right = -1;
+    public static int searchTriplet(int[] nums, int target) {
+        Arrays.sort(nums);
+        int tripletSum = 0;
         int closest = Integer.MAX_VALUE;
-        int sum = 0;
-        for(int i = 0; i < arr.length - 2; i++){
-            left = i + 1;
-            right = arr.length - 1;
+        for(int i = 0; i < nums.length - 2; i++){
+            int left = i+1;
+            int right = nums.length - 1;
             while(left < right){
-                sum = arr[i] + arr[left] + arr[right];
-                if(sum == targetSum){
-                    return sum;
+                tripletSum = nums[i] + nums[left] + nums[right];
+                if(tripletSum == target){
+                    return tripletSum;
                 }
-                if(Math.abs(sum - targetSum) < closest){
-                    closest = Math.abs(sum - targetSum);
+                if(Math.abs(target - tripletSum) < Math.abs(closest)){
+                    closest = target - tripletSum;
                 }
-                if(sum < targetSum){
+                if(tripletSum < target){
                     left++;
                 }else{
                     right--;
                 }
             }
         }
-        return targetSum - closest;
+        return target - closest;
     }
 }

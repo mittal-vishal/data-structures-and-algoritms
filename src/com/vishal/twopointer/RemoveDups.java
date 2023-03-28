@@ -2,18 +2,14 @@ package com.vishal.twopointer;
 
 public class RemoveDups {
 
-    public static int remove(int[] arr) {
-        if(arr == null || arr.length == 0){
-            return 0;
-        }
-        int i = 1, nonDupIdx = 0;
-        while(i < arr.length){
-            if(arr[i] != arr[i-1]){
-                arr[nonDupIdx++] = arr[i];
+    public static int remove(int[] nums) {
+        int index = 1;
+        for(int i = 1; i < nums.length; i++){
+            if(nums[i] != nums[i-1]){
+                nums[index++] = nums[i];
             }
-            i++;
         }
-        return nonDupIdx + 1;
+        return index;
     }
 
     public static void main(String[] args) {
