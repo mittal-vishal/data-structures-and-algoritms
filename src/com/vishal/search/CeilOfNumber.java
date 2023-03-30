@@ -3,22 +3,28 @@ package com.vishal.search;
 class CeilOfNumber {
 
     public static int searchCeilingOfANumber(int[] arr, int key) {
-        int start = 0;
+        int beg = 0;
         int end = arr.length-1;
-        int ceil = -1;
-        while(start <= end){
-            int mid = start + (end - start)/2;
-            if(arr[mid] == key){
-                ceil = mid;
-                break;
-            }else if(key > arr[mid]){
-                start = mid+1;
+        if(key > arr[end]){
+            return -1;
+        }else if(key < arr[beg]){
+            return beg;
+        }
+        while(beg <= end){
+            int mid = beg + (end-beg)/2;
+            if(key == arr[mid]){
+                return mid;
+            }
+            if(key > arr[mid-1] && key < arr[mid]){
+                return mid;
+            }
+            if(key > arr[mid]){
+                beg = mid + 1;
             }else{
-                ceil = mid;
                 end = mid - 1;
             }
         }
-        return ceil;
+        return -1;
     }
 
     public static void main(String[] args) {

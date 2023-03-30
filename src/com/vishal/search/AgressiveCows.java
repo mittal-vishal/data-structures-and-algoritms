@@ -1,28 +1,21 @@
 package com.vishal.search;
 
+import java.util.Arrays;
+
 public class AgressiveCows {
 
     public static void main(String[] args) {
-        int[] stalls = {1,2,4,8,9};
+        int[] stalls = {10, 1, 2, 7, 5};
         int k = 3;
         AgressiveCows cows = new AgressiveCows();
-        int minDist = cows.findMaxDistance(stalls, k);
+        int minDist = cows.findMaxDistance(stalls, stalls.length, k);
         System.out.print(minDist);
     }
 
-    private int findMaxDistance(int[] stalls, int k) {
+    private int findMaxDistance(int[] stalls, int n, int k) {
+        Arrays.sort(stalls);
         int low = 1;
-        int maxPos = stalls[0];
-        int minPos = stalls[0];
-        for(int i = 1; i < stalls.length; i++){
-            if(stalls[i] > maxPos){
-                maxPos = stalls[i];
-            }
-            if(stalls[i] < minPos){
-                minPos = stalls[i];
-            }
-        }
-        int high = maxPos - minPos;
+        int high = stalls[n-1] - stalls[0];
         int max = 1;
         while(low <= high){
             int guess = low + (high - low)/2;

@@ -5,37 +5,39 @@ import java.util.Arrays;
 public class MagneticForceBetweenTwoBalls {
 
     public int maxDistance(int[] position, int m) {
-        int minF = 1;
         Arrays.sort(position);
-        int maxF = position[position.length - 1] - position[0];
-        int max = 1;
-
-        while(minF <= maxF){
-            int mid = minF + (maxF-minF)/2;
-            if(isPossible(position, m, mid)){
-                max = Math.max(max, mid);
-                minF = mid + 1;
+        int n = position.length;
+        int beg = 1;
+        int end = position[n-1] - position[0];
+        int result = 0;
+        while(beg <= end){
+            int guess = beg + (end - beg)/2;
+            if(isPossible(position, n , m , guess)){
+                result = Math.max(result, guess);
+                beg = guess + 1;
             }else{
-                maxF = mid - 1;
+                end = guess - 1;
             }
         }
-
-        return max;
+        return result;
     }
 
-    private boolean isPossible(int[] position, int m, int guess){
-        int currBallsCount = 1;
-        int prevPos = 0;
-        for(int i = 1; i < position.length; i++){
-            if(position[i] - position[prevPos] >= guess){
-                currBallsCount++;
-                if(currBallsCount == m){
-                    return true;
-                }
-                prevPos = i;
+    private boolean isPossible(int[] position, int n, int m, int guess){
+        int i = 0;
+        int j = 1;
+        m--;
+        while(j < n){
+            if(position[j] - position[i] >= guess){
+                i = j;
+                m--;
             }
+            j++;
         }
-        return false;
+        if(m > 0){
+            return false;
+        }else{
+            return true;
+        }
     }
 
 }
