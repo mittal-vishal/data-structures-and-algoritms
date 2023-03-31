@@ -4,32 +4,40 @@ import java.util.List;
 
 public class LongestWordInDictionaryAfterDeleting {
 
-	public static String findLongestWord(String s, List<String> d) {
-		String resStr = "";
-		for (String str : d) {
-			if (isSubSequence(str, s)) {
-				if (str.length() > resStr.length()) {
-					resStr = str;
-				} else if (str.length() == resStr.length()) {
-					resStr = resStr.compareTo(str) < 0 ? resStr : str;
+	public String findLongestWord(String s, List<String> dictionary) {
+		int maxLen = 0;
+		String result = "";
+		for(String dicWord: dictionary){
+			if(isExist(s, dicWord)){
+				if(dicWord.length() > maxLen){
+					maxLen = dicWord.length();
+					result = dicWord;
+				}else if(dicWord.length() == maxLen){
+					if(dicWord.compareTo(result) < 0){
+						result = dicWord;
+					}
 				}
 			}
 		}
-		return resStr;
+		return result;
 	}
 
-	private static boolean isSubSequence(String word, String str) {
-		int wordStartI = 0;
-		int strStartI = 0;
-		while (wordStartI < word.length() && strStartI < str.length()) {
-			if (word.charAt(wordStartI) == str.charAt(strStartI)) {
-				wordStartI++;
-				strStartI++;
-			} else {
-				strStartI++;
+	private boolean isExist(String s, String dicWord){
+		int i = 0;
+		int j = 0;
+		while(i < s.length() && j < dicWord.length()){
+			if(s.charAt(i) == dicWord.charAt(j)){
+				i++;
+				j++;
+			}else{
+				i++;
 			}
 		}
-		return wordStartI == word.length();
+		if(j == dicWord.length()){
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 }

@@ -3,7 +3,7 @@ package com.vishal.string;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AtivateDeactivateNeighbours {
+public class ActivateDeactivateNeighbours {
 
 	public static void main(String[] args) {
 		int[] states = {1,1,1,0,1,1,1,1};
