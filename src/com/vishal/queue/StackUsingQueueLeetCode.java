@@ -16,7 +16,7 @@ public class StackUsingQueueLeetCode {
     /** Push element x onto stack. */
     public void push(int x) {
         while(!origQ.isEmpty()){
-            tempQ.add(tempQ.poll());
+            tempQ.add(origQ.poll());
         }
         origQ.add(x);
         while(!tempQ.isEmpty()){
