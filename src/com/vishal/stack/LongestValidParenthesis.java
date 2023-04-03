@@ -4,7 +4,11 @@ import java.util.Stack;
 
 public class LongestValidParenthesis {
 
-    public int longestValidParentheses(String s) {
+    public static void main(String[] args) {
+        System.out.println(longestValidParentheses("()(())"));
+    }
+
+    public static int longestValidParentheses(String s) {
         Stack<Integer> stack = new Stack<>();
         stack.push(-1);
         int longestLen = 0;

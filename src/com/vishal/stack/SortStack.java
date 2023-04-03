@@ -4,6 +4,25 @@ import java.util.Stack;
 
 public class SortStack {
 
+    private void sortStack(Stack<Integer> s){
+        if(s.size() == 1){
+            return;
+        }
+        int top = s.pop();
+        sortStack(s);
+        insert(s, top);
+    }
+
+    private void insert(Stack<Integer> s, int element){
+        if(s.isEmpty() || element >= s.peek()){
+            s.push(element);
+            return;
+        }
+        int popped = s.pop();
+        insert(s, element);
+        s.push(popped);
+    }
+
     public static Stack<Integer> sort(Stack<Integer> stack){
         Stack<Integer> tempStack = new Stack<>();
         int temp;

@@ -4,45 +4,45 @@ import java.util.Arrays;
 
 public class KStack {
 
-    int[] stack;
-    int[] top;
-    int[] next;
-    int free;
-    int k;
+    private int[] stack;
+    private int[] top;
+    private int[] next;
+    private int freeSpot;
 
-    public KStack(int size, int k){
-        stack = new int[size];
-        this.k = k;
-        free = 0;
+    public KStack(int capacity, int k){
+        stack = new int[capacity];
         top = new int[k];
-        next = new int[size];
+        next = new int[capacity];
         Arrays.fill(top, -1);
-        for(int i = 0; i < (size - 1); i++){
-            next[i] = i + 1;
+        for(int i = 0; i < capacity - 1; i++){
+            next[i] = i+1;
         }
-        next[size - 1] = -1;
+        next[capacity - 1] = -1;
+        freeSpot = 0;
     }
 
-    public void push(int item, int n){
-        if(next[free] == -1){
+    private void push(int item, int n){
+        if(freeSpot == -1){
             System.out.println("Overflow");
+            return;
         }
-        int i = free;
-        free = next[free];
-        next[i] = top[n - 1];
-        top[n - 1] = i;
-        stack[free] = item;
+        int index = freeSpot;
+        stack[index] = item;
+        freeSpot = next[index];
+        next[index] = top[n-1];
+        top[n-1] = index;
     }
 
-    public int pop(int n){
-        if(top[n - 1] == -1){
+    private int pop(int n){
+        if(top[n-1] == -1){
             System.out.println("Underflow");
+            return -1;
         }
-        int i = top[n - 1];
-        top[n - 1] = next[i];
-        next[i] = free;
-        free = i;
-        return stack[i];
+        int index = top[n-1];
+        top[n-1] = next[index];
+        next[index] = freeSpot;
+        freeSpot = index;
+        return stack[index];
     }
 
 }

@@ -2,29 +2,30 @@ package com.vishal.stack;
 
 import java.util.Stack;
 
-class StackNode{
-    int data;
-    int min;
-    public StackNode(int data, int min){
-        this.data = data;
-        this.min = min;
-    }
-}
-
 class MinStack {
 
-    Stack<StackNode> stack;
+    class StackNode{
+        int val;
+        int min;
+        public StackNode(int val){
+            this.val = val;
+        }
+    }
+
+    private Stack<StackNode> stack;
+
     public MinStack() {
-        this.stack = new Stack<>();
+        stack = new Stack<>();
     }
 
     public void push(int val) {
+        StackNode stackNode = new StackNode(val);
         if(stack.isEmpty()){
-            stack.push(new StackNode(val, val));
+            stackNode.min = val;
         }else{
-            int min = Math.min(val, stack.peek().min);
-            stack.push(new StackNode(val, min));
+            stackNode.min = Math.min(stack.peek().min, val);
         }
+        stack.push(stackNode);
     }
 
     public void pop() {
@@ -34,10 +35,18 @@ class MinStack {
     }
 
     public int top() {
-        return (!stack.isEmpty()) ? stack.peek().data: -1;
+        if(!stack.isEmpty()){
+            return stack.peek().val;
+        }else{
+            return -1;
+        }
     }
 
     public int getMin() {
-        return (!stack.isEmpty()) ? stack.peek().min: Integer.MAX_VALUE;
+        if(!stack.isEmpty()){
+            return stack.peek().min;
+        }else{
+            return -1;
+        }
     }
 }

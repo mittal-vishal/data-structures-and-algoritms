@@ -7,8 +7,8 @@ import java.util.Stack;
 public class ValidParenthesisAfterDeletion {
 
     public String minRemoveToMakeValid(String s) {
+        Set<Integer> unwantedChars = new HashSet<>();
         Stack<Integer> stack = new Stack<>();
-        Set<Integer> deletedCharsSet = new HashSet<>();
         for(int i = 0; i < s.length(); i++){
             if(s.charAt(i) == '('){
                 stack.push(i);
@@ -16,21 +16,20 @@ public class ValidParenthesisAfterDeletion {
                 if(!stack.isEmpty()){
                     stack.pop();
                 }else{
-                    deletedCharsSet.add(i);
+                    unwantedChars.add(i);
                 }
             }
         }
         while(!stack.isEmpty()){
-            deletedCharsSet.add(stack.pop());
+            unwantedChars.add(stack.pop());
         }
-
-        StringBuilder result = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         for(int i = 0; i < s.length(); i++){
-            if(!deletedCharsSet.contains(i)){
-                result.append(s.charAt(i));
+            if(!unwantedChars.contains(i)){
+                sb.append(s.charAt(i));
             }
         }
-        return result.toString();
+        return sb.toString();
     }
 
 }

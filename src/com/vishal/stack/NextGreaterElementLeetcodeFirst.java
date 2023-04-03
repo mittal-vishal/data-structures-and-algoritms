@@ -1,31 +1,30 @@
 package com.vishal.stack;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 public class NextGreaterElementLeetcodeFirst {
 
     public int[] nextGreaterElementOptimal(int[] nums1, int[] nums2) {
         Stack<Integer> stack = new Stack<>();
-        HashMap<Integer, Integer> nextGreaterEleMap = new HashMap<>();
-        for(int i = nums2.length - 1; i >= 0; i--){
-            while(!stack.isEmpty() && nums2[i] > stack.peek()){
+        Map<Integer,Integer> nextGreaterElements = new HashMap<>();
+        for(int i = nums2.length-1; i >= 0; i--){
+            int currNum = nums2[i];
+            while(!stack.isEmpty() && currNum >= stack.peek()){
                 stack.pop();
             }
-            if(!stack.isEmpty()){
-                nextGreaterEleMap.put(nums2[i], stack.peek());
+            if(stack.isEmpty()){
+                nextGreaterElements.put(currNum, -1);
             }else{
-                nextGreaterEleMap.put(nums2[i], -1);
+                nextGreaterElements.put(currNum, stack.peek());
             }
-            stack.push(nums2[i]);
+            stack.push(currNum);
         }
         int[] res = new int[nums1.length];
+        int index = 0;
         for(int i = 0; i < nums1.length; i++){
-            if(nextGreaterEleMap.containsKey(nums1[i])){
-                res[i] = nextGreaterEleMap.get(nums1[i]);
-            }else{
-                res[i] = -1;
-            }
+            res[index++] = nextGreaterElements.get(nums1[i]);
         }
         return res;
     }

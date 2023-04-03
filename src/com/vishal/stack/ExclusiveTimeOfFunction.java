@@ -5,34 +5,37 @@ import java.util.Stack;
 
 public class ExclusiveTimeOfFunction {
 
-    static class Log{
+    class Log{
         int id;
-        int start;
-        int childTime;
-        public Log(int id, int start){
-            this.id = id;
-            this.start = start;
+        boolean isStart;
+        int ts;
+        public Log(String[] logs){
+            this.id = Integer.valueOf(logs[0]);
+            this.isStart = logs[1].equals("start");
+            this.ts = Integer.valueOf(logs[2]);
         }
     }
 
     public int[] exclusiveTime(int n, List<String> logs) {
-        Stack<Log> logStack = new Stack<>();
-        int[] times = new int[n];
-        for(int i = 0; i < logs.size(); i++){
-            String[] currLog = logs.get(i).split("\\:");
-            if(currLog[1].equals("start")){
-                Log currentLog = new Log(Integer.parseInt(currLog[0]), Integer.parseInt(currLog[2]));
-                logStack.push(currentLog);
-            }else{
-                Log poppedLog = logStack.pop();
-                int interval = Integer.parseInt(currLog[2]) - poppedLog.start + 1;
-                times[poppedLog.id] += (interval - poppedLog.childTime);
-                if(!logStack.isEmpty()){
-                    logStack.peek().childTime += interval;
+        int[] time = new int[n];
+        Stack<Log> stack = new Stack<>();
+        int prevLogTime = 0;
+        for(String log: logs){
+            Log currentLog = new Log(log.split(":"));
+            if(currentLog.isStart){
+                if(!stack.isEmpty()){
+                    Log prevLog = stack.peek();
+                    time[prevLog.id] += currentLog.ts - prevLogTime;
                 }
+                prevLogTime = currentLog.ts;
+                stack.push(currentLog);
+            }else{
+                time[currentLog.id] += currentLog.ts - prevLogTime + 1;
+                prevLogTime = currentLog.ts + 1;
+                stack.pop();
             }
         }
-        return times;
+        return time;
     }
 
 }

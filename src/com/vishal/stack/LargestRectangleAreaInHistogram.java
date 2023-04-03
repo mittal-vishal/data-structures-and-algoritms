@@ -4,58 +4,61 @@ import java.util.Stack;
 
 public class LargestRectangleAreaInHistogram {
 
+    public static void main(String[] args) {
+        LargestRectangleAreaInHistogram histogram = new LargestRectangleAreaInHistogram();
+        int[] heights = {2,1,5,6,2,3};
+        int area = histogram.largestRectangleArea(heights);
+        System.out.println(area);
+    }
+
     public int largestRectangleArea(int[] heights) {
-        if(heights == null || heights.length == 0){
-            return 0;
-        }
-        int[] rb = getNextSmallestFromRight(heights);
-        int[] lb = getNextSmallestFromLeft(heights);
-
+        int n = heights.length;
+        //stores next smaller element index from right
+        int[] right = new int[n];
+        //store next smaller element index from left
+        int[] left = new int[n];
+        getNextSmallerElementFromRight(heights, right);
+        getNextSmallerElementFromLeft(heights, left);
         int maxArea = 0;
-        for(int i = 0; i < heights.length; i++){
-            int currentArea = (rb[i] - lb[i] - 1) * heights[i];
-            maxArea = Math.max(maxArea, currentArea);
+        for(int i = 0; i < n; i++){
+            int currArea = (right[i] - left[i] - 1) * heights[i];
+            maxArea =  Math.max(maxArea, currArea);
         }
-
         return maxArea;
     }
 
-    private int[] getNextSmallestFromRight(int[] heights){
+    private void getNextSmallerElementFromRight(int[] heights, int[] right){
         int n = heights.length;
         Stack<Integer> stack = new Stack<>();
-        int[] rb = new int[n];
-
         for(int i = n-1; i >= 0; i--){
-            while(!stack.isEmpty() && heights[stack.peek()] >= heights[i]){
+            int currHeight = heights[i];
+            while(!stack.isEmpty() && currHeight <= heights[stack.peek()]){
                 stack.pop();
             }
             if(stack.isEmpty()){
-                rb[i] = n;
+                right[i] = n;
             }else{
-                rb[i] = stack.peek();
+                right[i] = stack.peek();
             }
             stack.push(i);
         }
-        return rb;
     }
 
-    private int[] getNextSmallestFromLeft(int[] heights){
+    private void getNextSmallerElementFromLeft(int[] heights, int[] left){
         int n = heights.length;
         Stack<Integer> stack = new Stack<>();
-        int[] lb = new int[n];
-
         for(int i = 0; i < n; i++){
-            while(!stack.isEmpty() && heights[stack.peek()] >= heights[i]){
+            int currHeight = heights[i];
+            while(!stack.isEmpty() && currHeight <= heights[stack.peek()]){
                 stack.pop();
             }
             if(stack.isEmpty()){
-                lb[i] = -1;
+                left[i] = -1;
             }else{
-                lb[i] = stack.peek();
+                left[i] = stack.peek();
             }
             stack.push(i);
         }
-        return lb;
     }
 
 }

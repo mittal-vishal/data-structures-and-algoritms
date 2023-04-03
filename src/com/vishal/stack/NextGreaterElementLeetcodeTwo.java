@@ -6,23 +6,22 @@ public class NextGreaterElementLeetcodeTwo {
 
     public int[] nextGreaterElements(int[] nums) {
         int n = nums.length;
-        int res[] = new int[n];
+        int[] result = new int[n];
         Stack<Integer> stack = new Stack<>();
-
+        int index = n-1;
         for(int i = 2*n-1; i >= 0; i--){
-            while(!stack.isEmpty() && nums[i%n] >= stack.peek()){
+            int currNum = nums[i%n];
+            while(!stack.isEmpty() && currNum >= stack.peek()){
                 stack.pop();
             }
-            if(i < n){
-                if(!stack.isEmpty()){
-                    res[i] = stack.peek();
-                }else{
-                    res[i] = -1;
-                }
+            if(stack.isEmpty() && i < n){
+                result[index--] = -1;
+            }else if(i < n){
+                result[index--] = stack.peek();
             }
-            stack.push(nums[i%n]);
+            stack.push(currNum);
         }
-        return res;
+        return result;
     }
 
 }

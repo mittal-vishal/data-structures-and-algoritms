@@ -1,59 +1,60 @@
 package com.vishal.stack;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 import java.util.TreeSet;
 
 class DinnerPlates {
 
-    ArrayList<Stack> stackList;
-    int capacity;
-    TreeSet<Integer> pushSet;
-    TreeSet<Integer> popSet;
+    private List<Stack<Integer>> stacks;
+    private TreeSet<Integer> pushSet;
+    private TreeSet<Integer> popSet;
+    private int capacity;
 
     public DinnerPlates(int capacity) {
         this.capacity = capacity;
-        stackList = new ArrayList<>();
-        pushSet = new TreeSet<>();
-        popSet = new TreeSet<>();
+        this.stacks = new ArrayList<>();
+        this.pushSet = new TreeSet<>();
+        this.popSet = new TreeSet<>();
     }
 
     public void push(int val) {
         int index = pushSet.isEmpty() ? -1: pushSet.first();
         if(index == -1){
-            index = stackList.size();
+            index = stacks.size();
             pushSet.add(index);
-            stackList.add(new Stack<>());
+            stacks.add(new Stack<>());
         }
-        Stack<Integer> currStack = stackList.get(index);
-        if(currStack.isEmpty()){
+        Stack<Integer> currStack = stacks.get(index);
+        currStack.push(val);
+        if(currStack.size() == 1){
             popSet.add(index);
         }
-        currStack.push(val);
         if(currStack.size() == capacity){
             pushSet.remove(index);
         }
     }
 
     public int pop() {
-        if(popSet.isEmpty()){
+        int index = popSet.isEmpty()? -1: popSet.last();
+        if(index == -1){
             return -1;
         }
-        int index = popSet.last();
         return popAtStack(index);
     }
 
     public int popAtStack(int index) {
-        Stack<Integer> currStack = index < stackList.size() ? stackList.get(index): null;
-        if(currStack == null || currStack.isEmpty()){
+        if(index < 0 || index >= stacks.size()){
             return -1;
-        }else{
-            int item = currStack.pop();
-            if(currStack.isEmpty()){
-                popSet.remove(index);
-            }
-            pushSet.add(index);
-            return item;
         }
+        Stack<Integer> stack = stacks.get(index);
+        if(stack.size() == 1){
+            popSet.remove(index);
+        }
+        if(stack.size() == capacity){
+            pushSet.add(index);
+        }
+        return stack.isEmpty()? -1: stack.pop();
     }
 }

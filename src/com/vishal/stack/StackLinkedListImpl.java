@@ -5,10 +5,7 @@ import com.vishal.linkedlist.SinglyNode;
 public class StackLinkedListImpl {
 	
 	private SinglyNode top;
-
-	public StackLinkedListImpl(){
-		this.top = null;
-	}
+	private SinglyNode prev;
 
 	public static void main(String[] args) {
 		StackLinkedListImpl stackLinkedList = new StackLinkedListImpl();
@@ -26,19 +23,28 @@ public class StackLinkedListImpl {
 	
 	private void push(int item) {
 		SinglyNode newNode = new SinglyNode(item);
-		newNode.next = top;
-		top = newNode;
+		if(top == null){
+			top = newNode;
+		}else{
+			top.next = newNode;
+			prev = top;
+			top = top.next;
+		}
 	}
 	
 	private int pop() {
 		if(top == null) {
 			System.out.println("Underflow");
 			return -1;
+		}else{
+			int item = top.data;
+			if(prev == null){
+				top = null;
+			}else{
+				prev.next = null;
+			}
+			return item;
 		}
-		SinglyNode temp = top;
-		top = top.next;
-		temp.next = null;
-		return temp.data;
 	}
 	
 	private void print() {
