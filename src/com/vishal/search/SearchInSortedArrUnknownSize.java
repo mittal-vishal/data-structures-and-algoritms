@@ -17,13 +17,13 @@ public class SearchInSortedArrUnknownSize {
     }
 
     public int search(ArrayReader reader, int target) {
-        int start = 0;
+        int beg = 0;
         int end = 1;
-        while(target > reader.get(end)){
-            start = end;
-            end <<= 1;
+        while(target > end){
+            beg = end;
+            end = end*2;
         }
-        int index = binarySearch(reader, start, end, target);
+        int index = binarySearch(reader, beg, end, target);
         return index;
     }
 

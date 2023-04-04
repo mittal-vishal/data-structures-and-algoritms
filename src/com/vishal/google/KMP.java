@@ -2,25 +2,12 @@ package com.vishal.google;
 
 public class KMP {
 
-    public static void main(String[] args) {
-        KMP kmp = new KMP();
-        String text = "adsgwadsxdsgwadsgz";
-        String pattern = "dsgwadsgz";
-        System.out.println(kmp.strStr(text, pattern));
-    }
-
     public int strStr(String haystack, String needle) {
-        if(haystack == null || needle == null || haystack.length() < needle.length()){
-            return -1;
-        }
-        if(needle.length() == 0){
-            return 0;
-        }
-        int[] lps = new int[needle.length()];
-        createPrefixTable(needle, lps);
-        int j = 0;
         int i = 0;
-        while(i < haystack.length()){
+        int j = 0;
+        int[] lps = new int[needle.length()];
+        getLPS(needle, lps);
+        while(i < haystack.length() && j < needle.length()){
             if(haystack.charAt(i) == needle.charAt(j)){
                 i++;
                 j++;
@@ -32,21 +19,21 @@ public class KMP {
                 }
             }
             if(j == needle.length()){
-                return (i - j);
+                return i-j;
             }
         }
         return -1;
     }
 
-    private void createPrefixTable(String p, int[] lps){
+    private void getLPS(String needle, int[] lps){
         int i = 0;
-        lps[0] = 0;
         int j = 1;
-        while(j < p.length()){
-            if(p.charAt(i) == p.charAt(j)){
+        lps[0] = 0;
+        while(j < needle.length()){
+            if(needle.charAt(i) == needle.charAt(j)){
                 lps[j] = i+1;
-                j++;
                 i++;
+                j++;
             }else{
                 if(i == 0){
                     lps[j] = 0;

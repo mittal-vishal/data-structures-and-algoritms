@@ -5,6 +5,11 @@ import java.util.List;
 
 public class GenerateParenthsis {
 
+    public static void main(String[] args) {
+        GenerateParenthsis gp = new GenerateParenthsis();
+        System.out.println(gp.generateParenthesis(3));
+    }
+
     public List<String> generateParenthesis(int n) {
         List<String> balancedList = new ArrayList<>();
         generateParenthesis(n, n, "", balancedList);
