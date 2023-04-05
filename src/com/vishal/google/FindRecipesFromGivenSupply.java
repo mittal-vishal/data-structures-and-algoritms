@@ -8,30 +8,29 @@ import java.util.Set;
 public class FindRecipesFromGivenSupply {
 
     public List<String> findAllRecipes(String[] recipes, List<List<String>> ingredients, String[] supplies) {
-        Set<String> recipeSet = new HashSet<>();
-        for(String recipe: supplies){
-            recipeSet.add(recipe);
+        Set<String> recipesSet = new HashSet<>();
+        for(String supply: supplies){
+            recipesSet.add(supply);
         }
-        List<String> results = new ArrayList<>();
         boolean isFound = true;
+        List<String> results = new ArrayList<>();
         while(isFound){
             isFound = false;
             for(int i = 0; i < recipes.length; i++){
-                String currentRecipe = recipes[i];
-                if(recipeSet.contains(currentRecipe)){
+                String recipe = recipes[i];
+                if(recipesSet.contains(recipe)){
                     continue;
                 }
-                List<String> ingredientList = ingredients.get(i);
+                List<String> ingredientContent = ingredients.get(i);
                 boolean isExist = true;
-                for(String recipeContent: ingredientList){
-                    if(!recipeSet.contains(recipeContent)){
+                for(String ingredient: ingredientContent){
+                    if(!recipesSet.contains(ingredient)){
                         isExist = false;
-                        break;
                     }
                 }
                 if(isExist){
-                    recipeSet.add(currentRecipe);
-                    results.add(currentRecipe);
+                    recipesSet.add(recipe);
+                    results.add(recipe);
                     isFound = true;
                 }
             }
