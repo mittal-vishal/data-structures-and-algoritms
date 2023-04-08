@@ -7,34 +7,34 @@ import java.util.Map;
 
 public class FindMode {
 
-    private int max;
+    private Map<Integer,Integer> occurance;
+    private int maxOccurance;
+
     public int[] findMode(TreeNode root) {
-        Map<Integer, Integer> modeMap = new HashMap<>();
-        max = 0;
-        dfs(root, modeMap);
-        List<Integer> modeList = new ArrayList<>();
-        int index = 0;
-        for(Map.Entry<Integer, Integer> entry: modeMap.entrySet()){
-            if(entry.getValue() == max){
-                modeList.add(entry.getKey());
+        occurance = new HashMap<>();
+        dfs(root);
+        List<Integer> modes = new ArrayList<>();
+        for(Map.Entry<Integer,Integer> entry: occurance.entrySet()){
+            if(entry.getValue() == maxOccurance){
+                modes.add(entry.getKey());
             }
         }
-        int[] modes = new int[modeList.size()];
-        for(int mode: modeList){
-            modes[index++] = mode;
+        int[] res = new int[modes.size()];
+        for(int i = 0; i < modes.size(); i++){
+            res[i] = modes.get(i);
         }
-        return modes;
+        return res;
     }
 
-    private void dfs(TreeNode root, Map<Integer, Integer> modeMap){
+    private void dfs(TreeNode root){
         if(root == null){
             return;
         }
-        int currNodeCount = modeMap.getOrDefault(root.val, 0) + 1;
-        max = Math.max(max, currNodeCount);
-        modeMap.put(root.val, currNodeCount);
-        dfs(root.left, modeMap);
-        dfs(root.right, modeMap);
+        int currElement = root.val;
+        occurance.put(currElement, occurance.getOrDefault(currElement, 0) + 1);
+        maxOccurance = Math.max(maxOccurance, occurance.get(currElement));
+        dfs(root.left);
+        dfs(root.right);
     }
 
 }

@@ -2,26 +2,25 @@ package com.vishal.binarysearchtree;
 
 public class MinAbsDiff {
 
-    private int prev;
-    private int minAbs;
+    private int ans;
+    private Integer prev;
 
     public int getMinimumDifference(TreeNode root) {
-        prev = -1;
-        minAbs = Integer.MAX_VALUE;
-        inorder(root);
-        return minAbs;
+        ans = Integer.MAX_VALUE;
+        dfs(root);
+        return ans;
     }
 
-    private void inorder(TreeNode root){
+    private void dfs(TreeNode root){
         if(root == null){
             return;
         }
-        inorder(root.left);
-        if(prev != -1){
-            minAbs = Math.min(minAbs, root.val - prev);
+        dfs(root.left);
+        if(prev != null){
+            ans = Math.min(ans, root.val - prev);
         }
         prev = root.val;
-        inorder(root.right);
+        dfs(root.right);
     }
 
 }

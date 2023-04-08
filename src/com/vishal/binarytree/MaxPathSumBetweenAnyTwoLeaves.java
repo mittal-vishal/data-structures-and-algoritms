@@ -28,9 +28,6 @@ public class MaxPathSumBetweenAnyTwoLeaves {
 		if(root == null){
 			return 0;
 		}
-		if(root.left == null && root.right == null){
-			return root.val;
-		}
 		int leftPathSum = postOrderTraversal(root.left);
 		int rightPathSum = postOrderTraversal(root.right);
 

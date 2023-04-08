@@ -20,42 +20,44 @@ public class LeftView {
 		rootNode.getLeft().getLeft().setLeft(new TreeNode(10));
 		rootNode.getLeft().getLeft().setRight(new TreeNode(12));
 		LeftView leftView = new LeftView();
-		List<Integer>leftViewList = leftView.leftSideView(rootNode);
+		List<Integer>leftViewList = leftView.leftView(rootNode);
 		System.out.print(leftViewList);
 	}
 
-	private List<Integer> leftSideView(TreeNode root) {
-		List<Integer> leftViewList = new ArrayList<>();
-
+	ArrayList<Integer> leftView(TreeNode root){
+		ArrayList<Integer> result = new ArrayList<>();
 		if(root == null){
-			return leftViewList;
+			return result;
 		}
+		levelorder(root, result);
+		return result;
+	}
 
-		List<Integer> levelList = new ArrayList<>();
+	private void levelorder(TreeNode root, ArrayList<Integer> result){
 		Queue<TreeNode> queue = new LinkedList<>();
 		queue.offer(root);
 		queue.offer(null);
-
+		boolean isFirst = true;
 		while(!queue.isEmpty()){
 			TreeNode polled = queue.poll();
-			if(polled == null){
-				leftViewList.add(levelList.get(0));
-				levelList = new ArrayList<>();
-				if(queue.size() > 0){
-					queue.offer(null);
+			if(polled != null){
+				if(isFirst){
+					result.add(polled.val);
+					isFirst = false;
 				}
-			}else{
-				levelList.add(polled.val);
 				if(polled.left != null){
 					queue.offer(polled.left);
 				}
 				if(polled.right != null){
 					queue.offer(polled.right);
 				}
+			}else{
+				isFirst = true;
+				if(queue.size() > 0){
+					queue.offer(null);
+				}
 			}
 		}
-
-		return leftViewList;
 	}
 
 }

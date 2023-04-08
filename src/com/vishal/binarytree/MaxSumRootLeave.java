@@ -1,5 +1,8 @@
 package com.vishal.binarytree;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MaxSumRootLeave {
 
 private static TreeNode rootNode = null;
@@ -16,19 +19,29 @@ private static TreeNode rootNode = null;
 		rootNode.getRight().getLeft().setLeft(new TreeNode(7));
 		rootNode.getRight().getLeft().setRight(new TreeNode(9));
 		rootNode.getRight().getRight().setRight(new TreeNode(5));
-        System.out.println("maximum path sum is : " + findMaxSum(rootNode));
+        System.out.println("maximum path sum is : " + maxPathSum(rootNode));
     }
 
-	private static int findMaxSum(TreeNode root) {
+	public static int maxPathSum(TreeNode root){
+		List<Integer> results = new ArrayList<>();
+		dfs(root, 0, results);
+		int answer = Integer.MIN_VALUE;
+		for(int sum: results){
+			answer = Math.max(answer, sum);
+		}
+		return answer;
+	}
+
+	private static void dfs(TreeNode root, int num, List<Integer> results){
 		if(root == null){
-			return 0;
+			return;
+		}else if(root.left == null && root.right == null){
+			num += root.val;
+			results.add(num);
 		}
-		if(root.left == null && root.right == null){
-			return root.val;
-		}
-		int left = findMaxSum(root.left);
-		int right = findMaxSum(root.right);
-		return root.val + Math.max(left, right);
+		num += root.val;
+		dfs(root.left, num, results);
+		dfs(root.right, num, results);
 	}
 	
 }

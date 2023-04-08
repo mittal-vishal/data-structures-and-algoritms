@@ -2,15 +2,13 @@ package com.vishal.binarytree;
 
 public class CountNodes {
 
-    public int countNodes(TreeNode root) {
-        return dfs(root);
-    }
-
-    private int dfs(TreeNode root){
+    private int countNodes(TreeNode root){
         if(root == null){
             return 0;
         }
-        return 1 + dfs(root.left) + dfs(root.right);
+        int leftCount = countNodes(root.left);
+        int rightCount = countNodes(root.right);
+        return 1 + leftCount + rightCount;
     }
 
 }

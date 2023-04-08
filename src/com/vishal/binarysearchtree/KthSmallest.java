@@ -19,7 +19,8 @@ public class KthSmallest {
 	}
 
 	public int kthSmallest(TreeNode root, int k) {
-		kCount = k;
+		this.kCount = k;
+		this.kSmallest = -1;
 		inorder(root);
 		return kSmallest;
 	}

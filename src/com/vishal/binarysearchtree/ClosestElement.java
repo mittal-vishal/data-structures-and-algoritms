@@ -2,25 +2,25 @@ package com.vishal.binarysearchtree;
 
 public class ClosestElement {
 
-	private int closestEle;
-	private double closestVal;
-
+	private int ans;
+	private double absDiff;
 	public int closestValue(TreeNode root, double target) {
-		closestVal = Integer.MAX_VALUE;
-		inorder(root, target);
-		return closestEle;
+		this.absDiff = Integer.MAX_VALUE;
+		dfs(root, target);
+		return ans;
 	}
 
-	private void inorder(TreeNode root, double target){
+	private void dfs(TreeNode root, double target){
 		if(root == null){
 			return;
 		}
-		inorder(root.left, target);
-		if(Math.abs(target - root.val) < closestVal){
-			closestVal = Math.abs(target - root.val);
-			closestEle = root.val;
+		dfs(root.left, target);
+		double val = (double)root.val;
+		if(Math.abs(val-target) < absDiff){
+			ans = root.val;
+			absDiff = Math.abs(val-target);
 		}
-		inorder(root.right, target);
+		dfs(root.right, target);
 	}
 	
 }

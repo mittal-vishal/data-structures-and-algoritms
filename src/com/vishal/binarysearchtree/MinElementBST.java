@@ -16,6 +16,9 @@ public class MinElementBST {
 	}
 	
 	private static int find(TreeNode node) {
+		if(node == null){
+			return -1;
+		}
         while(node.left != null){
             node = node.left;
         }

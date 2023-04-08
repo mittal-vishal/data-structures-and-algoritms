@@ -20,22 +20,18 @@ public class DiameterTree {
 
 	private int diameter;
 	public int diameterOfBinaryTree(TreeNode root) {
-		diameter = 0;
-		calculateHeight(root);
+		dfs(root);
 		return diameter;
 	}
 
-	private int calculateHeight(TreeNode root){
+	private int dfs(TreeNode root){
 		if(root == null){
 			return 0;
 		}
-		int leftHeight = calculateHeight(root.left);
-		int rightHeight = calculateHeight(root.right);
-		if(leftHeight != 0 || rightHeight != 0){
-			int currDiameter = leftHeight + rightHeight;
-			diameter = Math.max(diameter, currDiameter);
-		}
-		return Math.max(leftHeight, rightHeight) + 1;
+		int leftHeight = dfs(root.left);
+		int rightHeight = dfs(root.right);
+		diameter = Math.max(diameter, leftHeight + rightHeight);
+		return 1 + Math.max(leftHeight, rightHeight);
 	}
 	
 }

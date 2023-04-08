@@ -3,20 +3,18 @@ package com.vishal.binarytree;
 public class PathWithGivenSequence {
 
     public static boolean findPath(TreeNode root, int[] sequence) {
-        return findPath(root, sequence, 0);
+        return dfs(root, sequence, 0);
     }
 
-    private static boolean findPath(TreeNode root, int[] sequence, int currIdx){
-        if(root == null || root.val != sequence[currIdx]){
+    private static boolean dfs(TreeNode root, int[] sequence, int index){
+        if(index == sequence.length){
+            return true;
+        }else if(root == null || root.val != sequence[index]){
             return false;
         }
-        if(currIdx == sequence.length - 1 && root.val == sequence[currIdx]){
-            return true;
-        }
-
-        boolean left = findPath(root.left, sequence, currIdx + 1);
-        boolean right = findPath(root.right, sequence, currIdx + 1);
-        return left || right;
+        boolean inLeft = dfs(root.left, sequence, index+1);
+        boolean inRight = dfs(root.right, sequence, index+1);
+        return inLeft || inRight;
     }
 
     public static void main(String[] args) {

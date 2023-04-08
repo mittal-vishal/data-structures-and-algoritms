@@ -1,74 +1,43 @@
 package com.vishal.binarytree;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.TreeMap;
 
 public class TopView {
-	
-	static class DataNode{
-		private int data;
-		private int level;
-		public DataNode(int data, int level) {
+
+	static class Pair{
+		int data;
+		int level;
+		public Pair(int data, int level){
 			this.data = data;
 			this.level = level;
 		}
 	}
-	
-	private static TreeNode rootNode = null;
-
-	public static void main(String[] args) {
-		rootNode = new TreeNode(1);
-		rootNode.setLeft(new TreeNode(2));
-		rootNode.setRight(new TreeNode(3));
-		rootNode.getLeft().setLeft(new TreeNode(4));
-		rootNode.getLeft().setRight(new TreeNode(5));
-		rootNode.getRight().setLeft(new TreeNode(6));
-		rootNode.getRight().setRight(new TreeNode(7));
-		rootNode.getLeft().getLeft().setLeft(new TreeNode(8));
-		
-		topView(rootNode);
-	}
-
-	private static void topView(TreeNode root) {
-		TreeMap<Integer, List<DataNode>> map = new TreeMap<>();
-		
-		topView(root, 0, 0, map);
-		
-		List<DataNode> list = null; int topData = -1;
-
-		for (Entry<Integer, List<DataNode>> entry : map.entrySet()) {
-			list = entry.getValue();
-			int minLevel = Integer.MAX_VALUE;
-			for(DataNode dataNode : list) {
-				if(dataNode.level < minLevel) {
-					minLevel = dataNode.level;
-					topData = dataNode.data;
-				}
-			}
-			System.out.print(topData + " ");
+	//Function to return a list of nodes visible from the top view
+	//from left to right in Binary Tree.
+	private ArrayList<Integer> topView(TreeNode root){
+		ArrayList<Integer> result = new ArrayList<>();
+		if(root == null){
+			return result;
 		}
+		TreeMap<Integer, List<Pair>> map = new TreeMap<>();
+		dfs(root, 0, 0, map);
+		for(Map.Entry<Integer, List<Pair>> entry: map.entrySet()){
+			List<Pair> elements = entry.getValue();
+			Collections.sort(elements, (a,b) -> a.level-b.level);
+			result.add(elements.get(0).data);
+		}
+		return result;
 	}
 
-	public static void topView(TreeNode root, int value, int level, TreeMap<Integer, List<DataNode>> map) {
-        if (root != null) {
-			List<DataNode> list = null;
-            if (map.containsKey(value)) {
-            	list = map.get(value);
-            } else {
-            	list = new LinkedList<>();
-            }
-			list.add(new DataNode(root.val, level));
-			map.put(value, list);
-            if (root.left != null) {
-                topView(root.left, value - 1, level + 1, map);
-            }
-            if (root.right != null) {
-                topView(root.right, value + 1, level + 1, map);
-            }
-        }
-    }
+	private void dfs(TreeNode root, int level, int vertical, TreeMap<Integer, List<Pair>> map){
+		if(root == null){
+			return;
+		}
+		map.putIfAbsent(vertical, new ArrayList<>());
+		map.get(vertical).add(new Pair(root.val, level));
+		dfs(root.left, level + 1, vertical - 1, map);
+		dfs(root.right, level + 1, vertical + 1, map);
+	}
 
 }

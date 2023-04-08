@@ -1,35 +1,35 @@
 package com.vishal.binarytree;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PathToGivenNode {
 
-	private static TreeNode rootNode = null;
-	
-	public static void main(String[] args) {
-		rootNode = new TreeNode(1);
-		rootNode.setLeft(new TreeNode(2));
-		rootNode.setRight(new TreeNode(3));
-		rootNode.getLeft().setLeft(new TreeNode(34));
-		rootNode.getLeft().setRight(new TreeNode(4));
-		rootNode.getRight().setLeft(new TreeNode(13));
-		rootNode.getRight().setRight(new TreeNode(40));
-		rootNode.getLeft().getLeft().setLeft(new TreeNode(10));
-		rootNode.getLeft().getLeft().setRight(new TreeNode(12));
-		System.out.println(find(rootNode, 12));
+	private List<Integer> answerList;
+
+	public int[] solve(TreeNode A, int B) {
+		List<Integer> resultList = new ArrayList<>();
+		dfs(A, B, resultList);
+		int[] res = new int[answerList.size()];
+		for(int i = 0; i < answerList.size(); i++){
+			res[i] = answerList.get(i);
+		}
+		return res;
 	}
 
-	private static boolean find(TreeNode root, int n) {
-		if(root == null) {
-			return false;
+	private void dfs(TreeNode A, int B, List<Integer> resultList){
+		if(A == null){
+			return;
+		}else if(A.val == B){
+			resultList.add(A.val);
+			answerList = new ArrayList<>(resultList);
+			return;
+		}else{
+			resultList.add(A.val);
 		}
-		if(root.getVal() == n) {
-			System.out.print(root.getVal() + " ");
-			return true;
-		}
-		if(find(root.getLeft(), n) || find(root.getRight(), n)) {
-			System.out.print(root.getVal() + " ");
-			return true;
-		}
-		return false;
+		dfs(A.left, B, resultList);
+		dfs(A.right, B, resultList);
+		resultList.remove(resultList.size()-1);
 	}
 
 }

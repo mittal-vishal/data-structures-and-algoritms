@@ -3,7 +3,18 @@ package com.vishal.binarytree;
 import java.util.Arrays;
 import java.util.LinkedList;
 
-public class SeializationDeserialization {
+public class SerializationDeserialization {
+
+    public static void main(String[] args) {
+        SerializationDeserialization sd = new SerializationDeserialization();
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(3);
+        root.getRight().setLeft(new TreeNode(4));
+        root.getRight().setRight(new TreeNode(5));
+        String serialize = sd.serialize(root);
+        System.out.println(serialize);
+    }
 
     // Encodes a tree to a single string.
     public String serialize(TreeNode root) {
@@ -35,9 +46,8 @@ public class SeializationDeserialization {
             nodes.removeFirst();
             return null;
         }
-        int rootVal = Integer.parseInt(nodes.getFirst());
+        int rootVal = Integer.parseInt(nodes.removeFirst());
         TreeNode root = new TreeNode(rootVal);
-        nodes.removeFirst();
         root.left = constructTree(nodes);
         root.right = constructTree(nodes);
         return root;

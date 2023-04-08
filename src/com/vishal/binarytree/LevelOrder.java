@@ -24,34 +24,33 @@ public class LevelOrder {
 	}
 
 	public List<List<Integer>> levelOrder(TreeNode root) {
-		List<List<Integer>> levelOrderList = new ArrayList<>();
 		if(root == null){
-			return levelOrderList;
+			return new ArrayList<>();
 		}
 		Queue<TreeNode> queue = new LinkedList<>();
 		queue.offer(root);
 		queue.offer(null);
-		List<Integer> levelList = new ArrayList<>();
+		List<List<Integer>> results = new ArrayList<>();
+		List<Integer> levels = new ArrayList<>();
 		while(!queue.isEmpty()){
 			TreeNode polled = queue.poll();
-			if(polled == null){
-				levelOrderList.add(levelList);
-				levelList = new ArrayList<>();
-				if(queue.size() > 0){
-					queue.offer(null);
-				}
-			}
 			if(polled != null){
-				levelList.add(polled.val);
+				levels.add(polled.val);
 				if(polled.left != null){
 					queue.offer(polled.left);
 				}
 				if(polled.right != null){
 					queue.offer(polled.right);
 				}
+			}else{
+				results.add(levels);
+				if(queue.size() > 0){
+					levels = new ArrayList<>();
+					queue.offer(null);
+				}
 			}
 		}
-		return levelOrderList;
+		return results;
 	}
 	
 }

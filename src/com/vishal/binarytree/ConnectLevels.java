@@ -14,24 +14,31 @@ public class ConnectLevels {
 
     public Node connect(Node root) {
         if(root == null){
-            return null;
+            return root;
         }
-
         Queue<Node> queue = new LinkedList<>();
         queue.offer(root);
-
+        queue.offer(null);
+        Node prev = null;
         while(!queue.isEmpty()){
-            int size = queue.size();
-            for(int i = 0; i < size; i++){
-                Node polled = queue.poll();
-                polled.next = i < (size-1) ? queue.peek() : null;
+            Node polled = queue.poll();
+            if(polled != null){
+                if(prev != null){
+                    prev.next = polled;
+                }
                 if(polled.left != null){
                     queue.offer(polled.left);
                 }
                 if(polled.right != null){
                     queue.offer(polled.right);
                 }
+            }else{
+                prev.next = null;
+                if(queue.size() > 0){
+                    queue.offer(null);
+                }
             }
+            prev = polled;
         }
         return root;
     }

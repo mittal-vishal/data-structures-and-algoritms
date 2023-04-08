@@ -4,19 +4,27 @@ import com.vishal.binarytree.TreeNode;
 
 public class ConstructBSTFromArrr {
 
-    public com.vishal.binarytree.TreeNode sortedArrayToBST(int[] nums) {
-        return constructTree(nums, 0, nums.length - 1);
+    public TreeNode sortedArrayToBST(int[] nums) {
+        return constructTree(nums, 0, nums.length-1);
     }
 
-    private com.vishal.binarytree.TreeNode constructTree(int[] nums, int beg, int end){
-        if(beg > end){
+    private TreeNode constructTree(int[] nums, int start, int end){
+        if(start > end){
             return null;
         }
-        int mid = beg + (end - beg)/2;
-        com.vishal.binarytree.TreeNode curr = new TreeNode(nums[mid]);
-        curr.left = constructTree(nums, beg, mid-1);
-        curr.right = constructTree(nums, mid+1, end);
-        return curr;
+        int mid = getMid(start, end);
+        TreeNode root = new TreeNode(nums[mid]);
+        root.left = constructTree(nums, start, mid-1);
+        root.right = constructTree(nums, mid+1, end);
+        return root;
+    }
+
+    private int getMid(int start, int end){
+        int mid = -1;
+        if(start <= end){
+            mid = start + (end-start)/2;
+        }
+        return mid;
     }
 
 }

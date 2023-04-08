@@ -15,25 +15,25 @@ public class MaxDiffNodeAndAncestor {
 		rootNode.getLeft().getRight().setRight(new TreeNode(7));
 		rootNode.getRight().setRight(new TreeNode(14));
 		rootNode.getRight().getRight().setLeft(new TreeNode(13));
-		System.out.println(find(rootNode));
+		System.out.println(maxAncestorDiff(rootNode));
 	}
 
-	private static int find(TreeNode root) {
-		if(root != null) {
-			int leftT = find(root.getLeft());
-			int rightT = find(root.getRight());
-			if(root.getLeft() == null && root.getRight() == null) {
-				return root.getVal();
-			}
-			if(root.getVal() - Math.min(leftT, rightT) > max) {
-				max = root.getVal() - Math.min(leftT, rightT);
-			}
-			if(root == rootNode)
-				return max;
-			else
-				return Math.min(root.getVal(), Math.min(leftT, rightT));
+	public static int maxAncestorDiff(TreeNode root) {
+		if(root == null){
+			return 0;
 		}
-		return Integer.MAX_VALUE;
+		return dfs(root, root.val, root.val);
+	}
+
+	private static int dfs(TreeNode root, int currMin, int currMax){
+		if(root == null){
+			return currMax - currMin;
+		}
+		currMax = Math.max(currMax, root.val);
+		currMin = Math.min(currMin, root.val);
+		int left = dfs(root.left, currMin, currMax);
+		int right = dfs(root.right, currMin, currMax);
+		return Math.max(left, right);
 	}
 
 }
