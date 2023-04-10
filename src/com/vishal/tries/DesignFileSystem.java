@@ -1,56 +1,54 @@
 package com.vishal.tries;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class DesignFileSystem {
 
-    static class TrieNode{
-        TrieNode[] childrens;
+    class Node{
         int value;
-        public TrieNode(){
-            childrens = new TrieNode[27];
-            value = -1;
+        Map<String,Node> childrens;
+        public Node(){
+            childrens = new HashMap<>();
         }
     }
 
-    private TrieNode root;
+    private Node root;
 
     public DesignFileSystem() {
-        root = new TrieNode();
+        root = new Node();
     }
 
     public boolean createPath(String path, int value) {
-        TrieNode curr = root;
-        boolean isCreated = false;
-        for(int i = 0; i < path.length(); i++){
-            int index = path.charAt(i) != '/' ? path.charAt(i) - 'a': 26;
-            if(curr.childrens[index] == null){
-                if(isCreated && index == 26){
+        String[] components = path.split("\\/");
+        Node curr = root;
+        for(int i = 1; i < components.length; i++){
+            String currComponent = components[i];
+            if(!curr.childrens.containsKey(currComponent)){
+                if(i == components.length - 1){
+                    curr.childrens.put(currComponent, new Node());
+                }else{
                     return false;
                 }
-                curr.childrens[index] = new TrieNode();
-                isCreated = true;
             }
-            if(i != 0 && index == 26 && curr.value == -1){
-                return false;
-            }
-            curr = curr.childrens[index];
+            curr = curr.childrens.get(currComponent);
         }
-        if(curr.value == -1){
+        if(curr.value == 0){
             curr.value = value;
             return true;
-        }else{
-            return false;
         }
+        return false;
     }
 
     public int get(String path) {
-        TrieNode curr = root;
-        for(int i = 0; i < path.length(); i++){
-            int index = path.charAt(i) != '/' ? path.charAt(i) - 'a': 26;
-            if(curr.childrens[index] != null){
-                curr = curr.childrens[index];
-            }else{
+        String[] components = path.split("\\/");
+        Node curr = root;
+        for(int i = 1; i < components.length; i++){
+            String currComponent = components[i];
+            if(!curr.childrens.containsKey(currComponent)){
                 return -1;
             }
+            curr = curr.childrens.get(currComponent);
         }
         return curr.value;
     }

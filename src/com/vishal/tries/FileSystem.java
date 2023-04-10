@@ -4,73 +4,75 @@ import java.util.*;
 
 class FileSystem {
 
-    static class File{
-        HashMap<String, File> childrens;
+    class Node{
+        Map<String,Node> childrens;
         String content;
         boolean isFile;
-        public File(){
-            this.childrens = new HashMap<>();
-            this.content = "";
-            this.isFile = false;
+        public Node(){
+            childrens = new HashMap<>();
+            content = "";
         }
     }
 
-    private File root;
+    private Node root;
 
     public FileSystem() {
-        root = new File();
+        root = new Node();
     }
 
     public List<String> ls(String path) {
-        File curr = root;
-        List<String> files = new ArrayList<>();
-        if(!path.equals("/")){
-            String[] paths = path.split("\\/");
-            for(int i = 1; i < paths.length; i++){
-                if(curr.childrens.containsKey(paths[i])){
-                    curr = curr.childrens.get(paths[i]);
-                }
-            }
-            if(curr.isFile){
-                files.add(paths[paths.length - 1]);
-                return files;
+        List<String> result = new ArrayList<>();
+        Node curr = root;
+        String[] components = path.split("\\/");
+        for(int i = 1; i < components.length; i++){
+            String currComponent = components[i];
+            if(curr.childrens.containsKey(currComponent)){
+                curr = curr.childrens.get(currComponent);
             }
         }
-        List<String> ans = new ArrayList<>(curr.childrens.keySet());
-        Collections.sort(ans);
-        return ans;
+        if(curr.isFile){
+            result.add(components[components.length-1]);
+            return result;
+        }else{
+            result = new ArrayList<>(curr.childrens.keySet());
+            Collections.sort(result);
+            return result;
+        }
     }
 
     public void mkdir(String path) {
-        File curr = root;
-        String[] paths = path.split("\\/");
-        for(int i = 1; i < paths.length; i++){
-            if(!curr.childrens.containsKey(paths[i])){
-                curr.childrens.put(paths[i], new File());
+        String[] components = path.split("\\/");
+        Node curr = root;
+        for(int i = 1; i < components.length; i++){
+            String currComponent = components[i];
+            if(!curr.childrens.containsKey(currComponent)){
+                curr.childrens.put(currComponent, new Node());
             }
-            curr = curr.childrens.get(paths[i]);
+            curr = curr.childrens.get(currComponent);
         }
     }
 
     public void addContentToFile(String filePath, String content) {
-        File curr = root;
-        String[] paths = filePath.split("\\/");
-        for(int i = 1; i < paths.length - 1; i++){
-            curr = curr.childrens.get(paths[i]);
+        String[] components = filePath.split("\\/");
+        Node curr = root;
+        for(int i = 1; i < components.length-1; i++){
+            String currComponent = components[i];
+            curr = curr.childrens.get(currComponent);
         }
-        if(!curr.childrens.containsKey(paths[paths.length - 1])){
-            curr.childrens.put(paths[paths.length - 1], new File());
+        if(!curr.childrens.containsKey(components[components.length-1])){
+            curr.childrens.put(components[components.length-1], new Node());
         }
-        curr = curr.childrens.get(paths[paths.length - 1]);
+        curr = curr.childrens.get(components[components.length-1]);
         curr.isFile = true;
-        curr.content = curr.content + content;
+        curr.content += content;
     }
 
     public String readContentFromFile(String filePath) {
-        File curr = root;
-        String[] paths = filePath.split("\\/");
-        for(int i = 1; i < paths.length; i++){
-            curr = curr.childrens.get(paths[i]);
+        String[] components = filePath.split("\\/");
+        Node curr = root;
+        for(int i = 1; i < components.length; i++){
+            String currComponent = components[i];
+            curr = curr.childrens.get(currComponent);
         }
         return curr.content;
     }

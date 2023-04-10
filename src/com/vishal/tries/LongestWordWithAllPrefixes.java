@@ -4,12 +4,11 @@ import java.util.Arrays;
 
 public class LongestWordWithAllPrefixes {
 
-    static class Node{
+    class Node{
         Node[] childrens;
-        boolean isEnd;
+        boolean isWord;
         public Node(){
-            this.childrens = new Node[26];
-            this.isEnd = false;
+            childrens = new Node[26];
         }
     }
 
@@ -18,32 +17,29 @@ public class LongestWordWithAllPrefixes {
     public String longestWord(String[] words) {
         root = new Node();
         Arrays.sort(words);
-        String longestWord = "";
-        for(int i = 0; i < words.length; i++){
-            String word = words[i];
+        String result = "";
+        for(String word: words){
             int prefixCount = insert(word);
-            if(prefixCount == word.length() - 1 && word.length() > longestWord.length()){
-                longestWord = word;
+            if(prefixCount == word.length() - 1 && word.length() > result.length()){
+                result = word;
             }
         }
-        return longestWord;
+        return result;
     }
 
     private int insert(String word){
-        Node curr = root;
         int prefixCount = 0;
+        Node curr = root;
         for(int i = 0; i < word.length(); i++){
-            char currChar = word.charAt(i);
-            if(curr.childrens[currChar-'a'] != null && curr.childrens[currChar-'a'].isEnd){
+            char ch = word.charAt(i);
+            if(curr.childrens[ch-'a'] != null && curr.childrens[ch-'a'].isWord){
                 prefixCount++;
-            }else if(curr.childrens[currChar-'a'] != null && !curr.childrens[currChar-'a'].isEnd){
-                return 0;
             }else{
-                curr.childrens[currChar-'a'] = new Node();
+                curr.childrens[ch-'a'] = new Node();
             }
-            curr = curr.childrens[currChar-'a'];
+            curr = curr.childrens[ch-'a'];
         }
-        curr.isEnd = true;
+        curr.isWord = true;
         return prefixCount;
     }
 }

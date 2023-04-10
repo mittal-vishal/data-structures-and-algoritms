@@ -28,7 +28,6 @@ public class ValidWords {
     }
 
     private void getPossibleStrings(int pos, String s, StringBuilder sb, TrieNode root, List<String> res){
-
         TrieNode curr = root;
         for(int i=pos; i<s.length();i++){
             char c = s.charAt(i);
