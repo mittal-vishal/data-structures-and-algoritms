@@ -1,62 +1,65 @@
 package com.vishal.tries;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class WordBreak {
 
-    class Node{
+    static class Node{
         Node[] childrens;
-        boolean isEnd;
+        boolean isWord;
         public Node(){
             childrens = new Node[26];
         }
     }
 
-    private Node root;
+    private static Node root;
 
-    public boolean wordBreak(String s, List<String> wordDict) {
+    public static int wordBreak(String A, ArrayList<String> B ) {
         root = new Node();
-        //store all words of dictionary in trie
-        for(String dicWord: wordDict){
-            insert(dicWord);
+        for(String word: B){
+            insert(word);
         }
-        return canBreak(s);
+        return isExist(root, A, 0) ? 1: 0;
     }
 
-    private boolean canBreak(String s){
-        if(s.length() == 0){
+    private static boolean isExist(Node curr, String s, int pos){
+        if(pos >= s.length()){
             return true;
         }
-        for(int i=1; i <= s.length(); i++){
-            if(isExist(s.substring(0,i)) && canBreak(s.substring(i, s.length()))){
+        for(int i = pos; i < s.length(); i++){
+            char ch = s.charAt(i);
+            if(curr.childrens[ch-'a'] != null && curr.childrens[ch-'a'].isWord && isExist(root, s, i+1)){
                 return true;
             }
-        }
-        return false;
-    }
-
-    private boolean isExist(String s){
-        Node curr = root;
-        for(int i = 0; i < s.length(); i++){
-            char ch = s.charAt(i);
             if(curr.childrens[ch-'a'] == null){
                 return false;
+            }else if(curr.childrens[ch-'a'] != null){
+                curr = curr.childrens[ch-'a'];
+            }else{
+                return false;
             }
-            curr = curr.childrens[ch-'a'];
         }
-        return curr.isEnd;
+        return curr.isWord;
     }
 
-    private void insert(String s){
+    private static void insert(String word){
         Node curr = root;
-        for(int i = 0; i < s.length(); i++){
-            char ch = s.charAt(i);
+        for(int i = 0; i < word.length(); i++){
+            char ch = word.charAt(i);
             if(curr.childrens[ch-'a'] == null){
                 curr.childrens[ch-'a'] = new Node();
             }
             curr = curr.childrens[ch-'a'];
         }
-        curr.isEnd = true;
+        curr.isWord = true;
+    }
+
+    public static void main(String[] args) {
+        ArrayList<String> words = new ArrayList<>(Arrays.asList("lrbbmqb", "owkk", "cd", "r"));
+        String word = "lrbbmqbabowkkab";
+        int res = wordBreak(word, words);
+        System.out.println(res);
     }
 
 }
