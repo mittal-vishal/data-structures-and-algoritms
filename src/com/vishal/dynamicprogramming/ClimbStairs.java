@@ -5,24 +5,34 @@ import java.util.Arrays;
 public class ClimbStairs {
 
 	public int climbStairs(int n) {
-		int[] memo = new int[n+1];
-		Arrays.fill(memo, -1);
-		return climbStairs(0, n, memo);
+		int[] dp = new int[n+1];
+		Arrays.fill(dp, -1);
+		return countWays(n,dp);
 	}
 
-	private int climbStairs(int curr, int n, int[] memo){
-		if(curr > n){
-			return 0;
-		}else if(curr == n){
+	private int countWays(int n,int[]dp){
+		if(n == 0){
 			return 1;
-		}else if(memo[curr] != -1){
-			return memo[curr];
+		}else if(n < 0){
+			return 0;
+		}else if(dp[n] != -1){
+			return dp[n];
 		}else{
-			int step1 = climbStairs(curr + 1, n, memo);
-			int step2 = climbStairs(curr + 2, n, memo);
-			memo[curr] = step1 + step2;
-			return memo[curr];
+			int oneStep = countWays(n-1,dp);
+			int twoStep = countWays(n-2,dp);
+			dp[n] = oneStep+twoStep;
+			return dp[n];
 		}
+	}
+
+	public int climbStairsTabulation(int n) {
+		int[] dp = new int[n+1];
+		dp[0] = 1;
+		dp[1] = 1;
+		for(int step = 2; step <= n; step++){
+			dp[step] = dp[step-1] + dp[step-2];
+		}
+		return dp[n];
 	}
 
 }

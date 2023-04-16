@@ -1,37 +1,34 @@
 package com.vishal.dynamicprogramming;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class DecodeWays {
 
-    private Map<Integer, Integer> memo;
-
     public int numDecodings(String s) {
-        memo = new HashMap<>();
-        return decode(s, 0);
+        int[] dp = new int[s.length()];
+        Arrays.fill(dp, -1);
+        return decodeWays(s, 0, dp);
     }
 
-    private int decode(String str, int idx){
-        if(memo.containsKey(idx)){
-            return memo.get(idx);
-        }
-        if(idx == str.length()){
+    private int decodeWays(String s, int index, int[] dp){
+        if(index == s.length()){
             return 1;
-        }
-        if(str.charAt(idx) == '0'){
+        }else if(s.charAt(index) == '0'){
             return 0;
+        }else if(dp[index] != -1){
+            return dp[index];
         }
-        if(idx == str.length()-1){
-            return 1;
+        int singleDigit = decodeWays(s, index+1, dp);
+        int twoDigit = 0;
+        if(index+1 < s.length()){
+            String twoDigitStr = s.substring(index, index+2);
+            if(Integer.valueOf(twoDigitStr) >= 0 && Integer.valueOf(twoDigitStr) <= 26){
+                twoDigit = decodeWays(s, index+2, dp);
+            }
         }
-        int ans = decode(str, idx + 1);
-        String decodeStr = str.substring(idx, idx + 2);
-        if(Integer.parseInt(decodeStr) <= 26){
-            ans += decode(str, idx + 2);
-        }
-        memo.put(idx, ans);
-        return memo.get(idx);
+        return dp[index] = singleDigit + twoDigit;
     }
 
 }

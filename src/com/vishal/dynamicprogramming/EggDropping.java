@@ -25,18 +25,18 @@ public class EggDropping {
         }else if(lookUp.containsKey(key)){
             return lookUp.get(key);
         }else{
-            int min = Integer.MAX_VALUE;
-            int result = 0;
+            int result = Integer.MAX_VALUE;
+            int currMaxSteps = 0;
             for(int i = 1; i <= N; i++){
-                result = 1 + Math.max(
+                currMaxSteps = 1 + Math.max(
                     superEggDrop(lookUp, K - 1, i - 1),
                     superEggDrop(lookUp, K, N - i)
                 );
-                if(result < min){
-                    min = result;
-                }
             }
-            lookUp.put(key, min);
+            if(result < currMaxSteps){
+                result = currMaxSteps;
+            }
+            lookUp.put(key, result);
             return lookUp.get(key);
         }
     }

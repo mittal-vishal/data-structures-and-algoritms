@@ -4,41 +4,50 @@ import java.util.Arrays;
 
 public class MinCostPathInMatrix {
 
-	public static void main(String[] args) {
-		int[][] grid = {{348, 391},{618, 193}};
-		System.out.println(minPathSum(grid));
-	}
+    public int minPathSum(int[][] grid) {
+        int row = grid.length;
+        int col = grid[0].length;
+        int[][] dp = new int[row][col];
+        for(int i = 0; i < row; i++){
+            Arrays.fill(dp[i], -1);
+        }
+        return minPathSum(grid, row-1, col-1, dp);
+    }
 
-	public static int minPathSum(int[][] grid) {
-        int[][] memo = new int[grid.length][grid[0].length];
-        for(int i = 0; i < memo.length; i++){
-            Arrays.fill(memo[i], -1);
-        }
-        return minPathSum(grid, memo, 0, 0, grid.length - 1, grid[0].length - 1);
-    }
-    
-    private static int minPathSum(int[][] grid, int[][] memo, int i, int j, int m, int n){
-        if(!isValid(i, j, grid)){
+    private int minPathSum(int[][] grid, int row, int col, int[][] dp){
+        if(row == 0 && col == 0){
+            return grid[row][col];
+        }else if(row < 0 || col < 0){
             return Integer.MAX_VALUE;
-        }else if(i == m && j == n){
-            return grid[i][j];
-        }else if(memo[i][j] != -1){
-            return memo[i][j];
+        }else if(dp[row][col] != -1){
+            return dp[row][col];
         }else{
-            memo[i][j] = grid[i][j] + Math.min(
-                minPathSum(grid, memo, i + 1, j, m, n),
-                minPathSum(grid, memo, i, j + 1, m, n)
-            );
-            return memo[i][j];
+            int up = minPathSum(grid, row-1, col, dp);
+            int left = minPathSum(grid, row, col-1, dp);
+            dp[row][col] = grid[row][col] + Math.min(up,left);
+            return dp[row][col];
         }
     }
-    
-    private static boolean isValid(int i, int j, int[][] grid){
-        if(i >= 0 && i < grid.length && j >= 0 && j < grid[0].length){
-            return true;
-        }else{
-            return false;
+
+    public int minPathSumTabulation(int[][] grid) {
+        int row = grid.length;
+        int col = grid[0].length;
+        int[][] dp = new int[row][col];
+        dp[0][0] = grid[0][0];
+        for(int j = 1; j < col; j++){
+            dp[0][j] = dp[0][j-1] + grid[0][j];
         }
+        for(int i = 1; i < row; i++){
+            dp[i][0] = dp[i-1][0] +grid[i][0];
+        }
+        for(int i = 1; i < row; i++){
+            for(int j = 1; j < col; j++){
+                int up = dp[i-1][j];
+                int left = dp[i][j-1];
+                dp[i][j] = grid[i][j] + Math.min(up,left);
+            }
+        }
+        return dp[row-1][col-1];
     }
 
 }

@@ -1,35 +1,52 @@
 package com.vishal.dynamicprogramming;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class RodCutMaxProfit {
 
-	private static Map<String, Integer> map;
+	private static int INT_MIN = (int)-1e8;
 
-	public static void main(String[] args) {
-		int W = 8;
-		int price[] = { 3, 5, 8, 9, 10, 17, 17, 20 };
-		int length[] = { 1, 2, 3, 4, 5, 6, 7, 8 };
-		map = new HashMap<>();
-		System.out.println(getMaxProfit(W, price, length, price.length));
+	public static int cutRod(int price[], int n) {
+		int[][] dp = new int[n][n+1];
+		for(int i = 0; i < n; i++){
+			Arrays.fill(dp[i], -1);
+		}
+		return maximize(price, n-1, n, dp);
 	}
 
-	private static int getMaxProfit(int W, int[] val, int[] w, int n) {
-		if (n == 0 || W == 0) {
-			return 0;
-		} else {
-			String key = String.valueOf(n).concat("|").concat(String.valueOf(W));
-			if (map.containsKey(key)) {
-				return map.get(key);
-			} else {
-				int included = W - w[n - 1] >= 0 ? getMaxProfit(W - w[n - 1], val, w, n) + val[n - 1]
-						: getMaxProfit(W, val, w, n - 1);
-				int excluded = getMaxProfit(W, val, w, n - 1);
-				map.put(key, Math.max(included, excluded));
-				return map.get(key);
+	private static int maximize(int[] price, int index, int length, int[][] dp){
+		if(index == 0){
+			return length * price[0];
+		}else if(dp[index][length] != -1){
+			return dp[index][length];
+		}
+		int exclude = maximize(price, index-1, length, dp);
+		int include = INT_MIN;
+		if(length >= index+1){
+			include = price[index] + maximize(price, index, length-(index+1), dp);
+		}
+		dp[index][length] = Math.max(include,exclude);
+		return dp[index][length];
+	}
+
+	public static int cutRodTabulation(int price[], int n) {
+		int[][] dp = new int[n][n+1];
+		for(int len = 0; len <= n; len++){
+			dp[0][len] = len*price[0];
+		}
+		for(int i = 1; i < n; i++){
+			for(int len = 0; len <= n; len++){
+				int exclude = dp[i-1][len];
+				int include = INT_MIN;
+				if(len >= i+1){
+					include = price[i] + dp[i][len-(i+1)];
+				}
+				dp[i][len] = Math.max(include,exclude);
 			}
 		}
+		return dp[n-1][n];
 	}
 
 }

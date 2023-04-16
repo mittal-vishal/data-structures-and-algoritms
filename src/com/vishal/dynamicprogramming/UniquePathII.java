@@ -5,34 +5,70 @@ import java.util.Arrays;
 public class UniquePathII {
 
     public int uniquePathsWithObstacles(int[][] obstacleGrid) {
-        int m = obstacleGrid.length;
-        int n = obstacleGrid[0].length;
-        int[][] dp = new int[m][n];
-        for(int i = 0; i < m; i++){
+        int row = obstacleGrid.length;
+        int col = obstacleGrid[0].length;
+        int[][]dp = new int[row][col];
+        for(int i = 0; i < row; i++){
             Arrays.fill(dp[i], -1);
         }
-        return uniquePaths(0, 0, obstacleGrid, dp);
+        return uniquePath(obstacleGrid, row-1, col-1, dp);
     }
 
-    private int uniquePaths(int i, int j, int[][] obstacleGrid, int[][] dp){
-        if(!isValid(i, j, obstacleGrid) || obstacleGrid[i][j] == 1){
+    private int uniquePath(int[][] grid, int row, int col, int[][] dp){
+        if(row < 0 || col < 0 || grid[row][col] == 1){
             return 0;
-        }else if(dp[i][j] != -1){
-            return dp[i][j];
-        }else if(i == obstacleGrid.length-1 && j == obstacleGrid[0].length-1){
+        }else if(row == 0 && col == 0){
             return 1;
+        }else if(dp[row][col] != -1){
+            return dp[row][col];
+        }else{
+            int up = uniquePath(grid, row-1, col, dp);
+            int left = uniquePath(grid, row, col-1, dp);
+            dp[row][col] = up+left;
+            return dp[row][col];
         }
-        int right = uniquePaths(i, j + 1, obstacleGrid, dp);
-        int down = uniquePaths(i + 1, j, obstacleGrid, dp);
-        dp[i][j] = right + down;
-        return dp[i][j];
     }
 
-    private boolean isValid(int i, int j, int[][] obstacleGrid){
-        if(i >= 0 && i < obstacleGrid.length && j >= 0 && j < obstacleGrid[0].length){
-            return true;
+    public int uniquePathsWithObstaclesTabulation(int[][] obstacleGrid) {
+        int row = obstacleGrid.length;
+        int col = obstacleGrid[0].length;
+        int[][]dp = new int[row][col];
+        for(int i = 0; i < row; i++){
+            for(int j = 0; j < col; j++){
+                if(i == 0 && j == 0){
+                    dp[i][j] = obstacleGrid[i][j] == 1? 0: 1;
+                }else if(obstacleGrid[i][j] == 1){
+                    dp[i][j] = 0;
+                }else{
+                    int up = i > 0 ? dp[i-1][j]: 0;
+                    int left = j > 0 ? dp[i][j-1]: 0;
+                    dp[i][j] = up+left;
+                }
+            }
         }
-        return false;
+        return dp[row-1][col-1];
+    }
+
+    public int uniquePathsWithObstaclesSpaceOptimised(int[][] obstacleGrid) {
+        int row = obstacleGrid.length;
+        int col = obstacleGrid[0].length;
+        int[] prev = new int[col];
+        for(int i = 0; i < row; i++){
+            int[] curr = new int[col];
+            for(int j = 0; j < col; j++){
+                if(i == 0 && j == 0){
+                    curr[j] = obstacleGrid[i][j] == 1? 0: 1;
+                }else if(obstacleGrid[i][j] == 1){
+                    curr[j] = 0;
+                }else{
+                    int up = i > 0 ? prev[j]: 0;
+                    int left = j > 0 ? curr[j-1]: 0;
+                    curr[j] = up+left;
+                }
+            }
+            prev = curr;
+        }
+        return prev[col-1];
     }
 
 }

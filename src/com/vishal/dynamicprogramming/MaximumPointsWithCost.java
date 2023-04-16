@@ -1,4 +1,4 @@
-package com.vishal.graph;
+package com.vishal.dynamicprogramming;
 
 public class MaximumPointsWithCost {
 
@@ -31,6 +31,14 @@ public class MaximumPointsWithCost {
         }
 
         return result;
+    }
+
+    public static void main(String[] args) {
+        int[][] points = {{1,2,3},
+                          {1,5,1},
+                          {3,1,1}};
+        MaximumPointsWithCost maximumPointsWithCost = new MaximumPointsWithCost();
+        System.out.println(maximumPointsWithCost.maxPoints(points));
     }
 
 }

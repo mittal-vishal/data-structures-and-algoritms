@@ -1,4 +1,4 @@
-package com.vishal.arrays;
+package com.vishal.dynamicprogramming;
 
 import java.util.Arrays;
 
