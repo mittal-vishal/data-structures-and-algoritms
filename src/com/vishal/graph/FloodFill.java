@@ -2,30 +2,35 @@ package com.vishal.graph;
 
 public class FloodFill {
 
-    public int[][] floodFill(int[][] image, int sr, int sc, int newColor) {
-        boolean[][] visited = new boolean[image.length][image[0].length];
-        int srcColor = image[sr][sc];
-        dfs(image, sr, sc, newColor, visited, srcColor);
+    public int[][] floodFill(int[][] image, int sr, int sc, int newColor)
+    {
+        int row = image.length;
+        int col = image[0].length;
+        boolean[][] visited = new boolean[row][col];
+        int oldColor = image[sr][sc];
+        dfs(image, sr, sc, newColor, oldColor, visited);
         return image;
     }
 
-    private void dfs(int[][] image, int sr, int sc, int newColor, boolean[][] visited, int srcColor){
-        if(isValid(image, sr, sc) && (!visited[sr][sc]) && image[sr][sc] == srcColor){
+    private void dfs(int[][] image, int sr, int sc, int newColor, int oldColor, boolean[][] visited){
+        if(!isValid(sr, sc, image)){
+            return;
+        }
+        if(!visited[sr][sc] && image[sr][sc] == oldColor){
             visited[sr][sc] = true;
             image[sr][sc] = newColor;
-            dfs(image, sr + 1, sc, newColor, visited, srcColor);
-            dfs(image, sr - 1, sc, newColor, visited, srcColor);
-            dfs(image, sr, sc + 1, newColor, visited, srcColor);
-            dfs(image, sr, sc - 1, newColor, visited, srcColor);
+            dfs(image, sr-1, sc, newColor, oldColor, visited);
+            dfs(image, sr+1, sc, newColor, oldColor, visited);
+            dfs(image, sr, sc-1, newColor, oldColor, visited);
+            dfs(image, sr, sc+1, newColor, oldColor, visited);
         }
     }
 
-    private boolean isValid(int[][] image, int sr, int sc){
-        if(sr >= 0 && sr < image.length && sc >= 0 && sc < image[0].length){
+    private boolean isValid(int i, int j, int[][] image){
+        if(i >= 0 && i < image.length && j >= 0 && j < image[0].length){
             return true;
-        }else{
-            return false;
         }
+        return false;
     }
 
 }

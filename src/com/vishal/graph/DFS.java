@@ -6,39 +6,19 @@ import java.util.Scanner;
 
 public class DFS {
 
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		int nov = sc.nextInt();
-		int edges = sc.nextInt();
-		List<List<Integer>> adj = new ArrayList<>();
-		for (int i = 0; i < nov; i++) {
-			adj.add(new ArrayList<>());
-		}
-		int u = 0, v = 0;
-		for (int i = 0; i < edges; i++) {
-			u = sc.nextInt();
-			v = sc.nextInt();
-			adj.get(u).add(v);
-		}
-		sc.close();
-		boolean[] visited = new boolean[nov];
-		dfs(adj, visited, nov);
+	public ArrayList<Integer> dfsOfGraph(int V, ArrayList<ArrayList<Integer>> adj) {
+		ArrayList<Integer> results = new ArrayList<>();
+		boolean[] visited = new boolean[V];
+		dfs(adj, 0, visited, results);
+		return results;
 	}
 
-	private static void dfs(List<List<Integer>> adj, boolean[] visited, int nov) {
-		for (int i = 0; i < nov; i++) {
-			if (!visited[i]) {
-				dfsTraversal(adj, visited, i);
-			}
-		}
-	}
-
-	private static void dfsTraversal(List<List<Integer>> adj, boolean[] visited, int src) {
+	private void dfs(ArrayList<ArrayList<Integer>> adj, int src, boolean[] visited, ArrayList<Integer> results){
 		visited[src] = true;
-		System.out.print(src + " ");
-		for(int i : adj.get(src)) {
-			if(!visited[i]) {
-				dfsTraversal(adj, visited, i);
+		results.add(src);
+		for(int neighbour: adj.get(src)){
+			if(!visited[neighbour]){
+				dfs(adj, neighbour, visited, results);
 			}
 		}
 	}

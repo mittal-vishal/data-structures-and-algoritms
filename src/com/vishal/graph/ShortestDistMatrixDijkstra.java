@@ -1,82 +1,43 @@
 package com.vishal.graph;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.PriorityQueue;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 class ShortestDistMatrixDijkstra {
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		int t = sc.nextInt();
-		while (t-- > 0) {
-			int nov = sc.nextInt();
-			int[][] grid = new int[nov][nov];
-			for (int i = 0; i < nov; i++) {
-				for (int j = 0; j < nov; j++) {
-					grid[i][j] = sc.nextInt();
-				}
-			}
-			int[] src = { 0, 0 };
-			int[] dest = { nov - 1, nov - 1 };
-			new Implementation().dijkstra(grid, src, dest, nov);
-			System.out.println();
-		}
-		sc.close();
-	}
-}
 
-class Implementation {
-	
-	public class GraphNode {
-		private int row;
-		private int col;
-		private int cost;
-
-		public GraphNode(int row, int col, int cost) {
-			super();
-			this.row = row;
-			this.col = col;
+	static class GraphNode{
+		int node;
+		int cost;
+		GraphNode(int node, int cost){
+			this.node = node;
 			this.cost = cost;
 		}
 	}
 
-	public void dijkstra(int[][] grid, int[] src, int[] dest, int nov) {
-		int[] validRow = { 0, 0, -1, 1 };
-		int[] validCol = { -1, 1, 0, 0 };
-		PriorityQueue<GraphNode> pq = new PriorityQueue<>((GraphNode o1, GraphNode o2) -> o1.cost - o2.cost);
-		Set<GraphNode> visitedSet = new HashSet<>();
-		int[][] dist = new int[nov][nov];
-		for (int[] distArray : dist) {
-			Arrays.fill(distArray, Integer.MAX_VALUE);
+	static int[] dijkstra(int V, ArrayList<ArrayList<ArrayList<Integer>>> adj, int S)
+	{
+		List<List<GraphNode>> graph = new ArrayList<>();
+		for(int i = 0; i < adj.size(); i++){
+			graph.add(new ArrayList<>());
+			ArrayList<ArrayList<Integer>> neighbours = adj.get(i);
+			for(ArrayList<Integer> graphNodeData: neighbours){
+				graph.get(i).add(new GraphNode(graphNodeData.get(0), graphNodeData.get(1)));
+			}
 		}
-		dist[src[0]][src[1]] = grid[0][0];
-		pq.add(new GraphNode(src[0], src[1], grid[src[0]][src[1]]));
-		GraphNode popped = null;
-		GraphNode adjNode = null;
-		while (!pq.isEmpty()) {
-			popped = pq.poll();
-			for (int i = 0; i < validRow.length; i++) {
-				if (isValid(popped.row + validRow[i], popped.col + validCol[i], nov)) {
-					adjNode = new GraphNode(popped.row + validRow[i], popped.col + validCol[i],
-							grid[popped.row + validRow[i]][popped.col + validCol[i]]);
-					if (!visitedSet.contains(adjNode)
-							&& dist[adjNode.row][adjNode.col] > dist[popped.row][popped.col] + adjNode.cost) {
-						dist[adjNode.row][adjNode.col] = dist[popped.row][popped.col] + adjNode.cost;
-						pq.add(new GraphNode(adjNode.row, adjNode.col, dist[adjNode.row][adjNode.col]));
-					}
+		PriorityQueue<GraphNode> pq = new PriorityQueue<>((a,b) -> a.cost-b.cost);
+		pq.offer(new GraphNode(S, 0));
+		int[] dist = new int[V];
+		Arrays.fill(dist, Integer.MAX_VALUE);
+		dist[S] = 0;
+		while(!pq.isEmpty()){
+			GraphNode polled = pq.poll();
+			for(GraphNode neighbour: graph.get(polled.node)){
+				if(dist[neighbour.node] > (dist[polled.node] + neighbour.cost)){
+					dist[neighbour.node] = dist[polled.node] + neighbour.cost;
+					pq.offer(neighbour);
 				}
 			}
-			visitedSet.add(popped);
 		}
-		System.out.print(dist[dest[0]][dest[1]]);
+		return dist;
 	}
 
-	private boolean isValid(int i, int j, int n) {
-		if(i >= 0 && i < n && j >= 0 && j < n) {
-			return true;
-		}
-		return false;
-	}
 }

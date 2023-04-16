@@ -1,58 +1,36 @@
 package com.vishal.graph;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.Scanner;
+import java.util.*;
 
 public class ShortestPathUndirectedUnweight {
 
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		int nov = sc.nextInt();
-		int edges = sc.nextInt();
-		List<List<Integer>> adj = new ArrayList<>();
-		for (int i = 0; i < nov; i++) {
-			adj.add(new ArrayList<>());
-		}
-		int u = 0, v = 0;
-		for (int i = 0; i < edges; i++) {
-			u = sc.nextInt();
-			v = sc.nextInt();
-			adj.get(u).add(v);
-			adj.get(v).add(u);
-		}
-		boolean[] visited = new boolean[nov];
-		int[] dist = new int[nov];
-		int src = sc.nextInt();
-		int dest = sc.nextInt();
-		sc.close();
-		System.out.println(bfs(adj, visited, src, dist, dest));
-	}
-
-	private static int bfs(List<List<Integer>> adj, boolean[] visited, int src, int[] dist, int dest) {
-		Queue<Integer> queue = new LinkedList<>();
-		queue.add(src);
-		visited[src] = true;
-		int popped = 0;
+	public int[] shortestPath(int[][] edges,int n,int m ,int src) {
+		int[] dist = new int[n];
+		Arrays.fill(dist, -1);
 		dist[src] = 0;
-		while (!queue.isEmpty()) {
-			popped = queue.poll();
-			for (int i : adj.get(popped)) {
-				if (!visited[i]) {
-					visited[i] = true;
-					queue.add(i);
-					dist[i] = dist[popped] + 1;
+		ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
+		for(int i = 0; i < n; i++){
+			graph.add(new ArrayList<>());
+		}
+		for(int[] edge: edges){
+			graph.get(edge[0]).add(edge[1]);
+			graph.get(edge[1]).add(edge[0]);
+		}
+		Queue<Integer> queue = new LinkedList<>();
+		queue.offer(src);
+		boolean[] visited = new boolean[n];
+		visited[src] = true;
+		while(!queue.isEmpty()){
+			int polled = queue.poll();
+			for(int neighbour: graph.get(polled)){
+				if(!visited[neighbour]){
+					visited[neighbour] = true;
+					queue.offer(neighbour);
+					dist[neighbour] = dist[polled] + 1;
 				}
 			}
 		}
-		for(int i = 0; i < dist.length; i++) {
-			if(i == dest) {
-				return dist[i];
-			}
-		}
-		return -1;
+		return dist;
 	}
 
 }

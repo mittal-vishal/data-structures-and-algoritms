@@ -7,45 +7,31 @@ import java.util.Stack;
 
 public class TopologicalSort {
 
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		int nov = sc.nextInt();
-		int edges = sc.nextInt();
-		List<List<Integer>> adj = new ArrayList<>();
-		for (int i = 0; i < nov; i++) {
-			adj.add(new ArrayList<>());
-		}
-		int u = 0, v = 0;
-		for (int i = 0; i < edges; i++) {
-			u = sc.nextInt();
-			v = sc.nextInt();
-			adj.get(u).add(v);
-		}
-		sc.close();
-		boolean[] visited = new boolean[nov];
-		topological(adj, visited, nov);
-	}
-
-	private static void topological(List<List<Integer>> adj, boolean[] visited, int nov) {
+	private int[] toposort(int V, ArrayList<ArrayList<Integer>> adj)
+	{
+		boolean[] visited = new boolean[V];
 		Stack<Integer> stack = new Stack<>();
-		for (int i = 0; i < nov; i++) {
-			if (!visited[i]) {
-				dfsTraversal(adj, visited, i, stack);
+		for(int i = 0; i < V; i++){
+			if(!visited[i]){
+				dfs(adj, i, visited, stack);
 			}
 		}
-		while(!stack.isEmpty()) {
-			System.out.print(stack.pop() + " ");
+		int[] result = new int[stack.size()];
+		int index = 0;
+		while(!stack.isEmpty()){
+			result[index++] = stack.pop();
 		}
+		return result;
 	}
 
-	private static void dfsTraversal(List<List<Integer>> adj, boolean[] visited, int src, Stack<Integer> stack) {
+	private void dfs(ArrayList<ArrayList<Integer>> adj, int src, boolean[] visited, Stack<Integer> stack){
 		visited[src] = true;
-		for(int i : adj.get(src)) {
-			if(!visited[i]) {
-				dfsTraversal(adj, visited, i, stack);
+		for(int neighbour: adj.get(src)){
+			if(!visited[neighbour]){
+				dfs(adj, neighbour, visited, stack);
 			}
 		}
-		stack.push(src);
+		stack.add(src);
 	}
 
 }

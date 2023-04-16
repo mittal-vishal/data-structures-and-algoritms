@@ -5,61 +5,56 @@ import java.util.Queue;
 
 class RottenOranges {
 
-    class Cell{
+    class Element{
         int i;
         int j;
-        public Cell(int i, int j){
+        Element(int i, int j){
             this.i = i;
-            this.j = i;
+            this.j = j;
         }
     }
-
     public int orangesRotting(int[][] grid) {
-        if(grid == null || grid.length == 0){
-            return 0;
-        }
-        Queue<Cell> rootenQueue = new LinkedList<>();
-
-        for(int i = 0; i < grid.length; i++){
-            for(int j = 0; j < grid[i].length; j++){
+        int row = grid.length;
+        int col = grid[0].length;
+        Queue<Element> queue = new LinkedList<>();
+        for(int i = 0; i < row; i++){
+            for(int j = 0; j < col; j++){
                 if(grid[i][j] == 2){
-                    rootenQueue.offer(new Cell(i, j));
+                    queue.offer(new Element(i, j));
                 }
             }
         }
-
-        int mints = 0;
-        int[][] cordinates = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
-        boolean[][] visited = new boolean[grid.length][grid[0].length];
-
-        while(!rootenQueue.isEmpty()){
-            int queueSize = rootenQueue.size();
+        int days = 0;
+        int[][] dirs = {{0,1},{0,-1},{1,0},{-1,0}};
+        while(!queue.isEmpty()){
+            int size = queue.size();
             boolean isRotten = false;
-            for(int i = 0; i < queueSize; i++){
-                Cell polledCell = rootenQueue.poll();
-                for(int j = 0; j < cordinates.length; j++){
-                    int[] currCordinate = cordinates[j];
-                    int newI = polledCell.i + currCordinate[0];
-                    int newJ = polledCell.j + currCordinate[1];
-                    if(isValid(newI, newJ, grid) && !visited[newI][newJ] && grid[newI][newJ] == 1){
+            for(int i = 0; i < size; i++){
+                Element polled = queue.poll();
+                for(int j = 0; j < dirs.length; j++){
+                    int[] cordinate = dirs[j];
+                    int newX = polled.i + cordinate[0];
+                    int newY = polled.j + cordinate[1];
+                    if(isValid(newX, newY, grid) && grid[newX][newY] == 1){
+                        grid[newX][newY] = 2;
                         isRotten = true;
-                        visited[newI][newJ] = true;
-                        rootenQueue.offer(new Cell(newI, newJ));
+                        queue.offer(new Element(newX,newY));
                     }
                 }
             }
-            if(isRotten){
-                mints++;
+            if(!isRotten){
+                break;
             }
+            days++;
         }
-        for(int i = 0; i < grid.length; i++){
-            for(int j = 0; j < grid[i].length; j++){
-                if(grid[i][j] == 1 && !visited[i][j]){
+        for(int i = 0; i < row; i++){
+            for(int j = 0; j < col; j++){
+                if(grid[i][j] == 1){
                     return -1;
                 }
             }
         }
-        return mints;
+        return days;
     }
 
     private boolean isValid(int i , int j, int[][] grid){
@@ -68,12 +63,5 @@ class RottenOranges {
         }else{
             return false;
         }
-    }
-
-    public static void main(String[] args) {
-        int[][] grid = {{2,1,1},{1,1,0},{0,1,1}};
-        RottenOranges rottenOranges = new RottenOranges();
-        int minutess = rottenOranges.orangesRotting(grid);
-        System.out.println(minutess);
     }
 }
