@@ -6,45 +6,39 @@ import java.util.Queue;
 public class ShortestPathInBinaryMatrix {
 
     class Cell{
-        int i;
-        int j;
-        public Cell(int i, int j){
-            this.i = i;
-            this.j = j;
+        int row;
+        int col;
+        int dist;
+        public Cell(int row, int col, int dist){
+            this.row = row;
+            this.col = col;
+            this.dist = dist;
         }
     }
-
     public int shortestPathBinaryMatrix(int[][] grid) {
-        if(grid == null || grid[0].length == 0){
-            return 0;
-        }else if(grid[0][0] == 1){
-            return 0;
+        if(grid[0][0] == 1){
+            return -1;
         }
         Queue<Cell> queue = new LinkedList<>();
-        queue.offer(new Cell(0, 0));
-        int rows = grid.length;
-        int cols = grid[0].length;
-        int dist = 1;
-        int[][] dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}, {-1, 1}, {1, 1}, {-1, -1}, {1, -1}};
-        boolean[][] visited = new boolean[rows][cols];
+        queue.offer(new Cell(0,0,1));
+        int row = grid.length;
+        int col = grid[0].length;
+        boolean[][] visited = new boolean[row][col];
+        visited[0][0] = true;
         while(!queue.isEmpty()){
-            int size = queue.size();
-            for(int i = 0; i < size; i++){
-                Cell polled = queue.poll();
-                visited[polled.i][polled.j] = true;
-                if(polled.i == cols - 1 && polled.j == cols - 1 && grid[polled.i][polled.j] == 0){
-                    return dist;
-                }
-                for(int j = 0; j < dirs.length; j++){
-                    int[] dir = dirs[j];
-                    int newI = polled.i + dir[0];
-                    int newJ = polled.j + dir[1];
-                    if(isValid(newI, newJ, grid) && !visited[newI][newJ] && grid[newI][newJ] == 0){
-                        queue.offer(new Cell(newI, newJ));
-                    }
+            Cell polled = queue.poll();
+            if(polled.row == row-1 && polled.col == col-1){
+                return polled.dist;
+            }
+            int[][] dirs = {{0,1},{0,-1},{1,0},{-1,0},{-1,1},{1,1},{-1,-1},{1,-1}};
+            for(int i = 0; i < dirs.length; i++){
+                int newRow = polled.row + dirs[i][0];
+                int newCol = polled.col + dirs[i][1];
+                if(isValid(newRow, newCol, grid) && !visited[newRow][newCol] && grid[newRow][newCol] == 0){
+                    visited[newRow][newCol] = true;
+                    queue.offer(new Cell(newRow, newCol, polled.dist + 1));
                 }
             }
-            dist++;
         }
         return -1;
     }
@@ -54,13 +48,6 @@ public class ShortestPathInBinaryMatrix {
             return true;
         }
         return false;
-    }
-
-    public static void main(String[] args) {
-        int[][] matrix = {{1,0,0},{1,1,0},{1,1,0}};
-        ShortestPathInBinaryMatrix shortestPath = new ShortestPathInBinaryMatrix();
-        int dist = shortestPath.shortestPathBinaryMatrix(matrix);
-        System.out.println(dist);
     }
 
 }

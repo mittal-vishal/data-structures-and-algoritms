@@ -7,36 +7,32 @@ import java.util.Queue;
 public class BipartiteGraphBFS {
 
     public boolean isBipartite(int[][] graph) {
-        if(graph == null || graph.length == 0){
-            return true;
-        }
-        int[] colors = new int[graph.length];
+        int n = graph.length;
+        int[] colors = new int[n];
         Arrays.fill(colors, -1);
-        for(int i = 0; i < graph.length; i++){
-            if(graph[i].length > 0 && colors[i] == -1){
-                if(!bfs(graph, i, colors)){
-                    return false;
-                }
+        for(int i = 0; i < n; i++){
+            if(colors[i] == -1 && !isBipartite(graph, colors, i)){
+                return false;
             }
         }
         return true;
     }
 
-    private boolean bfs(int[][] graph, int src, int[] colors){
+    private boolean isBipartite(int[][] graph, int[] colors, int src){
+
         Queue<Integer> queue = new LinkedList<>();
-        colors[src] = 0;
         queue.offer(src);
+        colors[src] = 0;
         while(!queue.isEmpty()){
-            int queueSize = queue.size();
-            for(int i = 0; i < queueSize; i++){
-                int polled = queue.poll();
-                for(int neighbour: graph[polled]){
-                    if(colors[neighbour] == -1){
-                        colors[neighbour] = colors[polled] == 0 ? 1: 0;
-                        queue.offer(neighbour);
-                    }else if(colors[neighbour] != -1 && colors[neighbour] == colors[polled]){
-                        return false;
-                    }
+            int polled = queue.poll();
+            int currNodeColor = colors[polled];
+            for(int neighbour: graph[polled]){
+                //not visited
+                if(colors[neighbour] == -1){
+                    colors[neighbour] = currNodeColor == 0? 1: 0;
+                    queue.offer(neighbour);
+                }else if(colors[neighbour] == colors[polled]){
+                    return false;
                 }
             }
         }

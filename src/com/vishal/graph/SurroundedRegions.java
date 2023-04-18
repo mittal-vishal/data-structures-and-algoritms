@@ -2,57 +2,55 @@ package com.vishal.graph;
 
 public class SurroundedRegions {
 
-    private boolean isSurrounded;
     public void solve(char[][] board) {
-        if(board == null || board.length == 0){
-            return;
+        //first row
+        int row = board.length;
+        int col = board[0].length;
+        boolean[][] visited = new boolean[row][col];
+        for(int j = 0; j < col; j++){
+            if(board[0][j] == 'O' && !visited[0][j]) dfs(board, 0, j, visited);
         }
-        int rows = board.length;
-        int cols = board[0].length;
-        boolean[][] visited = new boolean[board.length][board[0].length];
-        for(int i = 1; i < rows - 1; i++){
-            for(int j = 1; j < cols - 1; j++){
-                if(!visited[i][j] && board[i][j] == 'O'){
-                    this.isSurrounded = true;
-                    dfs(i, j, board, visited);
-                    if(this.isSurrounded){
-                        mark(i, j, board);
-                    }
+        //left col
+        for(int i = 0; i < row; i++){
+            if(board[i][0] == 'O' && !visited[i][0]) dfs(board, i, 0, visited);
+        }
+        //last row
+        for(int j = 0; j < col; j++){
+            if(board[row-1][j] == 'O' && !visited[row-1][j]) dfs(board, row-1, j, visited);
+        }
+        //right col
+        for(int i = 0; i < row; i++){
+            if(board[i][col-1] == 'O' && !visited[i][col-1]) dfs(board, i, col-1, visited);
+        }
+        for(int i = 0; i < row; i++){
+            for(int j = 0; j < col; j++){
+                if(board[i][j] == 'O' && !visited[i][j]){
+                    board[i][j] = 'X';
                 }
             }
         }
     }
 
-    private void mark(int i, int j, char[][] board){
-        if(isValid(i, j, board) && board[i][j] == 'O'){
-            board[i][j] = 'X';
-            mark(i - 1, j, board);
-            mark(i + 1, j, board);
-            mark(i, j - 1, board);
-            mark(i, j + 1, board);
-        }
-    }
-
-    private void dfs(int i, int j, char[][] board, boolean[][] visited){
-        if(!isValid(i, j, board) || visited[i][j] || board[i][j] != 'O'){
-            return;
-        }
-        if((i == 0 || j == 0 || i == board.length - 1 || j == board[0].length - 1) && board[i][j] != 'X'){
-            this.isSurrounded = false;
+    private void dfs(char[][] board, int i, int j, boolean[][] visited){
+        if(!isValid(i, j, board)){
             return;
         }
         visited[i][j] = true;
-        dfs(i - 1, j, board, visited);
-        dfs(i + 1, j, board, visited);
-        dfs(i, j + 1, board, visited);
-        dfs(i, j - 1, board, visited);
+        int[][] dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        for(int k = 0; k < dirs.length; k++){
+            int newRow = i + dirs[k][0];
+            int newCol = j + dirs[k][1];
+            if(isValid(newRow, newCol, board) && !visited[newRow][newCol] && board[newRow][newCol] == 'O'){
+                dfs(board, newRow, newCol, visited);
+            }
+        }
     }
 
     private boolean isValid(int i, int j, char[][] board){
-        if(i < 0 || i >= board.length || j < 0 || j >= board[0].length){
-            return false;
+        if(i >= 0 && i < board.length && j >= 0 && j < board[0].length){
+            return true;
         }
-        return true;
+        return false;
     }
 
 }

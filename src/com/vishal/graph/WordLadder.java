@@ -1,17 +1,23 @@
 package com.vishal.graph;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Queue;
+import java.util.*;
 
 public class WordLadder {
 
-    static class Pair{
-        String word;
+    public static void main(String[] args) {
+        String beginWord = "hit";
+        String endWord = "cog";
+        List<String> wordList = new ArrayList<>(Arrays.asList("hot","dot","dog","lot","log","cog"));
+        WordLadder wl = new WordLadder();
+        int result = wl.ladderLength(beginWord, endWord, wordList);
+        System.out.println(result);
+    }
+
+    class Pair{
+        String s;
         int sequence;
-        public Pair(String s, int sequence){
-            this.word = s;
+        Pair(String s, int sequence){
+            this.s = s;
             this.sequence = sequence;
         }
     }
@@ -19,37 +25,26 @@ public class WordLadder {
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
         Queue<Pair> queue = new LinkedList<>();
         queue.offer(new Pair(beginWord, 1));
+        HashSet<String> wordSet = new HashSet<>(wordList);
         while(!queue.isEmpty()){
-            int size = queue.size();
-            for(int i = 0; i < size; i++){
-                Pair polled = queue.poll();
-                ListIterator<String> iterator = wordList.listIterator();
-                while(iterator.hasNext()){
-                    String currWord = iterator.next();
-                    if(isAdjacent(polled.word, currWord)){
-                        iterator.remove();
-                        queue.offer(new Pair(currWord, polled.sequence + 1));
-                        if(currWord.equals(endWord)){
-                            return polled.sequence + 1;
-                        }
+            Pair polled = queue.poll();
+            if(polled.s.equals(endWord)){
+                return polled.sequence;
+            }
+            char[] wordArr = polled.s.toCharArray();
+            for(int i = 0; i < wordArr.length; i++){
+                char original = wordArr[i];
+                for(char ch='a'; ch <= 'z'; ch++){
+                    wordArr[i] = ch;
+                    if(wordSet.contains(String.valueOf(wordArr))){
+                        wordSet.remove(String.valueOf(wordArr));
+                        queue.offer(new Pair(String.valueOf(wordArr), polled.sequence+1));
                     }
                 }
+                wordArr[i] = original;
             }
         }
         return 0;
-    }
-
-    private boolean isAdjacent(String srcWord, String destWord){
-        int unmatchedCount = 0;
-        for(int i = 0; i < srcWord.length(); i++){
-            if(srcWord.charAt(i) != destWord.charAt(i)){
-                unmatchedCount++;
-            }
-            if(unmatchedCount > 1){
-                return false;
-            }
-        }
-        return true;
     }
 
 }

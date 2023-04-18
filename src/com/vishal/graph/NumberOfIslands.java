@@ -19,15 +19,14 @@ public class NumberOfIslands {
     }
 
     private void dfs(char[][] grid, int i, int j, boolean[][] visited){
-        if(!isValid(i, j, grid)){
-            return;
-        }
-        if(grid[i][j] == '1' && !visited[i][j]){
-            visited[i][j] = true;
-            dfs(grid, i-1, j, visited);
-            dfs(grid, i+1, j, visited);
-            dfs(grid, i, j-1, visited);
-            dfs(grid, i, j+1, visited);
+        visited[i][j] = true;
+        int[][] dirs = {{0,1},{1,0},{0,-1},{-1,0}};
+        for(int[] dir: dirs){
+            int newRow = i + dir[0];
+            int newCol = j + dir[1];
+            if(isValid(newRow, newCol, grid) && grid[newRow][newCol] == 1 && !visited[newRow][newCol]){
+                dfs(grid, newRow, newCol, visited);
+            }
         }
     }
 

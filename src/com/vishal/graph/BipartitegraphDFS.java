@@ -5,36 +5,25 @@ import java.util.Arrays;
 public class BipartitegraphDFS {
 
     public boolean isBipartite(int[][] graph) {
-        if(graph == null || graph.length == 0){
-            return true;
-        }
-        int nodes = graph.length;
-        int[] colors = new int[nodes];
+        int n = graph.length;
+        int[] colors = new int[n];
         Arrays.fill(colors, -1);
-        for(int i = 0; i < nodes; i++){
-            if(colors[i] == -1 && graph[i].length > 0){
-                if(!dfs(graph, colors, i, -1)){
-                    return false;
-                }
+        for(int i = 0; i < n; i++){
+            if(colors[i] == -1 && !isBipartite(graph, i, 0, colors)){
+                return false;
             }
         }
         return true;
     }
 
-    private boolean dfs(int[][] graph, int[] colors, int src, int parent){
-        if(colors[src] != -1 && colors[src] == colors[parent]){
-            return false;
-        }
-        if(colors[src] == -1){
-            if(parent == -1 || colors[parent] == 1){
-                colors[src] = 0;
-            }else{
-                colors[src] = 1;
-            }
-            for(int neighbour: graph[src]){
-                if(!dfs(graph, colors, neighbour, src)){
-                    return false;
-                }
+    private boolean isBipartite(int[][] graph, int src, int color, int[] colors){
+        colors[src] = color;
+        int toBeColored = color == 0? 1: 0;
+        for(int neighbour: graph[src]){
+            if(colors[neighbour] == -1 && !isBipartite(graph, neighbour, toBeColored, colors)){
+                return false;
+            }else if(colors[neighbour] != -1 && colors[neighbour] == color){
+                return false;
             }
         }
         return true;
