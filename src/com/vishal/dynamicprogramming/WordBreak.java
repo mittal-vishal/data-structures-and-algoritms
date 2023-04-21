@@ -1,34 +1,29 @@
 package com.vishal.dynamicprogramming;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class WordBreak {
 
     public boolean wordBreak(String s, List<String> wordDict) {
-        Set<String> dictionary = new HashSet<>(wordDict);
-        HashMap<String,Boolean> memo = new HashMap<>();
-        return canBreak(s, dictionary, memo);
+        HashSet<String> dict = new HashSet<>(wordDict);
+        Boolean[] dp = new Boolean[s.length()];
+        return canBreak(s, 0, dict, dp);
     }
 
-    private boolean canBreak(String s, Set<String> dictionary, HashMap<String,Boolean> memo){
-        if(s.length() == 0){
+    private boolean canBreak(String s, int index, HashSet<String> dict, Boolean[] dp){
+        if(index == s.length()){
             return true;
-        }else if(memo.containsKey(s)){
-            return memo.get(s);
+        }else if(dp[index] != null){
+            return dp[index];
         }
-        for(int i = 1; i <= s.length(); i++){
-            String left = s.substring(0, i);
-            String remaining = s.substring(i, s.length());
-            if(dictionary.contains(left) && canBreak(remaining, dictionary, memo)){
-                memo.put(s, true);
-                return memo.get(s);
+        for(int j = index+1; j <= s.length(); j++){
+            String left = s.substring(index, j);
+            if(dict.contains(left) && canBreak(s, j, dict, dp)){
+                return dp[index] = true;
             }
         }
-        memo.put(s, false);
-        return memo.get(s);
+        return dp[index] = false;
     }
 
 }

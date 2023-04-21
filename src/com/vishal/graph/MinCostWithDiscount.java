@@ -42,24 +42,20 @@ public class MinCostWithDiscount {
         PriorityQueue<Node> pq = new PriorityQueue<>((a, b) -> a.dist - b.dist);
         pq.offer(new Node(0, 0, 0));
         dist[0][0] = 0;
-        boolean[] visited = new boolean[n];
         while(!pq.isEmpty()){
             Node polled = pq.poll();
-            visited[polled.id] = true;
             if(polled.id == n-1){
                 return polled.dist;
             }
             for(Node neighbour: adjList.get(polled.id)){
-                if(!visited[neighbour.id]){
-                    if((dist[polled.id][polled.discount] + neighbour.dist) < dist[neighbour.id][polled.discount]){
-                        dist[neighbour.id][polled.discount] = dist[polled.id][polled.discount] + neighbour.dist;
-                        pq.offer(new Node(neighbour.id, dist[neighbour.id][polled.discount], polled.discount));
-                    }
-                    if(polled.discount < discounts &&
-                            (polled.dist + neighbour.dist/2) < dist[neighbour.id][polled.discount + 1]){
-                        dist[neighbour.id][polled.discount + 1] = dist[polled.id][polled.discount] + (neighbour.dist/2);
-                        pq.offer(new Node(neighbour.id, dist[neighbour.id][polled.discount+1], polled.discount + 1));
-                    }
+                if((dist[polled.id][polled.discount] + neighbour.dist) < dist[neighbour.id][polled.discount]){
+                    dist[neighbour.id][polled.discount] = dist[polled.id][polled.discount] + neighbour.dist;
+                    pq.offer(new Node(neighbour.id, dist[neighbour.id][polled.discount], polled.discount));
+                }
+                if(polled.discount < discounts &&
+                        (polled.dist + neighbour.dist/2) < dist[neighbour.id][polled.discount + 1]){
+                    dist[neighbour.id][polled.discount + 1] = dist[polled.id][polled.discount] + (neighbour.dist/2);
+                    pq.offer(new Node(neighbour.id, dist[neighbour.id][polled.discount+1], polled.discount + 1));
                 }
             }
         }

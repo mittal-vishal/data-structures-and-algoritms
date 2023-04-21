@@ -39,7 +39,7 @@ public class PrintShortestPath {
                 if(dist[neighbour.node] > (dist[polled.node] + neighbour.cost)){
                     dist[neighbour.node] = dist[polled.node] + neighbour.cost;
                     parent[neighbour.node] = polled.node;
-                    pq.offer(neighbour);
+                    pq.offer(new GraphNode(neighbour.node, dist[neighbour.node]));
                 }
             }
         }

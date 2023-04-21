@@ -33,7 +33,7 @@ class ShortestDistMatrixDijkstra {
 			for(GraphNode neighbour: graph.get(polled.node)){
 				if(dist[neighbour.node] > (dist[polled.node] + neighbour.cost)){
 					dist[neighbour.node] = dist[polled.node] + neighbour.cost;
-					pq.offer(neighbour);
+					pq.offer(new GraphNode(neighbour.node, dist[neighbour.node]));
 				}
 			}
 		}

@@ -6,64 +6,87 @@ import java.util.PriorityQueue;
 public class MazeII {
 
     class Cell{
-        int row;
-        int col;
+        int i;
+        int j;
         int dist;
-        public Cell(int row, int col){
-            this.row = row;
-            this.col = col;
+        Cell(int i, int j, int dist){
+            this.i = i;
+            this.j = j;
+            this.dist = dist;
         }
     }
     public int shortestDistance(int[][] maze, int[] start, int[] destination) {
-        PriorityQueue<Cell> pq = new PriorityQueue<>((a,b) -> a.dist - b.dist);
-        Cell srcCell = new Cell(start[0], start[1]);
-        srcCell.dist = 0;
-        pq.offer(srcCell);
-        int[][] dirs = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
-        boolean[][] visited = new boolean[maze.length][maze[0].length];
-        int[] dists = new int[maze.length * maze[0].length];
-        Arrays.fill(dists, Integer.MAX_VALUE);
+        PriorityQueue<Cell> pq = new PriorityQueue<>((a,b) -> a.dist-b.dist);
+        int row = maze.length;
+        int col = maze[0].length;
+        int[][] dist = new int[row][col];
+        for(int i = 0; i < row; i++){
+            Arrays.fill(dist[i], Integer.MAX_VALUE);
+        }
+        dist[start[0]][start[1]] = 0;
+        pq.offer(new Cell(start[0], start[1], 0));
+        char[] dirs = {'L', 'R', 'U', 'B'};
         while(!pq.isEmpty()){
-            Cell polledCell = pq.poll();
-            visited[polledCell.row][polledCell.col] = true;
-            for(int i = 0; i < dirs.length; i++){
-                int[] dir = dirs[i];
-                int row = polledCell.row;
-                int col = polledCell.col;
-                int dist = polledCell.dist;
-                while(isValid(row, col, maze) && maze[row][col] == 0){
-                    row += dir[0];
-                    col += dir[1];
-                    dist++;
-                }
-                dist--;
-                row -= dir[0];
-                col -= dir[1];
-                if(!visited[row][col] && dist < dists[(maze[0].length * row) + col]){
-                    dists[(maze[0].length * row) + col] = dist;
-                    Cell newCell = new Cell(row, col);
-                    newCell.dist = dist;
-                    pq.offer(newCell);
+            Cell polled = pq.poll();
+            if(polled.i == destination[0] && polled.j == destination[1]){
+                return polled.dist;
+            }
+            for(char dir: dirs){
+                Cell neighbour = getNeighbour(maze, dir, polled.i, polled.j);
+                int newRow = neighbour.i;
+                int newCol = neighbour.j;
+                int newDist = neighbour.dist;
+                if(dist[newRow][newCol] > (newDist + polled.dist)){
+                    dist[newRow][newCol] = newDist + polled.dist;
+                    pq.offer(new Cell(newRow, newCol, dist[newRow][newCol]));
                 }
             }
         }
-        int index = (maze[0].length * destination[0]) + destination[1];
-        return dists[index] != Integer.MAX_VALUE ? dists[index]: -1;
+        return -1;
     }
 
-    private boolean isValid(int row, int col, int[][] maze){
-        if(row >= 0 && row < maze.length && col >= 0 && col < maze[0].length){
-            return true;
+    private Cell getNeighbour(int[][] maze, char dir, int i, int j){
+        int nextRow = i;
+        int nextCol = j;
+        int dist = 0;
+        if(dir == 'L'){
+            for(int col = j-1; col >= 0; col--){
+                if(maze[i][col] == 0){
+                    nextCol = col;
+                    dist++;
+                }else{
+                    break;
+                }
+            }
+        }else if(dir == 'R'){
+            for(int col = j+1; col < maze[0].length; col++){
+                if(maze[i][col] == 0){
+                    nextCol = col;
+                    dist++;
+                }else{
+                    break;
+                }
+            }
+        }else if(dir == 'U'){
+            for(int row = i-1; row >= 0; row--){
+                if(maze[row][j] == 0){
+                    nextRow = row;
+                    dist++;
+                }else{
+                    break;
+                }
+            }
+        }else{
+            for(int row = i+1; row < maze.length; row++){
+                if(maze[row][j] == 0){
+                    nextRow = row;
+                    dist++;
+                }else{
+                    break;
+                }
+            }
         }
-        return false;
-    }
-
-    public static void main(String[] args) {
-        int[][] grid = {{0,0,1,0,0},{0,0,0,0,0},{0,0,0,1,0},{1,1,0,1,1},{0,0,0,0,0}};
-        int[] src = {0,4};
-        int[] target = {4,4};
-        MazeII maze = new MazeII();
-        int dist = maze.shortestDistance(grid, src, target);
-        System.out.println(dist);
+        if(dist == 0) dist = Integer.MAX_VALUE;
+        return new Cell(nextRow, nextCol, dist);
     }
 }

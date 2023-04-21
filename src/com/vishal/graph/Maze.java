@@ -6,95 +6,72 @@ import java.util.Queue;
 class Maze {
 
     class Cell{
-        int row;
-        int col;
-        public Cell(int row, int col){
-            this.row = row;
-            this.col = col;
+        int i;
+        int j;
+        Cell(int i, int j){
+            this.i = i;
+            this.j = j;
         }
     }
-
     public boolean hasPath(int[][] maze, int[] start, int[] destination) {
-        if(maze == null || maze.length == 0 || maze[0].length == 0){
-            return true;
-        }
-        Cell src = new Cell(start[0], start[1]);
+        char[] dirs = {'L', 'R', 'U', 'B'};
         Queue<Cell> queue = new LinkedList<>();
-        queue.offer(src);
+        queue.offer(new Cell(start[0], start[1]));
         boolean[][] visited = new boolean[maze.length][maze[0].length];
-        visited[src.row][src.col] = true;
-        char[] dirs = {'L','R','U', 'D'};
         while(!queue.isEmpty()){
-            int size = queue.size();
-            for(int i = 0; i < size; i++){
-                Cell polledCell = queue.poll();
-                if(polledCell.row == destination[0] && polledCell.col == destination[1]) {
-                    return true;
-                }
-                for(char dir: dirs){
-                    Cell nextCell = getNext(maze, polledCell, dir);
-                    if(visited[nextCell.row][nextCell.col] == false){
-                        visited[nextCell.row][nextCell.col] = true;
-                        queue.offer(nextCell);
-                    }
+            Cell polled = queue.poll();
+            if(polled.i == destination[0] && polled.j == destination[1]){
+                return true;
+            }
+            for(char ch: dirs){
+                Cell neighbour = getNextValidCell(maze, ch, polled.i, polled.j);
+                int newRow = neighbour.i;
+                int newCol = neighbour.j;
+                if(!visited[newRow][newCol]){
+                    queue.offer(new Cell(newRow,newCol));
+                    visited[newRow][newCol] = true;
                 }
             }
         }
         return false;
     }
 
-    private Cell getNext(int[][] maze, Cell curr, char dir){
-        int currRow = curr.row;
-        int currCol = curr.col;
-        if(dir == 'U'){
-            for(int i = currRow - 1; i >= 0; i--){
-                if(isValid(i, currCol, maze) && maze[i][currCol] == 0){
-                    currRow = i;
+    private Cell getNextValidCell(int[][] maze, char ch, int i, int j){
+        int nextRow = i;
+        int nextCol = j;
+        if(ch == 'L'){
+            for(int col = j-1; col >= 0; col--){
+                if(maze[i][col] == 0){
+                    nextCol = col;
                 }else{
                     break;
                 }
             }
-        }else if(dir == 'D'){
-            for(int i = currRow + 1; i < maze.length; i++){
-                if(isValid(i, currCol, maze) && maze[i][currCol] == 0){
-                    currRow = i;
+        }else if(ch == 'R'){
+            for(int col = j+1; col < maze[0].length; col++){
+                if(maze[i][col] == 0){
+                    nextCol = col;
                 }else{
                     break;
                 }
             }
-        }else if(dir == 'L'){
-            for(int i = currCol - 1; i >= 0; i--){
-                if(isValid(currRow, i, maze) && maze[currRow][i] == 0){
-                    currCol = i;
+        }else if(ch == 'U'){
+            for(int row = i-1; row >= 0; row--){
+                if(maze[row][j] == 0){
+                    nextRow = row;
                 }else{
                     break;
                 }
             }
         }else{
-            for(int i = currCol + 1; i < maze[0].length; i++){
-                if(isValid(currRow, i, maze) && maze[currRow][i] == 0){
-                    currCol = i;
+            for(int row = i+1; row < maze.length; row++){
+                if(maze[row][j] == 0){
+                    nextRow = row;
                 }else{
                     break;
                 }
             }
         }
-        return new Cell(currRow, currCol);
-    }
-
-    private boolean isValid(int row, int col, int[][] maze){
-        if(row >= 0 && row < maze.length && col >= 0 && col < maze[0].length){
-            return true;
-        }
-        return false;
-    }
-
-    public static void main(String[] args) {
-        int[][] grid = {{0,0,1,0,0},{0,0,0,0,0},{0,0,0,1,0},{1,1,0,1,1},{0,0,0,0,0}};
-        int[] src = {0,4};
-        int[] target = {1,2};
-        Maze maze = new Maze();
-        boolean isExist = maze.hasPath(grid, src, target);
-        System.out.println(isExist);
+        return new Cell(nextRow,nextCol);
     }
 }

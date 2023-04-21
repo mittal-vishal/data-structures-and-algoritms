@@ -31,11 +31,11 @@ public class LISII {
             }
         }
         List<Integer> results = new ArrayList<>();
-        results.add(nums[maxIndex]);
-        while(prev[maxIndex] != maxIndex){
-            maxIndex = prev[maxIndex];
+        while(maxIndex != prev[maxIndex]){
             results.add(nums[maxIndex]);
+            maxIndex = prev[maxIndex];
         }
+        results.add(nums[maxIndex]);
         Collections.reverse(results);
         return results;
     }
