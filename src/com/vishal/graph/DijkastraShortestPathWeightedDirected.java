@@ -2,11 +2,9 @@ package com.vishal.graph;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Scanner;
-import java.util.Set;
 
 public class DijkastraShortestPathWeightedDirected {
 
@@ -43,8 +41,8 @@ public class DijkastraShortestPathWeightedDirected {
 		while (!pq.isEmpty()) {
 			GraphNode popped = pq.poll();
 			for (GraphNode adjNode : adj.get(popped.getNode())) {
-				if (dist[adjNode.getNode()] > dist[popped.getNode()] + adjNode.getCost()) {
-					dist[adjNode.getNode()] = dist[popped.getNode()] + adjNode.getCost();
+				if (dist[adjNode.getNode()] > popped.getCost() + adjNode.getCost()) {
+					dist[adjNode.getNode()] = popped.getCost() + adjNode.getCost();
 					pq.add(new GraphNode(adjNode.getNode(), dist[adjNode.getNode()]));
 				}
 			}
