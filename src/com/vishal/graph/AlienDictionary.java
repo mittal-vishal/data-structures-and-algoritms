@@ -5,64 +5,70 @@ import java.util.*;
 public class AlienDictionary {
 
     public String alienOrder(String[] words) {
-        List<List<Integer>> adjList = new ArrayList<>();
-        for(int i = 0; i < 26; i++){
-            adjList.add(new ArrayList<>());
-        }
-        Set<Integer> charSet = new HashSet<>();
-        for(int i = 0; i < words.length; i++){
-            for(int j = 0; j < words[i].length(); j++){
-                charSet.add(words[i].charAt(j)-'a');
+        //get unique chars count for graph size
+        HashSet<Character> uniqueChars = new HashSet<>();
+        for(String word: words){
+            for(int i = 0; i < word.length(); i++){
+                uniqueChars.add(word.charAt(i));
             }
         }
-        for(int i = 0; i < words.length - 1; i++){
-            String firstWord = words[i];
-            String secondWord = words[i+1];
-            for(int j = 0; j < firstWord.length(); j++){
-                if(secondWord.length() <= j){
+        List<List<Integer>> graph = new ArrayList<>();
+        for(int i = 0; i < 26; i++){
+            graph.add(new ArrayList<>());
+        }
+        for(int i = 0; i < words.length-1; i++){
+            String str1 = words[i];
+            String str2 = words[i+1];
+            int len = Math.min(str1.length(), str2.length());
+            for(int k = 0; k < len; k++){
+                if(str1.charAt(k) != str2.charAt(k)){
+                    int u = str1.charAt(k)-'a';
+                    int v = str2.charAt(k)-'a';
+                    graph.get(u).add(v);
+                    break;
+                }else if(k == len-1 && str1.length() > str2.length()){
                     return "";
                 }
-                if(firstWord.charAt(j) != secondWord.charAt(j)){
-                    int u = getCharInt(firstWord.charAt(j));
-                    int v = getCharInt(secondWord.charAt(j));
-                    adjList.get(u).add(v);
-                    break;
-                }
             }
         }
-        boolean[] visited = new boolean[26];
-        boolean[] recStack = new boolean[26];
-        Stack<Integer> stack = new Stack<>();
-        for(int node: charSet){
-            if(!visited[node] && isCycle(adjList, node, visited, recStack, stack)){
-                return "";
-            }
-        }
-
+        int[] order = topoSort(graph, uniqueChars);
         StringBuilder sb = new StringBuilder();
-
-        while(!stack.isEmpty()){
-            sb.append((char)(stack.pop() + 97));
+        for(int i: order){
+            sb.append((char)(i+97));
         }
-
-        return sb.toString();
+        return sb.length() == uniqueChars.size()? sb.toString(): "";
     }
 
-    private int getCharInt(char ch){
-        return ch-'a';
+    private int[] topoSort(List<List<Integer>> graph, HashSet<Character> uniqueChars){
+        boolean[] visited = new boolean[26];
+        boolean[] pathVisited = new boolean[26];
+        Stack<Integer> stack = new Stack<>();
+        for(Character vertex: uniqueChars){
+            int node = vertex-'a';
+            if(!visited[node] && dfs(graph, node, visited, pathVisited, stack)){
+                break;
+            }
+        }
+        int[] result = new int[stack.size()];
+        int index = 0;
+        while(!stack.isEmpty()){
+            result[index++] = stack.pop();
+        }
+        return result;
     }
 
-    private boolean isCycle(List<List<Integer>> adjList, int src, boolean[] visited, boolean[] recStack, Stack<Integer> stack){
+    private boolean dfs(List<List<Integer>> graph, int src, boolean[] visited, boolean[] pathVisited, Stack<Integer> stack){
         visited[src] = true;
-        for(int neighbour: adjList.get(src)){
-            if(!visited[neighbour] && isCycle(adjList, neighbour, visited, recStack, stack)){
+        pathVisited[src] = true;
+        for(int neighbour: graph.get(src)){
+            if(!visited[neighbour] && dfs(graph, neighbour, visited, pathVisited, stack)){
                 return true;
-            }else if(visited[neighbour] && !recStack[neighbour]){
+            }else if(pathVisited[neighbour]){
                 return true;
             }
         }
-        recStack[src] = true;
         stack.push(src);
+        pathVisited[src] = false;
         return false;
     }
 

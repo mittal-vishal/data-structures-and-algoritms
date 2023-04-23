@@ -5,51 +5,40 @@ import java.util.LinkedList;
 
 public class SerializationDeserialization {
 
-    public static void main(String[] args) {
-        SerializationDeserialization sd = new SerializationDeserialization();
-        TreeNode root = new TreeNode(1);
-        root.left = new TreeNode(2);
-        root.right = new TreeNode(3);
-        root.getRight().setLeft(new TreeNode(4));
-        root.getRight().setRight(new TreeNode(5));
-        String serialize = sd.serialize(root);
-        System.out.println(serialize);
-    }
-
-    // Encodes a tree to a single string.
     public String serialize(TreeNode root) {
-        StringBuilder preorderStr = new StringBuilder();;
-        preorder(root, preorderStr);
-        preorderStr.deleteCharAt(preorderStr.length() - 1);
-        return preorderStr.toString();
+        StringBuilder sb = new StringBuilder();
+        preorder(root, sb);
+        sb.deleteCharAt(sb.length()-1);
+        return sb.toString();
     }
 
-    private void preorder(TreeNode root, StringBuilder str){
+    private void preorder(TreeNode root, StringBuilder sb){
         if(root == null){
-            str.append("null,");
-        }else{
-            str.append(String.valueOf(root.val) + ',');
-            preorder(root.left, str);
-            preorder(root.right, str);
+            sb.append("null,");
+            return;
         }
+        sb.append(root.val + ",");
+        preorder(root.left, sb);
+        preorder(root.right, sb);
     }
 
     // Decodes your encoded data to tree.
     public TreeNode deserialize(String data) {
+
         String[] nodes = data.split(",");
-        LinkedList<String> nodesList = new LinkedList(Arrays.asList(nodes));
+        LinkedList<String> nodesList = new LinkedList<>(Arrays.asList(nodes));
         return constructTree(nodesList);
     }
 
-    private TreeNode constructTree(LinkedList<String> nodes){
-        if(nodes.getFirst().equals("null")){
-            nodes.removeFirst();
+    private TreeNode constructTree(LinkedList<String> nodesList){
+        if(nodesList.size() > 0 && nodesList.getFirst().equals("null")){
+            nodesList.removeFirst();
             return null;
         }
-        int rootVal = Integer.parseInt(nodes.removeFirst());
-        TreeNode root = new TreeNode(rootVal);
-        root.left = constructTree(nodes);
-        root.right = constructTree(nodes);
+        int data = Integer.valueOf(nodesList.removeFirst());
+        TreeNode root = new TreeNode(data);
+        root.left = constructTree(nodesList);
+        root.right = constructTree(nodesList);
         return root;
     }
 

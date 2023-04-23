@@ -5,91 +5,72 @@ import java.util.stream.Collectors;
 
 public class AccountMerge {
 
-    public List<List<String>> accountsMerge(List<List<String>> accounts) {
-        int totalAccounts = accounts.size();
-        DSU dsu = new DSU(totalAccounts);
-        Map<String, Integer> emailAccIdMap = new HashMap<>();
-        for (int i = 0; i < totalAccounts; i++) {
-            List<String> emails = accounts.get(i).subList(1, accounts.get(i).size());
-            for (String email : emails) {
-                if (!emailAccIdMap.containsKey(email)) {
-                    emailAccIdMap.put(email, i);
-                } else {
-                    int prevAccId = emailAccIdMap.get(email);
-                    dsu.union(prevAccId, i);
-                }
-            }
-        }
-        // iterate account and prepare ans
-        Map<Integer, Account> aggregateMap = new HashMap<>();
-        for (int i = 0; i < totalAccounts; i++) {
-            List<String> currAccount = accounts.get(i);
-            List<String> emails = currAccount.subList(1, currAccount.size());
-            int ultimateAccId = dsu.findParent(i);
-            if (!aggregateMap.containsKey(ultimateAccId)) {
-                String accName = accounts.get(i).get(0);
-                aggregateMap.put(ultimateAccId, new Account(accName));
-                aggregateMap.get(ultimateAccId).emails.addAll(emails);
-            } else {
-                aggregateMap.get(ultimateAccId).emails.addAll(emails);
-            }
-        }
-        List<List<String>> aggregateList = aggregateMap.values()
-                .stream().map(acc -> acc.getSortedEmails())
-                .collect(Collectors.toList());
-        return aggregateList;
-    }
-
-    static class Account{
-        String name;
-        TreeSet<String> emails;
-        public Account(String name){
-            this.name = name;
-            this.emails = new TreeSet<>();
-        }
-
-        public List<String> getSortedEmails(){
-            List<String> emailList = new ArrayList<>();
-            emailList.add(name);
-            emailList.addAll(emails);
-            return emailList;
-        }
-
-    }
-
-    static class DSU{
-        private int[] size;
-        private int[] parent;
-        public DSU(int n){
-            size = new int[n];
-            parent = new int[n];
-            for(int i = 0; i < parent.length; i++){
+    class DisjointUnion{
+        int[] size;
+        int[] parent;
+        int n;
+        DisjointUnion(int n){
+            this.n = n;
+            this.size = new int[n];
+            this.parent = new int[n];
+            for(int i = 0; i < n; i++){
                 parent[i] = i;
+                size[i] = 1;
             }
         }
 
-        public void union(int u, int v){
-            int pu = findParent(u);
-            int pv = findParent(v);
-            if(pu == pv){
+        private int findParent(int i){
+            if(i == parent[i]){
+                return i;
+            }
+            return parent[i] = findParent(parent[i]);
+        }
+
+        private void unionBySize(int u, int v){
+            int up = findParent(u);
+            int vp = findParent(v);
+            if(vp == up){
                 return;
+            }else if(size[up] > size[vp]){
+                parent[vp] = up;
+                size[up] += size[vp];
             }else{
-                if(size[pu] > size[pv]){
-                    parent[pv] = pu;
-                    size[pu]++;
+                parent[up] = vp;
+                size[vp] += size[up];
+            }
+        }
+    }
+
+    public List<List<String>> accountsMerge(List<List<String>> accounts) {
+        HashMap<String, Integer> emailNode = new HashMap<>();
+        int n = accounts.size();
+        DisjointUnion dsu = new DisjointUnion(n);
+        for(int i = 0; i < n; i++){
+            List<String> emails = accounts.get(i);
+            for(int j = 1; j < emails.size(); j++){
+                String email = emails.get(j);
+                if(!emailNode.containsKey(email)){
+                    emailNode.put(email, i);
                 }else{
-                    parent[pu] = pv;
-                    size[pv]++;
+                    dsu.unionBySize(i, emailNode.get(email));
                 }
             }
         }
 
-        public int findParent(int node){
-            if(parent[node] == node){
-                return node;
-            }
-            parent[node] = findParent(parent[node]);
-            return parent[node];
+        Map<Integer, List<String>> nodeEmails = new HashMap<>();
+        for(Map.Entry<String, Integer> entry: emailNode.entrySet()){
+            int up = dsu.findParent(entry.getValue());
+            nodeEmails.putIfAbsent(up, new ArrayList<>());
+            nodeEmails.get(up).add(entry.getKey());
         }
+
+        List<List<String>> results = new ArrayList<>();
+        for(Map.Entry<Integer, List<String>> entry: nodeEmails.entrySet()){
+            List<String> mergeEmails = entry.getValue();
+            Collections.sort(mergeEmails);
+            mergeEmails.add(0, accounts.get(entry.getKey()).get(0));
+            results.add(mergeEmails);
+        }
+        return results;
     }
 }
