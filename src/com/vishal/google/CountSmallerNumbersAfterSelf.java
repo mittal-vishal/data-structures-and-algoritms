@@ -4,16 +4,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-class Element{
-    int num;
-    int index;
-    public Element(int num, int index){
-        this.num = num;
-        this.index = index;
-    }
-}
-
 public class CountSmallerNumbersAfterSelf {
+
+    class Element{
+        int num;
+        int index;
+        public Element(int num, int index){
+            this.num = num;
+            this.index = index;
+        }
+    }
 
     public List<Integer> countSmaller(int[] nums) {
         Element[] elementArr = new Element[nums.length];

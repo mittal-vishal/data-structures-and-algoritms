@@ -7,59 +7,44 @@ import java.util.Queue;
 
 public class JumpGameIV {
 
-    public static void main(String[] args) {
-        int[] nums = {100, -23, -23, 404, 100, 23, 23, 23, 3, 404};
-        int jumps = minJumps(nums);
-        System.out.print(jumps);
-    }
-
-    static class Pair{
+    class Pair{
         int index;
         int jumps;
-        public Pair(int index, int jumps){
+        Pair(int index, int jumps){
             this.index = index;
             this.jumps = jumps;
         }
     }
-
-    public static int minJumps(int[] arr) {
+    public int minJumps(int[] arr) {
         if(arr == null || arr.length < 2){
             return 0;
         }
-
-        Map<Integer, LinkedList<Integer>> occurMap = new HashMap<>();
-        for(int i = 0; i < arr.length; i++){
-            occurMap.putIfAbsent(arr[i], new LinkedList<>());
-            occurMap.get(arr[i]).add(i);
+        HashMap<Integer, LinkedList<Integer>> elementOccurance = new HashMap<>();
+        int n = arr.length;
+        for(int i = 0; i < n; i++){
+            elementOccurance.putIfAbsent(arr[i], new LinkedList<>());
+            elementOccurance.get(arr[i]).add(i);
         }
-
         Queue<Pair> queue = new LinkedList<>();
-        queue.offer(new Pair(0, 0));
-        boolean[] visited = new boolean[arr.length];
+        queue.offer(new Pair(0,0));
+        boolean[] visited = new boolean[n];
         visited[0] = true;
-
         while(!queue.isEmpty()){
-            int queueSize = queue.size();
-            for(int i = 0; i < queueSize; i++){
-                Pair currPair = queue.poll();
-                if(currPair.index == arr.length - 1){
-                    return currPair.jumps;
-                }
-                int value = arr[currPair.index];
-                LinkedList<Integer> neighboursPos = occurMap.get(value);
-                neighboursPos.add(currPair.index - 1);
-                neighboursPos.add(currPair.index + 1);
-                while(neighboursPos.size() > 0){
-                    int currPos = neighboursPos.poll();
-                    if(currPos >= 0 && currPos < arr.length && !visited[currPos]){
-                        queue.offer(new Pair(currPos, currPair.jumps + 1));
-                        visited[currPos] = true;
-                    }
+            Pair polled = queue.poll();
+            if(polled.index == n-1){
+                return polled.jumps;
+            }
+            LinkedList<Integer> neighbours = elementOccurance.get(arr[polled.index]);
+            neighbours.add(polled.index-1);
+            neighbours.add(polled.index+1);
+            while(neighbours.size() > 0){
+                int neighbour = neighbours.poll();
+                if(neighbour >= 0 && neighbour < n && !visited[neighbour]){
+                    visited[neighbour] = true;
+                    queue.offer(new Pair(neighbour, polled.jumps+1));
                 }
             }
-
         }
-
         return 0;
     }
 

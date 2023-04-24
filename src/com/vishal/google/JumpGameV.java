@@ -5,38 +5,38 @@ import java.util.Arrays;
 public class JumpGameV {
 
     public int maxJumps(int[] arr, int d) {
-        int max = 1;
-        int[] memo = new int[arr.length];
-        Arrays.fill(memo, -1);
-        for(int i = 0; i < arr.length; i++){
-            max = Math.max(max, dfs(arr, d, i, memo));
+        int maxJump = 1;
+        int n = arr.length;
+        int[] dp = new int[n];
+        Arrays.fill(dp, -1);
+        for(int i = 0; i < n; i++){
+            maxJump = Math.max(maxJump, dfs(arr, i, d, dp));
         }
-        return max;
+        return maxJump;
     }
 
-    private int dfs(int[] arr, int d, int curr, int[] memo){
-        if(memo[curr] != -1){
-            return memo[curr];
+    private int dfs(int[] arr, int curr, int d, int[] dp){
+        if(dp[curr] != -1){
+            return dp[curr];
         }
-        int maxJumps = 1;
-        //Left
-        for(int i = curr - 1; i >= 0 && curr-i <= d; i--){
+        int maxJump = 1;
+        //right side
+        for(int i = curr+1; i <= Math.min(curr+d, arr.length-1); i++){
             if(arr[i] < arr[curr]){
-                maxJumps =  Math.max(maxJumps, 1 + dfs(arr, d, i, memo));
+                maxJump = Math.max(maxJump, 1 + dfs(arr, i, d, dp));
             }else{
                 break;
             }
         }
-        //right
-        for(int i = curr + 1; i < arr.length && i-curr <= d; i++){
+        //left side
+        for(int i = curr-1; i >= Math.max(curr-d, 0); i--){
             if(arr[i] < arr[curr]){
-                maxJumps =  Math.max(maxJumps, 1 + dfs(arr, d, i, memo));
+                maxJump = Math.max(maxJump, 1 + dfs(arr, i, d, dp));
             }else{
                 break;
             }
         }
-        memo[curr] = maxJumps;
-        return memo[curr];
+        return dp[curr] = maxJump;
     }
 
 }

@@ -1,15 +1,15 @@
 package com.vishal.google;
 
-class TrieNode{
-    TrieNode[] childrens;
-    int value;
-    public TrieNode(){
-        childrens = new TrieNode[27];
-        value = -1;
-    }
-}
-
 class FileSystem {
+
+    class TrieNode{
+        TrieNode[] childrens;
+        int value;
+        public TrieNode(){
+            childrens = new TrieNode[27];
+            value = -1;
+        }
+    }
 
     private TrieNode root;
 

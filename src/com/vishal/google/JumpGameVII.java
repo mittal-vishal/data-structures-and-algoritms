@@ -5,39 +5,33 @@ import java.util.Queue;
 
 public class JumpGameVII {
 
-    public static class Element{
+    class Pair{
         char ch;
         int index;
-        public Element(char ch, int index){
+        Pair(char ch, int index){
             this.ch = ch;
             this.index = index;
         }
     }
 
     public boolean canReach(String s, int minJump, int maxJump) {
-        if(s.length() == 0 || s.charAt(0) != '0'){
-            return false;
-        }
-
-        Queue<Element> queue = new LinkedList<>();
-        queue.offer(new Element(s.charAt(0), 0));
-        int min = 0;
-        int max = 0;
-
+        Queue<Pair> queue = new LinkedList<>();
+        queue.offer(new Pair('0', 0));
+        int min = -1;
+        int max = -1;
         while(!queue.isEmpty()){
-            Element polled = queue.poll();
-            if(polled.ch == '0' && polled.index == s.length() - 1){
+            Pair polled = queue.poll();
+            if(polled.ch == '0' && polled.index == s.length()-1){
                 return true;
             }
-            min = polled.index + minJump < max ? max + 1: polled.index + minJump;
-            max = polled.index + maxJump;
+            min = Math.max(polled.index+minJump, max+1);
+            max = Math.min(polled.index+maxJump, s.length()-1);
             for(int i = min; i <= max; i++){
-                if(i < s.length() && s.charAt(i) == '0'){
-                    queue.offer(new Element(s.charAt(i), i));
+                if(s.charAt(i) == '0'){
+                    queue.offer(new Pair('0', i));
                 }
             }
         }
-
         return false;
     }
 }

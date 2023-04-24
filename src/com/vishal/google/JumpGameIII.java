@@ -8,23 +8,25 @@ import java.util.Set;
 public class JumpGameIII {
 
     public boolean canReach(int[] arr, int start) {
-        if(arr == null || arr.length == 0){
-            return false;
-        }
         boolean[] visited = new boolean[arr.length];
         return dfs(arr, start, visited);
     }
 
-    private boolean dfs(int[] arr, int currIdx, boolean[] visited){
-        if(currIdx < 0 || currIdx >= arr.length){
+    private boolean dfs(int[] arr, int start, boolean[] visited){
+        if(!isValid(start, arr.length) || visited[start]){
             return false;
-        }
-        if(arr[currIdx] == 0){
+        }else if(arr[start] == 0){
             return true;
         }
-        if(!visited[currIdx]){
-            visited[currIdx] = true;
-            return dfs(arr, currIdx - arr[currIdx], visited) || dfs(arr, currIdx + arr[currIdx], visited);
+        visited[start] = true;
+        boolean left = dfs(arr, start - arr[start], visited);
+        boolean right = dfs(arr, start + arr[start], visited);
+        return left || right;
+    }
+
+    private boolean isValid(int index, int n){
+        if(index >= 0 && index < n){
+            return true;
         }
         return false;
     }
