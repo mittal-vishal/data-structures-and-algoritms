@@ -1,53 +1,48 @@
 package com.vishal.graph;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
 class ShortestPathWithObstacles {
 
-    static class Cell{
-        int i;
-        int j;
+    class Cell{
+        int row;
+        int col;
         int obstacles;
-        public Cell(int i, int j, int obstacles){
-            this.i = i;
-            this.j = j;
+        public Cell(int row, int col, int obstacles){
+            this.row = row;
+            this.col = col;
             this.obstacles = obstacles;
         }
     }
 
     public int shortestPath(int[][] grid, int k) {
-        if(grid == null || grid.length == 0 || grid[0].length == 0){
-            return -1;
-        }
-        int rows = grid.length;
-        int cols = grid[0].length;
+        int row = grid.length;
+        int col = grid[0].length;
+        boolean[][][] visited = new boolean[row][col][k+1];
         Queue<Cell> queue = new LinkedList<>();
-        queue.offer(new Cell(0, 0, 0));
-        int[][] dirs = {{0, 1}, {0, -1}, {-1, 0}, {1, 0}};
+        queue.offer(new Cell(0,0,0));
+        visited[0][0][0] = true;
+        int[][] dirs = {{-1,0},{1,0},{0,1},{0,-1}};
         int steps = 0;
-        boolean[][][] visited = new boolean[rows][cols][k + 1];
         while(!queue.isEmpty()){
-            int size = queue.size();
-            for(int i = 0; i < size; i++){
-                Cell currCell = queue.poll();
-                if(currCell.i == rows - 1 && currCell.j == cols - 1){
+            int queueSize = queue.size();
+            for(int i = 0; i < queueSize; i++){
+                Cell polled = queue.poll();
+                if(polled.obstacles > k){
+                    continue;
+                }else if(polled.row == row-1 && polled.col == col-1){
                     return steps;
                 }
                 for(int[] dir: dirs){
-                    int newI = currCell.i + dir[0];
-                    int newJ = currCell.j + dir[1];
-                    if(isValid(newI, newJ, grid)){
-                        //If obstacle
-                        if(grid[newI][newJ] == 1 && currCell.obstacles < k &&
-                                !visited[newI][newJ][currCell.obstacles + 1]){
-                            queue.offer(new Cell(newI, newJ, currCell.obstacles + 1));
-                            visited[newI][newJ][currCell.obstacles + 1] = true;
-                        }else if(grid[newI][newJ] == 0
-                                && !visited[newI][newJ][currCell.obstacles]){
-                            queue.offer(new Cell(newI, newJ, currCell.obstacles));
-                            visited[newI][newJ][currCell.obstacles] = true;
+                    int newRow = polled.row+dir[0];
+                    int newCol = polled.col+dir[1];
+                    if(isValid(newRow, newCol, row, col) && !visited[newRow][newCol][polled.obstacles]){
+                        visited[newRow][newCol][polled.obstacles] = true;
+                        if(grid[newRow][newCol] == 1 && polled.obstacles <= k){
+                            queue.offer(new Cell(newRow, newCol, polled.obstacles+1));
+                        }else{
+                            queue.offer(new Cell(newRow, newCol, polled.obstacles));
                         }
                     }
                 }
@@ -57,18 +52,10 @@ class ShortestPathWithObstacles {
         return -1;
     }
 
-    private boolean isValid(int i, int j, int[][] grid){
-        if(i >= 0 && i < grid.length && j >= 0 && j < grid[0].length){
+    private boolean isValid(int i, int j, int n, int m){
+        if(i >= 0 && i < n && j >= 0 && j < m){
             return true;
         }
         return false;
-    }
-
-    public static void main(String[] args) {
-        int[][] grid = {{0,0,0},{1,1,0},{0,0,0},{0,1,1},{0,0,0}};
-        int k = 1;
-        ShortestPathWithObstacles path = new ShortestPathWithObstacles();
-        int shortestPath = path.shortestPath(grid, k);
-        System.out.println(shortestPath);
     }
 }
