@@ -28,10 +28,10 @@ public class CycleUnidirectedGraph {
 	}
 
 	class Element{
-		int n;
+		int node;
 		int parent;
-		Element(int n, int parent){
-			this.n = n;
+		Element(int node, int parent){
+			this.node = node;
 			this.parent = parent;
 		}
 	}
@@ -52,12 +52,12 @@ public class CycleUnidirectedGraph {
 		visited[src] = true;
 		while(!queue.isEmpty()){
 			Element polled = queue.poll();
-			for(int neighbour: adj.get(polled.n)){
+			for(int neighbour: adj.get(polled.node)){
 				if(visited[neighbour] && neighbour != polled.parent){
 					return true;
 				}else if(!visited[neighbour]){
 					visited[neighbour] = true;
-					queue.offer(new Element(neighbour, polled.n));
+					queue.offer(new Element(neighbour, polled.node));
 				}
 			}
 		}

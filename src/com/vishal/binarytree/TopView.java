@@ -1,7 +1,6 @@
 package com.vishal.binarytree;
 
 import java.util.*;
-import java.util.Map.Entry;
 
 public class TopView {
 

@@ -22,36 +22,34 @@ private static TreeNode rootNode = null;
 	}
 
 	public List<Integer> rightSideView(TreeNode root) {
-		List<Integer> result = new ArrayList<>();
 		if(root == null){
-			return result;
+			return new ArrayList<>();
 		}
-		levelorder(root, result);
-		return result;
-	}
-
-	private void levelorder(TreeNode root, List<Integer> result){
+		List<Integer> results = new ArrayList<>();
 		Queue<TreeNode> queue = new LinkedList<>();
 		queue.offer(root);
 		queue.offer(null);
+		TreeNode prev = null;
 		while(!queue.isEmpty()){
-			TreeNode polled = queue.poll();
-			if(polled != null){
-				if(queue.peek() == null){
-					result.add(polled.val);
+			TreeNode curr = queue.poll();
+			if(curr == null){
+				if(prev != null){
+					results.add(prev.val);
 				}
-				if(polled.left != null){
-					queue.offer(polled.left);
-				}
-				if(polled.right != null){
-					queue.offer(polled.right);
-				}
-			}else{
-				if(queue.size() > 0){
+				if(!queue.isEmpty()){
 					queue.offer(null);
 				}
+			}else{
+				if(curr.left != null){
+					queue.offer(curr.left);
+				}
+				if(curr.right != null){
+					queue.offer(curr.right);
+				}
 			}
+			prev = curr;
 		}
+		return results;
 	}
 	
 }

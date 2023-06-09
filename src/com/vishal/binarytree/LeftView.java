@@ -24,40 +24,37 @@ public class LeftView {
 		System.out.print(leftViewList);
 	}
 
-	ArrayList<Integer> leftView(TreeNode root){
-		ArrayList<Integer> result = new ArrayList<>();
+	private ArrayList<Integer> leftView(TreeNode root){
+		ArrayList<Integer> results = new ArrayList<>();
 		if(root == null){
-			return result;
+			return results;
 		}
-		levelorder(root, result);
-		return result;
-	}
-
-	private void levelorder(TreeNode root, ArrayList<Integer> result){
 		Queue<TreeNode> queue = new LinkedList<>();
 		queue.offer(root);
 		queue.offer(null);
-		boolean isFirst = true;
+		results.add(root.val);
+		boolean isFirstNode = false;
 		while(!queue.isEmpty()){
-			TreeNode polled = queue.poll();
-			if(polled != null){
-				if(isFirst){
-					result.add(polled.val);
-					isFirst = false;
-				}
-				if(polled.left != null){
-					queue.offer(polled.left);
-				}
-				if(polled.right != null){
-					queue.offer(polled.right);
+			TreeNode curr = queue.poll();
+			if(isFirstNode){
+				results.add(curr.val);
+			}
+			if(curr == null){
+				isFirstNode = true;
+				if(!queue.isEmpty()){
+					queue.offer(null);
 				}
 			}else{
-				isFirst = true;
-				if(queue.size() > 0){
-					queue.offer(null);
+				isFirstNode = false;
+				if(curr.left != null){
+					queue.offer(curr.left);
+				}
+				if(curr.right != null){
+					queue.offer(curr.right);
 				}
 			}
 		}
+		return results;
 	}
 
 }
