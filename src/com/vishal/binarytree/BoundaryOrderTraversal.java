@@ -23,48 +23,51 @@ public class BoundaryOrderTraversal {
     }
 
     public List<Integer> boundaryOfBinaryTree(TreeNode root) {
-        List<Integer> boundaryList = new ArrayList<>();
-        boundaryList.add(root.val);
-        leftTraversal(root.left, boundaryList);
-        if(root.left != null || root.right != null){
-            bottomTraversal(root, boundaryList);
-        }
-        rightTraversal(root.right, boundaryList);
-        return boundaryList;
-    }
-
-    private void leftTraversal(TreeNode root, List<Integer> boundaryList){
-        if(root == null || (root.left == null && root.right == null)){
-            return;
-        }
-        boundaryList.add(root.val);
+        List<Integer> results = new ArrayList<>();
+        results.add(root.val);
         if(root.left != null){
-            leftTraversal(root.left, boundaryList);
-        }else{
-            leftTraversal(root.right, boundaryList);
+            getLeftView(root.left, results);
         }
-    }
-
-    private void rightTraversal(TreeNode root, List<Integer> boundaryList){
-        if(root == null || (root.left == null && root.right == null)){
-            return;
+        if(root.left != null || root.right != null){
+            getBottomView(root, results);
         }
         if(root.right != null){
-            rightTraversal(root.right, boundaryList);
-        }else{
-            rightTraversal(root.left, boundaryList);
+            getRightView(root.right, results);
         }
-        boundaryList.add(root.val);
+        return results;
     }
 
-    private void bottomTraversal(TreeNode root, List<Integer> boundaryList){
-        if(root == null){
+    private void getLeftView(TreeNode node, List<Integer> results){
+        if(node == null || (node.left == null && node.right == null)){
             return;
         }
-        if(root.left == null && root.right == null){
-            boundaryList.add(root.val);
+        results.add(node.val);
+        if(node.left == null){
+            getLeftView(node.right, results);
+        }else{
+            getLeftView(node.left, results);
         }
-        bottomTraversal(root.left, boundaryList);
-        bottomTraversal(root.right, boundaryList);
+    }
+
+    private void getRightView(TreeNode node, List<Integer> results){
+        if(node == null || (node.left == null && node.right == null)){
+            return;
+        }
+        if(node.right == null){
+            getRightView(node.left, results);
+        }else{
+            getRightView(node.right, results);
+        }
+        results.add(node.val);
+    }
+
+    private void getBottomView(TreeNode node, List<Integer> results){
+        if(node == null){
+            return;
+        }else if(node.left == null && node.right == null){
+            results.add(node.val);
+        }
+        getBottomView(node.left, results);
+        getBottomView(node.right, results);
     }
 }
