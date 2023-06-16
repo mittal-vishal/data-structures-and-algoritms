@@ -1,8 +1,44 @@
 package com.vishal.graph;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 class NumberOfProvinces {
+
+    public int findCircleNumDFS(int[][] isConnected) {
+        int n = isConnected.length;
+        List<List<Integer>> graph = new ArrayList<>();
+        for(int i = 0; i < n; i++){
+            graph.add(new ArrayList<>());
+        }
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < isConnected[i].length; j++){
+                if(i != j && isConnected[i][j] == 1){
+                    graph.get(i).add(j);
+                }
+            }
+        }
+        int count = 0;
+        boolean[] visited = new boolean[n];
+        for(int i = 0; i < n; i++){
+            if(!visited[i]){
+                dfs(i, graph, visited);
+                count++;
+            }
+        }
+        return count;
+    }
+
+    private void dfs(int src, List<List<Integer>> graph, boolean[] visited){
+        if(visited[src]){
+            return;
+        }
+        visited[src] = true;
+        for(int neighbour: graph.get(src)){
+            dfs(neighbour, graph, visited);
+        }
+    }
 
     private int result;
 
