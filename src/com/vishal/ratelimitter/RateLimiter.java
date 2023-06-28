@@ -1,8 +1,8 @@
 package com.vishal.ratelimitter;
 
-public abstract class RateLimiter {
+public interface RateLimiter {
 
-    public abstract void createRateLimiter(int bucketSize, int timeUnit, int userId);
-    public abstract boolean isApplicable(Integer userId);
+    void createRateLimiter(int bucketSize, int timeUnit, int userId);
+    boolean isApplicable(Integer userId);
 
 }

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class SlidingWindowRateLimiter extends RateLimiter{
+public class SlidingWindowRateLimiter implements RateLimiter{
 
     private Queue<Integer> queue;
     private int timeUnit;
@@ -22,7 +22,7 @@ public class SlidingWindowRateLimiter extends RateLimiter{
     }
 
     @Override
-    public boolean isApplicable(String userId) {
+    public boolean isApplicable(Integer userId) {
         SlidingWindowRateLimiter slidingWindowRateLimiter = buckets.get(userId);
         long currentTime = System.currentTimeMillis();
         updateQueue(slidingWindowRateLimiter.queue, currentTime);

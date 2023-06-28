@@ -1,6 +1,6 @@
 package com.vishal.ratelimitter;
 
-public class TokenBucketRateLimiter extends RateLimiter {
+public class TokenBucketRateLimiter implements RateLimiter {
 
     @Override
     public void createRateLimiter(int bucketSize, int timeUnit, int userId) {
@@ -8,7 +8,7 @@ public class TokenBucketRateLimiter extends RateLimiter {
     }
 
     @Override
-    public boolean isApplicable(String userId) {
+    public boolean isApplicable(Integer userId) {
         return false;
     }
 }
