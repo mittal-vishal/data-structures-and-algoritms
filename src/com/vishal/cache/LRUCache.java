@@ -3,14 +3,14 @@ package com.vishal.cache;
 import java.util.HashMap;
 import java.util.Map;
 
-class LRUCache {
+class LRUCache<T> implements Cache<T>{
 
     class Node{
-        int key;
-        int value;
+        T key;
+        T value;
         Node next;
         Node prev;
-        Node(int key,int value){
+        Node(T key,T value){
             this.key = key;
             this.value = value;
         }
@@ -18,7 +18,7 @@ class LRUCache {
 
     private Node head;
     private Node tail;
-    private Map<Integer,Node> cache;
+    private Map<T,Node> cache;
     private int size;
     private int capacity;
 
@@ -27,7 +27,8 @@ class LRUCache {
         cache = new HashMap<>();
     }
 
-    public int get(int key) {
+    @Override
+    public T get(T key) {
         if(cache.containsKey(key)){
             Node node = cache.get(key);
             if(node != tail){
@@ -35,11 +36,12 @@ class LRUCache {
             }
             return node.value;
         }else{
-            return -1;
+            return null;
         }
     }
 
-    public void put(int key, int value) {
+    @Override
+    public void put(T key, T value) {
         Node existingNode = cache.get(key);
         //new data need to be inserted
         if(existingNode == null){

@@ -3,15 +3,14 @@ package com.vishal.cache;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.TreeMap;
 
-class LFUCache {
+class LFUCache<T> implements Cache<T>{
 	//Key and value map
-	private Map<Integer,Integer> cache;
+	private Map<T,T> cache;
 	//key and its count
-	private Map<Integer,Integer> keyCounts;
+	private Map<T,Integer> keyCounts;
 	//frequence count and list of keys
-	private Map<Integer, LinkedHashSet<Integer>> freqMap;
+	private Map<Integer, LinkedHashSet<T>> freqMap;
 	private int capacity;
 	private int minFreq;
 
@@ -24,7 +23,8 @@ class LFUCache {
 		minFreq = 0;
 	}
 
-	public int get(int key) {
+	@Override
+	public T get(T key) {
 		if(cache.containsKey(key)){
 			int currCount = keyCounts.get(key);
 			keyCounts.put(key, currCount+1);
@@ -36,11 +36,12 @@ class LFUCache {
 			freqMap.get(currCount+1).add(key);
 			return cache.get(key);
 		}else{
-			return -1;
+			return null;
 		}
 	}
 
-	public void put(int key, int value) {
+	@Override
+	public void put(T key, T value) {
 		if(capacity <= 0){
 			return;
 		}
@@ -50,7 +51,7 @@ class LFUCache {
 			return;
 		}else{
 			if(cache.size() >= capacity){
-				int evict = freqMap.get(minFreq).iterator().next();
+				T evict = freqMap.get(minFreq).iterator().next();
 				freqMap.get(minFreq).remove(evict);
 				keyCounts.remove(evict);
 				cache.remove(evict);
