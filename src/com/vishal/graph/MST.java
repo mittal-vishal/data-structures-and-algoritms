@@ -8,11 +8,9 @@ public class MST {
 
     static class GraphNode{
         int node;
-        int parent;
         int cost;
-        GraphNode(int node, int parent, int cost){
+        public GraphNode(int node, int cost){
             this.node = node;
-            this.parent = parent;
             this.cost = cost;
         }
     }
@@ -24,30 +22,28 @@ public class MST {
         for(int[] edge: edges){
             int u = edge[0];
             int v = edge[1];
-            int cost = edge[2];
-            graph.get(u).add(new GraphNode(v, u, cost));
-            graph.get(v).add(new GraphNode(u, v, cost));
+            int wt = edge[2];
+            graph.get(u).add(new GraphNode(v,wt));
+            graph.get(v).add(new GraphNode(u,wt));
         }
-        PriorityQueue<GraphNode> pq = new PriorityQueue<>((a, b) -> a.cost- b.cost);
-        pq.offer(new GraphNode(0, -1, -1));
-        int cost = 0;
+        PriorityQueue<GraphNode> pq = new PriorityQueue<>((a,b) -> a.cost-b.cost);
+        pq.offer(new GraphNode(0, 0));
+        int result = 0;
         boolean[] visited = new boolean[V];
         while(!pq.isEmpty()){
-            GraphNode polled = pq.poll();
-            if(visited[polled.node]){
+            GraphNode curr = pq.poll();
+            if(visited[curr.node]){
                 continue;
             }
-            visited[polled.node] = true;
-            if(polled.parent != -1){
-                cost += polled.cost;
-            }
-            for(GraphNode neighbour: graph.get(polled.node)){
+            visited[curr.node] = true;
+            result += curr.cost;
+            for(GraphNode neighbour: graph.get(curr.node)){
                 if(!visited[neighbour.node]){
                     pq.offer(neighbour);
                 }
             }
         }
-        return cost;
+        return result;
     }
 
 }

@@ -5,45 +5,44 @@ import java.util.*;
 public class WordLadderII {
 
     public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
-        List<List<String>> result = new ArrayList<>();
-        Queue<ArrayList<String>> queue = new LinkedList<>();
-        HashSet<String> wordsSet = new HashSet<>();
-        for(String word: wordList){
-            wordsSet.add(word);
-        }
+        List<List<String>> results = new ArrayList<>();
+        Queue<List<String>> queue = new LinkedList<>();
         queue.offer(new ArrayList<>(Arrays.asList(beginWord)));
+        List<String> lastLevelWords = new ArrayList<>();
+        lastLevelWords.add(beginWord);
         int level = 0;
-        List<String> wordsOnLevel = new ArrayList<>();
-        wordsOnLevel.add(beginWord);
+        HashSet<String> dictionary = new HashSet<>(wordList);
         while(!queue.isEmpty()){
-            List<String> polled = queue.poll();
-            if(polled.size() > level){
+            List<String> currList = queue.poll();
+            //Remove previous level words from dictionary
+            if(currList.size() > level){
                 level++;
-                for(String levelWord: wordsOnLevel){
-                    wordsSet.remove(levelWord);
+                for(String lastLevelWord: lastLevelWords){
+                    dictionary.remove(lastLevelWord);
                 }
-                wordsOnLevel.clear();
+                lastLevelWords.clear();
             }
-            String lastSeqWord = polled.get(polled.size()-1);
-            if(lastSeqWord.equals(endWord)){
-                result.add(polled);
+            String currWord = currList.get(currList.size()-1);
+            if(currWord.equals(endWord)){
+                results.add(currList);
             }
-            char[] lastSeqWordArr = lastSeqWord.toCharArray();
-            for(int i = 0; i < lastSeqWordArr.length; i++){
-                char original = lastSeqWordArr[i];
+            char[] currWordArr = currWord.toCharArray();
+            for(int i = 0; i < currWordArr.length; i++){
+                char temp = currWordArr[i];
                 for(char ch = 'a'; ch <= 'z'; ch++){
-                    lastSeqWordArr[i] = ch;
-                    if(wordsSet.contains(String.valueOf(lastSeqWordArr))){
-                        polled.add(String.valueOf(lastSeqWordArr));
-                        queue.offer(new ArrayList<>(polled));
-                        wordsOnLevel.add(String.valueOf(lastSeqWordArr));
-                        polled.remove(polled.size()-1);
+                    currWordArr[i] = ch;
+                    String transformedStr = String.valueOf(currWordArr);
+                    if(dictionary.contains(transformedStr)){
+                        currList.add(transformedStr);
+                        queue.offer(new ArrayList<>(currList));
+                        lastLevelWords.add(transformedStr);
+                        currList.remove(currList.size()-1);
                     }
                 }
-                lastSeqWordArr[i] = original;
+                currWordArr[i] = temp;
             }
         }
-        return result;
+        return results;
     }
 
 }

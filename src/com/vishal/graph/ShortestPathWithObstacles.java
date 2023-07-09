@@ -5,7 +5,7 @@ import java.util.Queue;
 
 class ShortestPathWithObstacles {
 
-    class Cell{
+    static class Cell{
         int row;
         int col;
         int obstacles;
@@ -15,34 +15,35 @@ class ShortestPathWithObstacles {
             this.obstacles = obstacles;
         }
     }
-
     public int shortestPath(int[][] grid, int k) {
+        Queue<Cell> queue = new LinkedList<>();
+        queue.offer(new Cell(0,0,0));
         int row = grid.length;
         int col = grid[0].length;
         boolean[][][] visited = new boolean[row][col][k+1];
-        Queue<Cell> queue = new LinkedList<>();
-        queue.offer(new Cell(0,0,0));
         visited[0][0][0] = true;
-        int[][] dirs = {{-1,0},{1,0},{0,1},{0,-1}};
+        int[][] dirs = {{1,0}, {-1,0}, {0,-1}, {0,1}};
         int steps = 0;
         while(!queue.isEmpty()){
-            int queueSize = queue.size();
-            for(int i = 0; i < queueSize; i++){
-                Cell polled = queue.poll();
-                if(polled.obstacles > k){
+            int size = queue.size();
+            for(int i = 0; i < size; i++){
+                Cell currCell = queue.poll();
+                if(currCell.obstacles > k){
                     continue;
-                }else if(polled.row == row-1 && polled.col == col-1){
+                }
+                if(currCell.row == row - 1 && currCell.col == col-1){
                     return steps;
                 }
                 for(int[] dir: dirs){
-                    int newRow = polled.row+dir[0];
-                    int newCol = polled.col+dir[1];
-                    if(isValid(newRow, newCol, row, col) && !visited[newRow][newCol][polled.obstacles]){
-                        visited[newRow][newCol][polled.obstacles] = true;
-                        if(grid[newRow][newCol] == 1 && polled.obstacles <= k){
-                            queue.offer(new Cell(newRow, newCol, polled.obstacles+1));
-                        }else{
-                            queue.offer(new Cell(newRow, newCol, polled.obstacles));
+                    int newRow = currCell.row + dir[0];
+                    int newCol = currCell.col + dir[1];
+                    if(isValid(newRow, newCol, grid)){
+                        if(grid[newRow][newCol] == 0 && !visited[newRow][newCol][currCell.obstacles]){
+                            visited[newRow][newCol][currCell.obstacles] = true;
+                            queue.offer(new Cell(newRow, newCol, currCell.obstacles));
+                        }else if(currCell.obstacles < k && !visited[newRow][newCol][currCell.obstacles + 1]){
+                            visited[newRow][newCol][currCell.obstacles + 1] = true;
+                            queue.offer(new Cell(newRow, newCol, currCell.obstacles + 1));
                         }
                     }
                 }
@@ -52,8 +53,8 @@ class ShortestPathWithObstacles {
         return -1;
     }
 
-    private boolean isValid(int i, int j, int n, int m){
-        if(i >= 0 && i < n && j >= 0 && j < m){
+    private boolean isValid(int row, int col, int[][] grid){
+        if(row >= 0 && row < grid.length && col >= 0 && col < grid[0].length){
             return true;
         }
         return false;

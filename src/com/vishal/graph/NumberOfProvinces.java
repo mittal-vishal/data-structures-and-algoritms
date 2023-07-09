@@ -7,36 +7,36 @@ import java.util.List;
 class NumberOfProvinces {
 
     public int findCircleNumDFS(int[][] isConnected) {
-        int n = isConnected.length;
         List<List<Integer>> graph = new ArrayList<>();
+        int n = isConnected.length;
         for(int i = 0; i < n; i++){
             graph.add(new ArrayList<>());
         }
         for(int i = 0; i < n; i++){
-            for(int j = 0; j < isConnected[i].length; j++){
+            for(int j = 0; j < isConnected[0].length; j++){
                 if(i != j && isConnected[i][j] == 1){
                     graph.get(i).add(j);
+                    graph.get(j).add(i);
                 }
             }
         }
-        int count = 0;
         boolean[] visited = new boolean[n];
+        int provinces = 0;
         for(int i = 0; i < n; i++){
             if(!visited[i]){
                 dfs(i, graph, visited);
-                count++;
+                provinces++;
             }
         }
-        return count;
+        return provinces;
     }
 
     private void dfs(int src, List<List<Integer>> graph, boolean[] visited){
-        if(visited[src]){
-            return;
-        }
         visited[src] = true;
         for(int neighbour: graph.get(src)){
-            dfs(neighbour, graph, visited);
+            if(!visited[neighbour]){
+                dfs(neighbour, graph, visited);
+            }
         }
     }
 
@@ -82,18 +82,22 @@ class NumberOfProvinces {
 
     }
     public int findCircleNum(int[][] isConnected) {
-        int row = isConnected.length;
-        int col = isConnected[0].length;
-        this.result = row;
-        DSU dsu = new DSU(row);
-        for(int i = 0; i < row; i++){
-            for(int j = 0; j < col; j++){
-                if(isConnected[i][j] == 1){
+        int n = isConnected.length;
+        DSU dsu = new DSU(n);
+        for(int i = 0; i < isConnected.length; i++){
+            for(int j = 0; j < isConnected[i].length; j++){
+                if(i != j && isConnected[i][j] == 1){
                     dsu.union(i, j);
                 }
             }
         }
-        return result;
+        int count = 0;
+        for(int i = 0; i < n; i++){
+            if(dsu.findParent(i) == i){
+                count++;
+            }
+        }
+        return count;
     }
 
 }

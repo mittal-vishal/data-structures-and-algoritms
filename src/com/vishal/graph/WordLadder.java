@@ -4,45 +4,35 @@ import java.util.*;
 
 public class WordLadder {
 
-    public static void main(String[] args) {
-        String beginWord = "hit";
-        String endWord = "cog";
-        List<String> wordList = new ArrayList<>(Arrays.asList("hot","dot","dog","lot","log","cog"));
-        WordLadder wl = new WordLadder();
-        int result = wl.ladderLength(beginWord, endWord, wordList);
-        System.out.println(result);
-    }
-
-    class Pair{
-        String s;
-        int sequence;
-        Pair(String s, int sequence){
-            this.s = s;
-            this.sequence = sequence;
-        }
-    }
-
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-        Queue<Pair> queue = new LinkedList<>();
-        queue.offer(new Pair(beginWord, 1));
-        HashSet<String> wordSet = new HashSet<>(wordList);
+        Queue<String> queue = new LinkedList<>();
+        queue.offer(beginWord);
+        HashSet<String> dictionary = new HashSet<>(wordList);
+        if(dictionary.contains(beginWord)){
+            dictionary.remove(beginWord);
+        }
+        int steps = 1;
         while(!queue.isEmpty()){
-            Pair polled = queue.poll();
-            if(polled.s.equals(endWord)){
-                return polled.sequence;
-            }
-            char[] wordArr = polled.s.toCharArray();
-            for(int i = 0; i < wordArr.length; i++){
-                char original = wordArr[i];
-                for(char ch='a'; ch <= 'z'; ch++){
-                    wordArr[i] = ch;
-                    if(wordSet.contains(String.valueOf(wordArr))){
-                        wordSet.remove(String.valueOf(wordArr));
-                        queue.offer(new Pair(String.valueOf(wordArr), polled.sequence+1));
-                    }
+            int size = queue.size();
+            for(int i = 0; i < size; i++){
+                String curr = queue.poll();
+                if(curr.equals(endWord)){
+                    return steps;
                 }
-                wordArr[i] = original;
+                char[] currArr = curr.toCharArray();
+                for(int j = 0; j < curr.length(); j++){
+                    char temp = currArr[j];
+                    for(char ch = 'a'; ch <= 'z'; ch++){
+                        currArr[j] = ch;
+                        if(dictionary.contains(String.valueOf(currArr))){
+                            queue.offer(String.valueOf(currArr));
+                            dictionary.remove(String.valueOf(currArr));
+                        }
+                    }
+                    currArr[j] = temp;
+                }
             }
+            steps++;
         }
         return 0;
     }

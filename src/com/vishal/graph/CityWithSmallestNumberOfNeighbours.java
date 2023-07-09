@@ -4,43 +4,44 @@ public class CityWithSmallestNumberOfNeighbours {
 
     public int findTheCity(int n, int[][] edges, int distanceThreshold) {
         int[][] dist = new int[n][n];
-        for(int i = 0; i < n; i++){
-            for(int j = 0; j < n; j++){
-                if(i != j){
-                    dist[i][j] = Integer.MAX_VALUE;
-                }else{
-                    dist[i][j] = 0;
-                }
-            }
-        }
         for(int[] edge: edges){
             int u = edge[0];
             int v = edge[1];
-            int cost = edge[2];
-            dist[u][v] = cost;
-            dist[v][u] = cost;
+            int wt = edge[2];
+            dist[u][v] = wt;
+            dist[v][u] = wt;
+        }
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                if(i == j){
+                    dist[i][j] = 0;
+                }else if(dist[i][j] == 0){
+                    dist[i][j] = Integer.MAX_VALUE;
+                }
+            }
         }
         for(int k = 0; k < n; k++){
             for(int i = 0; i < n; i++){
                 for(int j = 0; j < n; j++){
-                    if(dist[i][k] == Integer.MAX_VALUE || dist[k][j] == Integer.MAX_VALUE){
-                        continue;
+                    if(dist[i][k] != Integer.MAX_VALUE && dist[k][j] != Integer.MAX_VALUE){
+                        dist[i][j] = Math.min(dist[i][j], dist[i][k] + dist[k][j]);
                     }
-                    dist[i][j] = Math.min(dist[i][j], dist[i][k] + dist[k][j]);
                 }
             }
         }
+
         int city = -1;
-        int maxNeighbourCityCount = n + 1;
+        int maxThreshold = distanceThreshold + 1;
+
         for(int i = 0; i < n; i++){
-            int count = 0;
+            int thresholdCount = 0;
             for(int j = 0; j < n; j++){
                 if(dist[i][j] <= distanceThreshold){
-                    count++;
+                    thresholdCount++;
                 }
             }
-            if(count <= maxNeighbourCityCount){
-                maxNeighbourCityCount = count;
+            if(thresholdCount <= maxThreshold){
+                maxThreshold = thresholdCount;
                 city = i;
             }
         }

@@ -7,18 +7,22 @@ import java.util.Scanner;
 public class DFS {
 
 	public ArrayList<Integer> dfsOfGraph(int V, ArrayList<ArrayList<Integer>> adj) {
-		ArrayList<Integer> results = new ArrayList<>();
 		boolean[] visited = new boolean[V];
-		dfs(adj, 0, visited, results);
-		return results;
+		ArrayList<Integer> result = new ArrayList<>();
+		for(int i = 0; i < V; i++){
+			if(!visited[i]){
+				dfs(i, result, visited, adj);
+			}
+		}
+		return result;
 	}
 
-	private void dfs(ArrayList<ArrayList<Integer>> adj, int src, boolean[] visited, ArrayList<Integer> results){
+	private void dfs(int src, ArrayList<Integer> result, boolean[] visited, ArrayList<ArrayList<Integer>> adj){
 		visited[src] = true;
-		results.add(src);
+		result.add(src);
 		for(int neighbour: adj.get(src)){
 			if(!visited[neighbour]){
-				dfs(adj, neighbour, visited, results);
+				dfs(neighbour, result, visited, adj);
 			}
 		}
 	}

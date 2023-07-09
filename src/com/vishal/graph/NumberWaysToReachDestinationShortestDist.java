@@ -36,6 +36,9 @@ public class NumberWaysToReachDestinationShortestDist {
         }
         while(!pq.isEmpty()){
             Node polled = pq.poll();
+            if(polled.dist > dist[polled.id]){
+                continue;
+            }
             for(Node neighbour: adjList.get(polled.id)){
                 if((dist[neighbour.id] > dist[polled.id] + neighbour.dist)){
                     dist[neighbour.id] = dist[polled.id] + neighbour.dist;

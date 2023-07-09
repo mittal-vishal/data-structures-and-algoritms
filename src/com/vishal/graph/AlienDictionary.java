@@ -5,70 +5,62 @@ import java.util.*;
 public class AlienDictionary {
 
     public String alienOrder(String[] words) {
-        //get unique chars count for graph size
-        HashSet<Character> uniqueChars = new HashSet<>();
-        for(String word: words){
-            for(int i = 0; i < word.length(); i++){
-                uniqueChars.add(word.charAt(i));
-            }
-        }
+        int n = words.length;
         List<List<Integer>> graph = new ArrayList<>();
         for(int i = 0; i < 26; i++){
             graph.add(new ArrayList<>());
         }
-        for(int i = 0; i < words.length-1; i++){
-            String str1 = words[i];
-            String str2 = words[i+1];
-            int len = Math.min(str1.length(), str2.length());
-            for(int k = 0; k < len; k++){
-                if(str1.charAt(k) != str2.charAt(k)){
-                    int u = str1.charAt(k)-'a';
-                    int v = str2.charAt(k)-'a';
-                    graph.get(u).add(v);
+        HashSet<Integer> uniqueNodes = new HashSet<>();
+        for(String word: words){
+            for(int i = 0; i < word.length(); i++){
+                uniqueNodes.add(word.charAt(i)-'a');
+            }
+        }
+        for(int i = 0; i < n-1; i++){
+            String s1 = words[i];
+            String s2 = words[i+1];
+            int len = Math.min(s1.length(), s2.length());
+            for(int j = 0; j < len; j++){
+                if(s1.charAt(j) != s2.charAt(j)){
+                    buildGraph(graph, s1.charAt(j)-'a', s2.charAt(j)-'a');
                     break;
-                }else if(k == len-1 && str1.length() > str2.length()){
+                }
+                if(j == len - 1 && s1.length() > s2.length()){
                     return "";
                 }
             }
         }
-        int[] order = topoSort(graph, uniqueChars);
-        StringBuilder sb = new StringBuilder();
-        for(int i: order){
-            sb.append((char)(i+97));
-        }
-        return sb.length() == uniqueChars.size()? sb.toString(): "";
-    }
-
-    private int[] topoSort(List<List<Integer>> graph, HashSet<Character> uniqueChars){
         boolean[] visited = new boolean[26];
         boolean[] pathVisited = new boolean[26];
-        Stack<Integer> stack = new Stack<>();
-        for(Character vertex: uniqueChars){
-            int node = vertex-'a';
-            if(!visited[node] && dfs(graph, node, visited, pathVisited, stack)){
-                break;
+        Stack<Integer> st = new Stack<>();
+        for(int i: uniqueNodes){
+            if(!visited[i] && dfs(i, graph, st, visited, pathVisited)){
+                return "";
             }
         }
-        int[] result = new int[stack.size()];
-        int index = 0;
-        while(!stack.isEmpty()){
-            result[index++] = stack.pop();
+        StringBuilder sb = new StringBuilder();
+        while(!st.isEmpty()){
+            sb.append((char)(st.pop()+'a'));
         }
-        return result;
+        return sb.toString();
     }
 
-    private boolean dfs(List<List<Integer>> graph, int src, boolean[] visited, boolean[] pathVisited, Stack<Integer> stack){
+    private void buildGraph(List<List<Integer>> graph, int u, int v){
+        graph.get(u).add(v);
+    }
+
+    private boolean dfs(int src, List<List<Integer>> graph, Stack<Integer> st, boolean[] visited, boolean[] pathVisited){
         visited[src] = true;
         pathVisited[src] = true;
         for(int neighbour: graph.get(src)){
-            if(!visited[neighbour] && dfs(graph, neighbour, visited, pathVisited, stack)){
+            if(visited[neighbour] && pathVisited[neighbour]){
                 return true;
-            }else if(pathVisited[neighbour]){
+            }else if(!visited[neighbour] && dfs(neighbour, graph, st, visited, pathVisited)){
                 return true;
             }
         }
-        stack.push(src);
         pathVisited[src] = false;
+        st.push(src);
         return false;
     }
 

@@ -4,31 +4,31 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.Scanner;
 
 public class BFS {
 
-	private static void bfs(List<List<Integer>> adj, int nov) {
-		boolean[] visited = new boolean[nov];
-		for (int i = 0; i < nov; i++) {
-			if (!visited[i]) {
-				bfsTraversal(adj, visited, i);
+	public List<Integer> bfsOfGraph(int V, List<List<Integer>> adj) {
+		boolean[] visited = new boolean[V];
+		List<Integer> results = new ArrayList<>();
+		for(int i = 0; i < V; i++){
+			if(!visited[i]){
+				bfs(i, visited, adj, results);
 			}
 		}
+		return results;
 	}
 
-	private static void bfsTraversal(List<List<Integer>> adj, boolean[] visited, int src) {
+	public void bfs(int src, boolean[] visited, List<List<Integer>> adj, List<Integer> results) {
 		Queue<Integer> queue = new LinkedList<>();
-		queue.add(src);
+		queue.offer(src);
 		visited[src] = true;
-		int popped = 0;
-		while (!queue.isEmpty()) {
-			popped = queue.poll();
-			System.out.print(popped + " ");
-			for (int i : adj.get(popped)) {
-				if (!visited[i]) {
-					visited[i] = true;
-					queue.add(i);
+		while(!queue.isEmpty()){
+			int currNode = queue.poll();
+			results.add(currNode);
+			for(int neighbour: adj.get(currNode)){
+				if(!visited[neighbour]){
+					visited[neighbour] = true;
+					queue.offer(neighbour);
 				}
 			}
 		}
