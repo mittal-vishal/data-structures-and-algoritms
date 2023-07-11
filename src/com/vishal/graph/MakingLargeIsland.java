@@ -5,99 +5,93 @@ import java.util.HashSet;
 
 public class MakingLargeIsland {
 
-    class DSU{
-
+    static class DSU{
+        int n;
         int[] size;
         int[] parent;
-
-        DSU(int n){
-            size = new int[n];
-            parent = new int[n];
-            Arrays.fill(size, 1);
+        public DSU(int n){
+            this.n = n;
+            this.size = new int[n];
+            this.parent = new int[n];
             for(int i = 0; i < n; i++){
                 parent[i] = i;
+                size[i] = 1;
             }
         }
-
         private int findParent(int i){
             if(i == parent[i]){
                 return i;
             }
             return parent[i] = findParent(parent[i]);
         }
-
         private void union(int u, int v){
-            int up = findParent(u);
-            int vp = findParent(v);
-            if(up == vp){
+            int pu = findParent(u);
+            int pv = findParent(v);
+            if(pu == pv){
                 return;
+            }else if(size[pu] > size[pv]){
+                parent[pv] = pu;
+                size[pu] += size[pv];
             }else{
-                if(size[up] > size[vp]){
-                    parent[vp] = up;
-                    size[up] += size[vp];
-                }else{
-                    parent[up] = vp;
-                    size[vp] += size[up];
-                }
+                parent[pu] = pv;
+                size[pv] += size[pu];
             }
         }
-
     }
 
     public int largestIsland(int[][] grid) {
         int row = grid.length;
         int col = grid[0].length;
         DSU dsu = new DSU(row*col);
+        int[][] dirs = {{0,1}, {0,-1}, {1,0}, {-1,0}};
         for(int i = 0; i < row; i++){
             for(int j = 0; j < col; j++){
                 if(grid[i][j] == 0){
                     continue;
                 }
-                int[][] dirs = {{0,1}, {0,-1}, {1,0}, {-1,0}};
                 for(int[] dir: dirs){
-                    int newRow = i + dir[0];
-                    int newCol = j + dir[1];
-                    if(isValid(newRow, newCol, grid) && grid[newRow][newCol] == 1){
-                        int cell = (i*row)+j;
-                        int adjacentCell = (newRow*row)+newCol;
-                        dsu.union(cell, adjacentCell);
+                    int newX = i + dir[0];
+                    int newY = j + dir[1];
+                    if(isValid(newX, newY, row, col) && grid[newX][newY] == 1){
+                        int node = (i * col) + j;
+                        int adjNode = (newX * col) + newY;
+                        dsu.union(node, adjNode);
                     }
                 }
             }
         }
-        int maxSize = 0;
+        int result = 0;
         for(int i = 0; i < row; i++){
             for(int j = 0; j < col; j++){
                 if(grid[i][j] == 1){
                     continue;
                 }
-                int[][] dirs = {{0,1}, {0,-1}, {1,0}, {-1,0}};
-                HashSet<Integer> components = new HashSet<>();
+                HashSet<Integer> uniqueAdjParent = new HashSet<>();
                 for(int[] dir: dirs){
-                    int newRow = i + dir[0];
-                    int newCol = j + dir[1];
-                    if(isValid(newRow, newCol, grid) && grid[newRow][newCol] == 1){
-                        int cell = (newRow*row)+newCol;
-                        components.add(dsu.findParent(cell));
+                    int newX = i + dir[0];
+                    int newY = j + dir[1];
+                    if(isValid(newX, newY, row, col) && grid[newX][newY] == 1){
+                        int adjNode = (newX * col) + newY;
+                        uniqueAdjParent.add(dsu.findParent(adjNode));
                     }
                 }
-                int totalSize = 0;
-                for(Integer parent: components){
-                    totalSize += dsu.size[parent];
+                int size = 0;
+                for(int parent: uniqueAdjParent){
+                    size += dsu.size[parent];
                 }
-                maxSize = Math.max(maxSize, totalSize + 1);
+                result = Math.max(result, size + 1);
             }
         }
-
-        for(int cell = 0; cell < row*col; cell++){
-            maxSize = Math.max(maxSize, dsu.size[dsu.parent[cell]]);
+        for(int node = 0; node < (row*col); node++){
+            if(node == dsu.findParent(node)){
+                result = Math.max(result, dsu.size[node]);
+            }
         }
-
-        return maxSize;
+        return result;
     }
 
-    private boolean isValid(int i, int j, int[][] grid){
-        if(i >= 0 && i < grid.length && j >= 0 && j < grid[0].length){
+    private boolean isValid(int i, int j, int row, int col){
+        if(i >= 0 && i < row && j >= 0 && j < col){
             return true;
         }
         return false;

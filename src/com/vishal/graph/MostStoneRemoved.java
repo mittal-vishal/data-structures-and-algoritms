@@ -5,7 +5,7 @@ import java.util.HashSet;
 
 public class MostStoneRemoved {
 
-    class DSU{
+    static class DSU{
         private int[] size;
         private int[] parent;
         private int n;
@@ -26,7 +26,7 @@ public class MostStoneRemoved {
             return parent[i] = findParent(parent[i]);
         }
 
-        private void unionBySize(int u, int v){
+        private void union(int u, int v){
             int up = findParent(u);
             int vp = findParent(v);
             if(up == vp){
@@ -43,29 +43,30 @@ public class MostStoneRemoved {
     }
 
     public int removeStones(int[][] stones) {
-        int n = stones.length;
-        int row = 0;
-        int col = 0;
+        int maxRow = -1;
+        int maxCol = -1;
         for(int[] stone: stones){
-            row = Math.max(row, stone[0]);
-            col = Math.max(col, stone[1]);
+            int row = stone[0];
+            int col = stone[1];
+            maxRow = Math.max(maxRow, row);
+            maxCol = Math.max(maxCol, col);
         }
-        DSU dsu = new DSU(row+col+2);
+        DSU dsu = new DSU(maxRow+maxCol+2);
         HashSet<Integer> uniqueStones = new HashSet<>();
         for(int[] stone: stones){
             int u = stone[0];
-            int v = stone[1] + row + 1;
-            dsu.unionBySize(u,v);
+            int v = stone[1] + maxRow + 1;
+            dsu.union(u, v);
             uniqueStones.add(u);
             uniqueStones.add(v);
         }
-        int componentCount = 0;
-        for(int node: uniqueStones){
-            if(node == dsu.parent[node]){
-                componentCount++;
+        int count = 0;
+        for(int stone: uniqueStones){
+            if(stone == dsu.findParent(stone)){
+                count++;
             }
         }
-        return n-componentCount;
+        return stones.length - count;
     }
 
 }

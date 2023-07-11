@@ -4,34 +4,38 @@ import java.util.*;
 
 public class NodesAtKDistanceFromTarget {
 
-    Map<TreeNode,TreeNode> parentMap;
-
+    private HashMap<TreeNode,TreeNode> parentMap;
     public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
+        List<Integer> result = new ArrayList<>();
         parentMap = new HashMap<>();
         getParent(root, null);
         Queue<TreeNode> queue = new LinkedList<>();
         queue.offer(target);
-        List<Integer> result = new ArrayList<>();
-        Set<TreeNode> visited = new HashSet<>();
+        int dist = 0;
+        HashSet<TreeNode> visited = new HashSet<>();
         while(!queue.isEmpty()){
-            int queueSize = queue.size();
-            for(int i = 0; i < queueSize; i++){
-                TreeNode polled = queue.poll();
-                if(polled.left != null && !visited.contains(polled.left)){
-                    queue.offer(polled.left);
+            int size = queue.size();
+            for(int i = 0; i < size; i++){
+                TreeNode curr = queue.poll();
+                if(visited.contains(curr)){
+                    continue;
                 }
-                if(polled.right != null && !visited.contains(polled.right)){
-                    queue.offer(polled.right);
+                visited.add(curr);
+                if(dist == k){
+                    result.add(curr.val);
                 }
-                if(parentMap.get(polled) != null && !visited.contains(parentMap.get(polled))){
-                    queue.offer(parentMap.get(polled));
+                if(curr.left != null){
+                    queue.offer(curr.left);
                 }
-                visited.add(polled);
-                if(k == 0){
-                    result.add(polled.val);
+                if(curr.right != null){
+                    queue.offer(curr.right);
+                }
+                TreeNode parent = parentMap.get(curr);
+                if(parent != null){
+                    queue.offer(parent);
                 }
             }
-            k--;
+            dist++;
         }
         return result;
     }

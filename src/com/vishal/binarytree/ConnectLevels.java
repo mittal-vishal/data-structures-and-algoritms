@@ -18,16 +18,11 @@ public class ConnectLevels {
         }
         Queue<Node> queue = new LinkedList<>();
         queue.offer(root);
-        queue.offer(null);
         Node prev = null;
         while(!queue.isEmpty()){
-            Node curr = queue.poll();
-            if(curr == null){
-                prev = null;
-                if(!queue.isEmpty()){
-                    queue.offer(null);
-                }
-            }else{
+            int size = queue.size();
+            for(int i = 0; i < size; i++){
+                Node curr = queue.poll();
                 if(prev != null){
                     prev.next = curr;
                 }
@@ -37,8 +32,9 @@ public class ConnectLevels {
                 if(curr.right != null){
                     queue.offer(curr.right);
                 }
+                prev = curr;
             }
-            prev = curr;
+            prev = null;
         }
         return root;
     }

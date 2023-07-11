@@ -30,10 +30,7 @@ public class CloneBinaryTreeWithRandomPointer {
         if(root == null){
             return;
         }
-        if(root.random != null){
-            TreeNode clonedRandom = mapping.get(root.random);
-            cloneRoot.random = clonedRandom;
-        }
+        cloneRoot.random = mapping.get(root.random);
         cloneRandomPointer(root.left, cloneRoot.left);
         cloneRandomPointer(root.right, cloneRoot.right);
     }

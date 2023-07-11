@@ -6,67 +6,63 @@ import java.util.List;
 
 public class NumberOfIslandsII {
 
-    class DSU{
-        private int[] size;
-        private int[] parent;
-        private int n;
+    static class DSU{
+        int n;
+        int[] size;
+        int[] parent;
         public DSU(int n){
             this.n = n;
             this.size = new int[n];
             this.parent = new int[n];
-            Arrays.fill(size, 1);
             for(int i = 0; i < n; i++){
                 parent[i] = i;
+                size[i] = 1;
             }
         }
-
         private int findParent(int i){
             if(i == parent[i]){
                 return i;
             }
             return parent[i] = findParent(parent[i]);
         }
-
-        private void unionBySize(int u, int v){
-            int up = findParent(u);
-            int vp = findParent(v);
-            if(up == vp){
+        private void union(int u, int v){
+            int pu = findParent(u);
+            int pv = findParent(v);
+            if(pu == pv){
                 return;
-            }
-            if(size[up] > size[vp]){
-                parent[vp] = up;
-                size[up] += size[vp];
+            }else if(size[pu] > size[pv]){
+                parent[pv] = pu;
+                size[pu] += size[pv];
             }else{
-                parent[up] = vp;
-                size[vp] += size[up];
+                parent[pu] = pv;
+                size[pv] += size[pu];
             }
         }
     }
-
     public List<Integer> numIslands2(int m, int n, int[][] positions) {
-        DSU dsu = new DSU(m*n);
-        int count = 0;
-        List<Integer> result = new ArrayList<>();
         boolean[][] visited = new boolean[m][n];
-        for(int[] pos: positions){
-            int[][] dirs = {{-1,0},{1,0},{0,-1},{0,1}};
-            int row = pos[0];
-            int col = pos[1];
-            if(visited[row][col]){
+        DSU dsu = new DSU(m*n);
+        List<Integer> result = new ArrayList<>();
+        int count = 0;
+        int[][] dirs = {{1,0}, {-1,0}, {0,1}, {0,-1}};
+        for(int[] position: positions){
+            int i = position[0];
+            int j = position[1];
+            if(visited[i][j]){
                 result.add(count);
                 continue;
             }
             count++;
-            visited[row][col] = true;
+            visited[i][j] = true;
             for(int[] dir: dirs){
-                int newRow = row+dir[0];
-                int newCol = col+dir[1];
-                if(isValid(newRow, newCol, m, n) && visited[newRow][newCol]){
-                    int u = (row*n)+col;
-                    int v = (newRow*n)+newCol;
-                    if(dsu.findParent(u) != dsu.findParent(v)){
+                int newX = i + dir[0];
+                int newY = j + dir[1];
+                if(isValid(newX, newY, m, n) && visited[newX][newY]){
+                    int node = (i * n) + j;
+                    int adjNode = (newX * n) + newY;
+                    if(dsu.findParent(node) != dsu.findParent(adjNode)){
                         count--;
-                        dsu.unionBySize(u,v);
+                        dsu.union(node, adjNode);
                     }
                 }
             }

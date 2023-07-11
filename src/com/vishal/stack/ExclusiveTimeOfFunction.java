@@ -5,37 +5,37 @@ import java.util.Stack;
 
 public class ExclusiveTimeOfFunction {
 
-    class Log{
+    static class Log{
         int id;
-        boolean isStart;
         int ts;
-        public Log(String[] logs){
-            this.id = Integer.valueOf(logs[0]);
-            this.isStart = logs[1].equals("start");
-            this.ts = Integer.valueOf(logs[2]);
+        int childTs;
+        public Log(int id, int ts){
+            this.id = id;
+            this.ts = ts;
         }
     }
 
     public int[] exclusiveTime(int n, List<String> logs) {
-        int[] time = new int[n];
         Stack<Log> stack = new Stack<>();
-        int prevLogTime = 0;
+        int[] res = new int[n];
         for(String log: logs){
-            Log currentLog = new Log(log.split(":"));
-            if(currentLog.isStart){
-                if(!stack.isEmpty()){
-                    Log prevLog = stack.peek();
-                    time[prevLog.id] += currentLog.ts - prevLogTime;
-                }
-                prevLogTime = currentLog.ts;
-                stack.push(currentLog);
+            String[] logParts = log.split(":");
+            int currLogId = Integer.valueOf(logParts[0]);
+            int currLogTs = Integer.valueOf(logParts[2]);
+            boolean isStart = logParts[1].equals("start")? true: false;
+            if(isStart){
+                stack.push(new Log(currLogId, currLogTs));
             }else{
-                time[currentLog.id] += currentLog.ts - prevLogTime + 1;
-                prevLogTime = currentLog.ts + 1;
-                stack.pop();
+                Log prevLog = stack.pop();
+                int interval = currLogTs - prevLog.ts + 1;
+                int executionTime = interval - prevLog.childTs;
+                res[currLogId] += executionTime;
+                if(stack.size() > 0){
+                    stack.peek().childTs += interval;
+                }
             }
         }
-        return time;
+        return res;
     }
 
 }

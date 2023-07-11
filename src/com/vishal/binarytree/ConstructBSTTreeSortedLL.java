@@ -1,4 +1,4 @@
-package com.vishal.binarysearchtree;
+package com.vishal.binarytree;
 
 import com.vishal.binarytree.TreeNode;
 
