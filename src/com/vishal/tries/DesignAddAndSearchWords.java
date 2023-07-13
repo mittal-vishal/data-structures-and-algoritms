@@ -2,9 +2,9 @@ package com.vishal.tries;
 
 public class DesignAddAndSearchWords {
 
-    class Node{
+    static class Node{
         Node[] childrens;
-        boolean isEnd;
+        boolean isWord;
         public Node(){
             childrens = new Node[26];
         }
@@ -25,35 +25,33 @@ public class DesignAddAndSearchWords {
             }
             curr = curr.childrens[ch-'a'];
         }
-        curr.isEnd = true;
+        curr.isWord = true;
     }
 
-    public boolean search(String word){
-        char[] words = word.toCharArray();
+    public boolean search(String word) {
         Node curr = root;
-        return search(curr, words, 0);
+        return search(word, 0, curr);
     }
 
-    public boolean search(Node curr, char[] words, int beg) {
-        for(int i = beg; i < words.length; i++){
-            char ch = words[i];
-            if(ch == '.'){
+    private boolean search(String word, int index, Node curr){
+        for(int i = index; i < word.length(); i++){
+            char ch = word.charAt(i);
+            if(ch != '.' && curr.childrens[ch-'a'] == null){
+                return false;
+            }else if(ch == '.'){
                 for(int j = 0; j < 26; j++){
                     if(curr.childrens[j] != null){
-                        if(search(curr.childrens[j], words, i+1)){
+                        if(search(word, i+1, curr.childrens[j])){
                             return true;
                         }
                     }
                 }
                 return false;
             }else{
-                if(curr.childrens[ch-'a'] == null){
-                    return false;
-                }
                 curr = curr.childrens[ch-'a'];
             }
         }
-        return curr.isEnd;
+        return curr.isWord;
     }
 
 }

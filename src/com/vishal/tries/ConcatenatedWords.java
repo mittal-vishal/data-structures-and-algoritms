@@ -6,11 +6,11 @@ import java.util.List;
 
 public class ConcatenatedWords {
 
-    class Node{
-        Node[] childrens;
-        boolean isEnd;
+    static class Node{
+        Node[] children;
+        boolean isWord;
         public Node(){
-            childrens = new Node[26];
+            children = new Node[26];
         }
     }
 
@@ -18,51 +18,45 @@ public class ConcatenatedWords {
 
     public List<String> findAllConcatenatedWordsInADict(String[] words) {
         root = new Node();
-        Arrays.sort(words, (a,b) -> a.length()-b.length());
-        List<String> results = new ArrayList<>();
+        List<String> result = new ArrayList<>();
+        Arrays.sort(words, (a,b) -> a.length() - b.length());
         for(String word: words){
-            if(isExist(word)){
-                results.add(word);
+            if(isExist(word, 0)){
+                result.add(word);
             }else{
                 insert(word);
             }
         }
-        return results;
-    }
-
-    private boolean isExist(String s){
-        if(s.length() == 0){
-            return true;
-        }
-        Node curr = root;
-        for(int i = 0; i < s.length(); i++){
-            char ch = s.charAt(i);
-            if(curr.isEnd && i < s.length() && isExist(s.substring(i, s.length()))){
-                return true;
-            }else if(curr.childrens[ch-'a'] == null){
-                return false;
-            }
-            curr = curr.childrens[ch-'a'];
-        }
-        return curr.isEnd;
+        return result;
     }
 
     private void insert(String s){
         Node curr = root;
         for(int i = 0; i < s.length(); i++){
             char ch = s.charAt(i);
-            if(curr.childrens[ch-'a'] == null){
-                curr.childrens[ch-'a'] = new Node();
+            if(curr.children[ch-'a'] == null){
+                curr.children[ch-'a'] = new Node();
             }
-            curr = curr.childrens[ch-'a'];
+            curr = curr.children[ch-'a'];
         }
-        curr.isEnd = true;
+        curr.isWord = true;
     }
 
-    public static void main(String[] args) {
-        String[] words = {"cat","cats","catsdogcats","dog","dogcatsdog","hippopotamuses","rat","ratcatdogcat"};
-        ConcatenatedWords concatenatedWords = new ConcatenatedWords();
-        List<String> concatWordsList = concatenatedWords.findAllConcatenatedWordsInADict(words);
-        System.out.print(concatWordsList);
+    private boolean isExist(String s, int index){
+        if(index == s.length()){
+            return true;
+        }
+        Node curr = root;
+        for(int i = index; i < s.length(); i++){
+            char ch = s.charAt(i);
+            if(curr.isWord && isExist(s, i)){
+                return true;
+            }else if(curr.children[ch-'a'] == null){
+                return false;
+            }else{
+                curr = curr.children[ch-'a'];
+            }
+        }
+        return curr.isWord;
     }
 }

@@ -1,15 +1,14 @@
 package com.vishal.tries;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class DesignFileSystem {
 
-    class Node{
-        int value;
-        Map<String,Node> childrens;
+    static class Node{
+        HashMap<String,Node> childs;
+        int val;
         public Node(){
-            childrens = new HashMap<>();
+            childs = new HashMap<>();
         }
     }
 
@@ -20,43 +19,36 @@ public class DesignFileSystem {
     }
 
     public boolean createPath(String path, int value) {
-        String[] components = path.split("\\/");
+        String[] pathValues = path.split("\\/");
+        String newPath = pathValues[pathValues.length-1];
         Node curr = root;
-        for(int i = 1; i < components.length; i++){
-            String currComponent = components[i];
-            if(!curr.childrens.containsKey(currComponent)){
-                if(i == components.length - 1){
-                    curr.childrens.put(currComponent, new Node());
-                }else{
-                    return false;
-                }
+        for(int i = 1; i < pathValues.length-1; i++){
+            String pathVal = pathValues[i];
+            if(!curr.childs.containsKey(pathVal)){
+                return false;
             }
-            curr = curr.childrens.get(currComponent);
+            curr = curr.childs.get(pathVal);
         }
-        if(curr.value == 0){
-            curr.value = value;
-            return true;
+        if(curr.childs.containsKey(newPath)){
+            return false;
         }
-        return false;
+        curr.childs.put(newPath, new Node());
+        curr = curr.childs.get(newPath);
+        curr.val = value;
+        return true;
     }
 
     public int get(String path) {
-        String[] components = path.split("\\/");
+        String[] pathValues = path.split("\\/");
         Node curr = root;
-        for(int i = 1; i < components.length; i++){
-            String currComponent = components[i];
-            if(!curr.childrens.containsKey(currComponent)){
+        for(int i = 1; i < pathValues.length; i++){
+            String pathVal = pathValues[i];
+            if(!curr.childs.containsKey(pathVal)){
                 return -1;
             }
-            curr = curr.childrens.get(currComponent);
+            curr = curr.childs.get(pathVal);
         }
-        return curr.value;
-    }
-
-    public static void main(String[] args) {
-        DesignFileSystem fileSystem = new DesignFileSystem();
-        fileSystem.createPath("/a",1);
-        System.out.println(fileSystem.get("/a"));
+        return curr.val;
     }
 
 }

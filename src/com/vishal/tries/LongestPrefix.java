@@ -2,55 +2,63 @@ package com.vishal.tries;
 
 class LongestPrefix {
 
-    class Node{
-        Node[] childrens;
-        boolean isEnd;
-        char ch;
-        public Node(char ch){
-            this.ch = ch;
-            childrens = new Node[26];
+    static class Node{
+        Node[] children;
+        boolean isWord;
+        public Node(){
+            children = new Node[27];
         }
     }
+
     private Node root;
+
     public String longestCommonPrefix(String[] strs) {
-        root = new Node('\0');
-        for(String str: strs){
-            insert(str);
+        root = new Node();
+        for(String word: strs){
+            if(word.length() == 0){
+                return "";
+            }
+            insert(word);
         }
         StringBuilder sb = new StringBuilder();
-        Node curr = root;
-        getLongestPrefix(curr, sb);
+        getPrefix(root, sb);
         return sb.toString();
     }
 
-    private void getLongestPrefix(Node curr, StringBuilder sb){
-        int nodeCount = 0;
-        Node singleChild = null;
-        if(curr.isEnd){
+    private void getPrefix(Node curr, StringBuilder sb){
+        if(curr.isWord){
             return;
         }
+        Node singleNode = null;
+        int singleNodeCount = 0;
+        int resCharIndex = 0;
         for(int i = 0; i < 26; i++){
-            if(curr.childrens[i] != null){
-                nodeCount++;
-                singleChild = curr.childrens[i];
+            if(curr.children[i] != null){
+                singleNode = curr.children[i];
+                singleNodeCount++;
+                resCharIndex = i;
             }
         }
-        if(nodeCount == 1){
-            sb.append(singleChild.ch);
-            getLongestPrefix(singleChild, sb);
+        if(singleNodeCount == 1){
+            sb.append((char)('a'+resCharIndex));
+            getPrefix(singleNode, sb);
         }
     }
 
-    private void insert(String s){
+    private void insert(String word){
         Node curr = root;
-        for(int i = 0; i < s.length(); i++){
-            char ch = s.charAt(i);
-            if(curr.childrens[ch-'a'] == null){
-                curr.childrens[ch-'a'] = new Node(ch);
-            }
-            curr = curr.childrens[ch-'a'];
+        if(word.length() == 0){
+            curr.children[26] = new Node();
+            return;
         }
-        curr.isEnd = true;
+        for(int i = 0; i < word.length(); i++){
+            char ch = word.charAt(i);
+            if(curr.children[ch-'a'] == null){
+                curr.children[ch-'a'] = new Node();
+            }
+            curr = curr.children[ch-'a'];
+        }
+        curr.isWord = true;
     }
 }
 

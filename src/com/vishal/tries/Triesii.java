@@ -6,10 +6,9 @@ class Triesii {
         Node[] childrens;
         int wordCount;
         int prefixCount;
+        boolean isWord;
         public Node(){
-            childrens = new Node[26];
-            wordCount = 0;
-            prefixCount = 0;
+            this.childrens = new Node[26];
         }
     }
 
@@ -22,36 +21,37 @@ class Triesii {
     public void insert(String word) {
         Node curr = root;
         for(int i = 0; i < word.length(); i++){
-            char currChar = word.charAt(i);
-            if(curr.childrens[currChar-'a'] == null){
-                curr.childrens[currChar-'a'] = new Node();
+            char ch = word.charAt(i);
+            if(curr.childrens[ch-'a'] == null){
+                curr.childrens[ch-'a'] = new Node();
             }
-            curr = curr.childrens[currChar-'a'];
+            curr = curr.childrens[ch-'a'];
             curr.prefixCount++;
         }
+        curr.isWord = true;
         curr.wordCount++;
     }
 
     public int countWordsEqualTo(String word) {
         Node curr = root;
         for(int i = 0; i < word.length(); i++){
-            char currChar = word.charAt(i);
-            if(curr.childrens[currChar-'a'] == null){
+            char ch = word.charAt(i);
+            if(curr.childrens[ch-'a'] == null){
                 return 0;
             }
-            curr = curr.childrens[currChar-'a'];
+            curr = curr.childrens[ch-'a'];
         }
-        return curr.wordCount;
+        return curr.isWord? curr.wordCount: 0;
     }
 
     public int countWordsStartingWith(String prefix) {
         Node curr = root;
         for(int i = 0; i < prefix.length(); i++){
-            char currChar = prefix.charAt(i);
-            if(curr.childrens[currChar-'a'] == null){
+            char ch = prefix.charAt(i);
+            if(curr.childrens[ch-'a'] == null){
                 return 0;
             }
-            curr = curr.childrens[currChar-'a'];
+            curr = curr.childrens[ch-'a'];
         }
         return curr.prefixCount;
     }
@@ -59,16 +59,14 @@ class Triesii {
     public void erase(String word) {
         Node curr = root;
         for(int i = 0; i < word.length(); i++){
-            char currChar = word.charAt(i);
-            if(curr.childrens[currChar-'a'] == null){
+            char ch = word.charAt(i);
+            if(curr.childrens[ch-'a'] == null){
                 return;
             }
-            curr = curr.childrens[currChar-'a'];
-            if(curr.prefixCount > 0){
-                curr.prefixCount--;
-            }
+            curr = curr.childrens[ch-'a'];
+            curr.prefixCount--;
         }
-        if(curr.wordCount > 0){
+        if(curr.isWord){
             curr.wordCount--;
         }
     }

@@ -2,6 +2,22 @@ package com.vishal.binarytree;
 
 public class HeightOfBinaryTreeAfterSubtreeRemoval {
 
+    public static void main(String[] args) {
+        HeightOfBinaryTreeAfterSubtreeRemoval subtreeRemoval = new HeightOfBinaryTreeAfterSubtreeRemoval();
+        TreeNode root = new TreeNode(5);
+        root.left = new TreeNode(8);
+        root.right = new TreeNode(9);
+        root.left.left = new TreeNode(2);
+        root.left.right = new TreeNode(1);
+        root.left.left.left = new TreeNode(4);
+        root.left.left.right = new TreeNode(6);
+        root.right.left = new TreeNode(3);
+        root.right.right = new TreeNode(7);
+        int[] queries = {8};
+        int[] res = subtreeRemoval.treeQueries(root, queries);
+        System.out.println(res[0]);
+    }
+
     private int[] allLevel;
     private int leftMaxLevel;
     private int rightMaxLevel;
