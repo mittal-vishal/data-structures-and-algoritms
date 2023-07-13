@@ -22,15 +22,17 @@ public class WordSearch {
         if(idx == word.length()){
             return true;
         }
-        if(isValid(i, j, board) && !visited[i][j] && word.charAt(idx) == board[i][j]){
+        int[][] dirs = {{1,0}, {-1,0}, {0,1}, {0,-1}};
+        if(isValid(i, j, board) && !visited[i][j] && board[i][j] == word.charAt(idx)){
             visited[i][j] = true;
-            boolean left = dfs(board, i, j-1, idx+1, word, visited);
-            boolean right = dfs(board, i, j+1, idx+1, word, visited);
-            boolean up = dfs(board, i-1, j, idx+1, word, visited);
-            boolean down = dfs(board, i+1, j, idx+1, word, visited);
-            boolean found = left || right || up || down;
+            boolean isPossible = false;
+            for(int[] dir: dirs){
+                int newRow = i + dir[0];
+                int newCol = j + dir[1];
+                isPossible = isPossible || dfs(board, newRow, newCol, idx+1, word, visited);
+            }
             visited[i][j] = false;
-            return found;
+            return isPossible;
         }
         return false;
     }
