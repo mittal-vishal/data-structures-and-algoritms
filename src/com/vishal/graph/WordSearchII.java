@@ -5,6 +5,14 @@ import java.util.List;
 
 public class WordSearchII {
 
+    public static void main(String[] args) {
+        char[][] board = {{'o','a','a','n'},{'e','t','a','e'},{'i','h','k','r'},{'i','f','l','v'}};
+        String[] words = {"oath", "pea", "eat", "rain"};
+        WordSearchII wordSearchII = new WordSearchII();
+        List<String> result = wordSearchII.findWords(board, words);
+        System.out.println(result);
+    }
+
     public List<String> findWords(char[][] board, String[] words) {
         List<String> wordsExistList = new ArrayList<>();
         for(String word: words){

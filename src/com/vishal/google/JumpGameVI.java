@@ -5,6 +5,14 @@ import java.util.Queue;
 
 public class JumpGameVI {
 
+    public static void main(String[] args) {
+        int[] arr = {1,-1,-2,4,-7,3};
+        int k = 2;
+        JumpGameVI jumpGame = new JumpGameVI();
+        int result = jumpGame.maxResult(arr, k);
+        System.out.println(result);
+    }
+
     class Pair{
         int index;
         int score;
