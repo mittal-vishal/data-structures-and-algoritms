@@ -1,6 +1,8 @@
 package com.vishal.wayfair;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 /*
 *
@@ -13,7 +15,8 @@ Note: Category structure is hierarchical. Categories without coupons inherit the
 Coupons = [
     {"CategoryName":"Comforter Sets", "CouponName":"Comforters Sale"},
     {"CategoryName":"Bedding", "CouponName":"Savings on Bedding"},
-    {"CategoryName":"Bed & Bath", "CouponName":"Low price for Bed & Bath"}
+    {"CategoryName":"Bed & Bath", "CouponName":"Low price for Bed & Bath"},
+    {"CategoryName":"Toy Organizers", "CouponName":"Relative low price on baby and kids"}
 ]
 
 Categories = [
@@ -32,8 +35,11 @@ Categories = [
 "Bedding"              => "Savings on Bedding"
 "Bathroom Accessories" => "Low price for Bed & Bath"
 "Soap Dispensers"      => "Low price for Bed & Bath"
-"Toy Organizers"       => null
+"Toy Organizers"       => "Relative low price on baby and kids"
 
+----------------------------------------------------------------
+
+Solution
 HashMap<Category,Coupon>
 HashMap<Node, Parent_Node>
 
@@ -43,7 +49,6 @@ class CategoryNode{
     CategoryNode right;
 
 }
-
 */
 public class CouponCategory {
 
@@ -70,17 +75,32 @@ public class CouponCategory {
         root.left.left = new CategoryNode("Comforter Sets","Comforters Sale");
         root.right = new CategoryNode("Bathroom Accessories");
         root.right.left = new CategoryNode("Soap Dispensers");
-        CategoryNode root2 = new CategoryNode("Baby And Kids");
+        CategoryNode root2 = new CategoryNode("Baby And Kids", "Relative low price on baby and kids");
         root2.left = new CategoryNode("Toy Organizers");
-        System.out.println(getCategoryCoupons(root, "Toy Organizers"));
+        List<CategoryNode> roots = Arrays.asList(root, root2);
+        System.out.println(getCategoryCoupons(roots, "Toy Organizers"));
     }
 
-    private static String getCategoryCoupons(CategoryNode root, String categoryName){
+    private static String getCategoryCoupons(List<CategoryNode> roots, String categoryName){
         categoryCouponsMap = new HashMap<>();
         nodeParentMap = new HashMap<>();
-        dfs(root);
-        initializeParent(root, null);
-        CategoryNode categoryNode = getCategoryNode(root, categoryName);
+        //Populate category coupon mapping of each category, may have multiple root
+        for(CategoryNode root: roots){
+            dfs(root);
+        }
+        //Create parent category for all category, may have multiple root
+        for(CategoryNode root: roots){
+            initializeParent(root, null);
+        }
+        //get queried category, may present inside any root
+        CategoryNode categoryNode = null;
+        for(CategoryNode root: roots){
+            categoryNode = getCategoryNode(root, categoryName);
+            if(categoryNode != null){
+                break;
+            }
+        }
+
         String result = getResult(categoryNode);
         return result;
     }

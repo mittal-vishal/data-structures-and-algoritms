@@ -1,4 +1,4 @@
-package com.vishal.graph;
+package com.vishal.wayfair;
 
 import java.util.LinkedList;
 import java.util.Queue;
