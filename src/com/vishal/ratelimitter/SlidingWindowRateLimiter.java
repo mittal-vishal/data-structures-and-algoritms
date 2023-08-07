@@ -6,11 +6,19 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class SlidingWindowRateLimiter implements RateLimiter{
 
-    private Queue<Integer> queue;
+    private Queue<Long> queue;
     private int timeUnit;
     private int userId;
     private int bucketCapacity;
     private HashMap<Integer, SlidingWindowRateLimiter> buckets;
+
+    public SlidingWindowRateLimiter(Queue queue, int bucketCapacity){
+        this.queue = queue;
+        this.bucketCapacity = bucketCapacity;
+    }
+
+    public SlidingWindowRateLimiter(){
+    }
 
     @Override
     public void createRateLimiter(int bucketCapacity, int timeUnit, int userId) {
@@ -18,7 +26,8 @@ public class SlidingWindowRateLimiter implements RateLimiter{
         this.timeUnit = timeUnit;
         this.userId = userId;
         this.bucketCapacity = bucketCapacity;
-        buckets.put(userId, new SlidingWindowRateLimiter());
+        buckets = new HashMap<>();
+        buckets.put(userId, new SlidingWindowRateLimiter(this.queue, bucketCapacity));
     }
 
     @Override
@@ -26,18 +35,22 @@ public class SlidingWindowRateLimiter implements RateLimiter{
         SlidingWindowRateLimiter slidingWindowRateLimiter = buckets.get(userId);
         long currentTime = System.currentTimeMillis();
         updateQueue(slidingWindowRateLimiter.queue, currentTime);
-        if(slidingWindowRateLimiter.queue.size() <= bucketCapacity){
-            slidingWindowRateLimiter.queue.offer((int) currentTime);
+        if(slidingWindowRateLimiter.queue.size() < bucketCapacity) {
+            slidingWindowRateLimiter.queue.offer(currentTime);
             return true;
+        }else{
+            return false;
         }
-        return false;
     }
 
-    private void updateQueue(Queue<Integer> queue, long currentTime) {
+    private void updateQueue(Queue<Long> queue, long currentTime) {
+        if(queue.isEmpty()){
+            return;
+        }
         long timeDiff = (currentTime - queue.peek())/1000;
         while(!queue.isEmpty() && timeDiff > timeUnit){
             queue.poll();
-            timeDiff = (currentTime - queue.peek())/1000;
+            timeDiff = !queue.isEmpty()? (currentTime - queue.peek())/1000: 0;
         }
     }
 }
