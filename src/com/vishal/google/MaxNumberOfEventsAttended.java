@@ -3,7 +3,7 @@ package com.vishal.google;
 import java.util.Arrays;
 import java.util.TreeSet;
 
-public class MaxNumberOfMeetingThatCanBeAttended {
+public class MaxNumberOfEventsAttended {
 
     public int maxEvents(int[][] events) {
         Arrays.sort(events, (a, b) -> {
