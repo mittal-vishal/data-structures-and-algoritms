@@ -7,56 +7,55 @@ import java.util.List;
 
 public class EvaluateDivision {
 
+    private double result;
+
     static class Node{
         String name;
         double value;
-        public Node(String name, double value){
+        Node(String name, double value){
             this.name = name;
             this.value = value;
         }
     }
+
     public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
         HashMap<String, List<Node>> graph = new HashMap<>();
-        buildGraph(equations, values, graph);
-        double[] result = new double[queries.size()];
+        initializeGraph(graph, equations, values);
+        double[] results = new double[queries.size()];
         HashSet<String> visited = new HashSet<>();
         for(int i = 0; i < queries.size(); i++){
-            String src = queries.get(i).get(0);
-            String dest = queries.get(i).get(1);
-            result[i] = backtrack(src, dest, values, graph, visited);
+            List<String> query = queries.get(i);
+            result = -1d;
+            dfs(graph, query.get(0), query.get(1), visited, 1d);
+            results[i] = result;
         }
-        return result;
+        return results;
     }
 
-    private double backtrack(String src, String dest, double[] values, HashMap<String, List<Node>> graph, HashSet<String> visited){
+    private void dfs(HashMap<String, List<Node>> graph, String src, String dest, HashSet<String> visited, double prod){
         if(!graph.containsKey(src) || visited.contains(src)){
-            return -1d;
+            return;
         }else if(src.equals(dest)){
-            return 1d;
+            result = prod;
+            return;
         }
         visited.add(src);
         for(Node neighbour: graph.get(src)){
-            if(!visited.contains(neighbour.name)){
-                double ans = backtrack(neighbour.name, dest, values, graph, visited);
-                if(ans != -1d){
-                    visited.remove(src);
-                    return ans * neighbour.value;
-                }
-            }
+            dfs(graph, neighbour.name, dest, visited, prod * neighbour.value);
         }
         visited.remove(src);
-        return -1d;
     }
 
-    private void buildGraph(List<List<String>> equations, double[] values, HashMap<String, List<Node>> graph){
+    private void initializeGraph(HashMap<String, List<Node>> graph, List<List<String>> equations, double[] values){
         for(int i = 0; i < equations.size(); i++){
-            String src = equations.get(i).get(0);
-            String dest = equations.get(i).get(1);
+            List<String> equation = equations.get(i);
             double value = values[i];
-            graph.putIfAbsent(src, new ArrayList<>());
-            graph.putIfAbsent(dest, new ArrayList<>());
-            graph.get(src).add(new Node(dest, value));
-            graph.get(dest).add(new Node(src, 1/value));
+            String u = equation.get(0);
+            String v = equation.get(1);
+            graph.putIfAbsent(u, new ArrayList<>());
+            graph.putIfAbsent(v, new ArrayList<>());
+            graph.get(u).add(new Node(v, value));
+            graph.get(v).add(new Node(u, 1/value));
         }
     }
 

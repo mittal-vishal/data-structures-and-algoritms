@@ -3,7 +3,6 @@ package com.vishal.backtracking;
 public class WordSearch {
 
     public boolean exist(char[][] board, String word) {
-        boolean isExist = false;
         if(board == null || board.length == 0){
             return false;
         }
