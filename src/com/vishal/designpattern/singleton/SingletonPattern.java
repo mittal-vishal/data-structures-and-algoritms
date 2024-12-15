@@ -1,9 +1,8 @@
-package com.vishal.designpattern;
+package com.vishal.designpattern.singleton;
 
 public class SingletonPattern {
 	
-	private static SingletonPattern spObj = null;
-	int data;
+	private static volatile SingletonPattern spObj = null;
 	
 	/**
 	 * Private constructor will prevent this class to be get instantiated with new object creation
@@ -16,17 +15,13 @@ public class SingletonPattern {
 	 */
 	public static SingletonPattern getInstance() {
 		if(spObj == null) {
-			spObj = new SingletonPattern();
+			synchronized (SingletonPattern.class){
+				if(spObj == null){
+					spObj = new SingletonPattern();
+				}
+			}
 		}
 		return spObj;
-	}
-
-	public int getData() {
-		return data;
-	}
-
-	public void setData(int data) {
-		this.data = data;
 	}
 
 }
