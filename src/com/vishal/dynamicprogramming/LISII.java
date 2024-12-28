@@ -1,6 +1,7 @@
 package com.vishal.dynamicprogramming;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -8,36 +9,37 @@ public class LISII {
 
     public static void main(String[] args) {
         int[] nums = {5,4,11,1,16,8};
-        System.out.println(lengthOfLIS(nums));
+        System.out.println(lengthOfLIS(nums.length, nums));
     }
 
-    public static List<Integer> lengthOfLIS(int[] nums) {
-        int n = nums.length;
+    public static ArrayList<Integer> lengthOfLIS(int n, int arr[]) {
+        ArrayList<Integer> result = new ArrayList<>();
         int[] dp = new int[n];
         int[] prev = new int[n];
-        int maxLIS = 1;
-        int maxIndex = 0;
+        Arrays.fill(dp, 1);
+        int maxLenIdx = 0;
+        int maxLen = 1;
         for(int i = 1; i < n; i++){
             prev[i] = i;
             for(int j = 0; j < i; j++){
-                if(nums[i] > nums[j] && 1+dp[j] > dp[i]){
-                    dp[i] = 1 + dp[j];
+                if(arr[i] > arr[j] && dp[i] <= dp[j]){
+                    dp[i] = dp[j] + 1;
                     prev[i] = j;
                 }
             }
-            if(dp[i] > maxLIS){
-                maxLIS = dp[i];
-                maxIndex = i;
+            if(maxLen < dp[i]){
+                maxLen = dp[i];
+                maxLenIdx = i;
             }
         }
-        List<Integer> results = new ArrayList<>();
-        while(maxIndex != prev[maxIndex]){
-            results.add(nums[maxIndex]);
-            maxIndex = prev[maxIndex];
+        result.add(arr[maxLenIdx]);
+        while(prev[maxLenIdx] != maxLenIdx){
+            maxLenIdx = prev[maxLenIdx];
+            result.add(arr[maxLenIdx]);
         }
-        results.add(nums[maxIndex]);
-        Collections.reverse(results);
-        return results;
+
+        Collections.reverse(result);
+        return result;
     }
 
 }

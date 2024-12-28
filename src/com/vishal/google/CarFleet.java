@@ -1,41 +1,40 @@
 package com.vishal.google;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class CarFleet {
 
-    public static void main(String[] args) {
-        int[] positions = {10,8,0,5,3};
-        int[] speed = {2,4,1,1,3};
-        int target = 12;
-        CarFleet fleet = new CarFleet();
-        int fleets = fleet.carFleet(target, positions, speed);
-        System.out.print(fleets);
+    static class Car{
+        int pos;
+        int speed;
+        double time;
+        public Car(int pos, int speed, double time){
+            this.pos = pos;
+            this.speed = speed;
+            this.time = time;
+        }
     }
 
     public int carFleet(int target, int[] position, int[] speed) {
-        TreeMap<Integer, Double> timeToReachMap = new TreeMap<>();
-        int totalCars = position.length;
-        for(int i = 0; i < totalCars; i++){
-            double carSpeed = speed[i];
-            double timeToReach = (target - position[i]) / carSpeed;
-            timeToReachMap.put(position[i], timeToReach);
+        List<Car> cars = new ArrayList<>();
+        int n = position.length;
+        for(int i = 0; i < n; i++){
+            double time = (target-position[i])/(speed[i]*1d);
+            cars.add(new Car(position[i], speed[i], time));
         }
-        List<Double> timeToReachList = new ArrayList<>(timeToReachMap.values());
-        double currTimeToReach = 0d;
-        int totalFleet = 0;
-        for(int i = timeToReachList.size() - 1; i >= 0; i--){
-            if(currTimeToReach == 0d || timeToReachList.get(i) > currTimeToReach){
-                totalFleet++;
-                currTimeToReach = timeToReachList.get(i);
+        Collections.sort(cars, (a, b) -> a.pos-b.pos);
+        double lastTimeToReach = cars.get(n-1).time;
+        int collisions = 0;
+        for(int i = n-2; i >= 0; i--){
+            double currTimeToReach = cars.get(i).time;
+            if(currTimeToReach <= lastTimeToReach){
+                collisions++;
+                lastTimeToReach = Math.max(lastTimeToReach, currTimeToReach);
             }else{
-                currTimeToReach = Math.max(currTimeToReach, timeToReachList.get(i));
+                lastTimeToReach = currTimeToReach;
             }
         }
-        return totalFleet;
+        return n-collisions;
     }
 
 }

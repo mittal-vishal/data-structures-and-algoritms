@@ -1,62 +1,56 @@
 package com.vishal.graph;
 
 import java.util.Arrays;
-import java.util.HashSet;
 
 class ConnectedComponents {
+    static class DisjointSet{
+        int[] size;
+        int[] parent;
+        DisjointSet(int n){
+            size = new int[n+1];
+            parent = new int[n+1];
+            Arrays.fill(size, 1);
+            for(int i = 0; i <= n; i++){
+                parent[i] = i;
+            }
+        }
+
+        public void union(int u, int v){
+            int ultParentU = findParent(u);
+            int ultParentV = findParent(v);
+            if(ultParentU == ultParentV){
+                return;
+            }
+            if(size[ultParentU] > size[ultParentV]){
+                parent[ultParentV] = ultParentU;
+                size[ultParentU] += size[ultParentV];
+            }else{
+                parent[ultParentU] = ultParentV;
+                size[ultParentV] += size[ultParentU];
+            }
+        }
+
+        public int findParent(int node){
+            if(parent[node] == node){
+                return node;
+            }
+            return parent[node] = findParent(parent[node]);
+        }
+    }
+
     public int countComponents(int n, int[][] edges) {
-        if(edges == null || edges.length == 0){
-            return n;
-        }
-        DSU dsu = new DSU(n);
+        DisjointSet dsu = new DisjointSet(n);
         for(int[] edge: edges){
-            dsu.union(edge[0], edge[1]);
+            int u = edge[0];
+            int v = edge[1];
+            dsu.union(u, v);
         }
-
-        HashSet<Integer> uniqueParentSet = new HashSet<>();
+        int components = 0;
         for(int i = 0; i < n; i++){
-            int uniqueParent = dsu.findParent(i);
-            uniqueParentSet.add(uniqueParent);
+            if(dsu.findParent(i) == i){
+                components++;
+            }
         }
-
-        return uniqueParentSet.size();
-    }
-}
-
-class DSU{
-    int[] size;
-    int[] parent;
-
-    public DSU(int n){
-        size = new int[n];
-        parent = new int[n];
-        Arrays.fill(size, 1);
-        for(int i = 0; i < n; i++){
-            parent[i] = i;
-        }
-    }
-
-    public void union(int u, int v){
-        int uParent = findParent(u);
-        int vParent = findParent(v);
-        if(uParent == vParent){
-            return;
-        }
-        if(size[uParent] > size[vParent]){
-            parent[vParent] = u;
-            size[uParent] += size[vParent];
-        }else{
-            parent[uParent] = v;
-            size[vParent] += size[uParent];
-        }
-    }
-
-    public int findParent(int node){
-        if(parent[node]  == node){
-            return node;
-        }
-        //path compression
-        parent[node] = findParent(parent[node]);
-        return parent[node];
+        return components;
     }
 }

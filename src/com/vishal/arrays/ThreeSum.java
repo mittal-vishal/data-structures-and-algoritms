@@ -6,25 +6,36 @@ import java.util.stream.IntStream;
 
 public class ThreeSum {
 
-    public List<List<Integer>> threeSumBruteForce(int[] nums) {
-        List<List<Integer>> results = new ArrayList<>();
-        Set<List<Integer>> uniques = new HashSet<>();
-        for(int i = 0; i < nums.length - 2; i++){
-            for(int j = i + 1; j < nums.length - 1; j++){
-                for(int k = j + 1; k < nums.length; k++){
-                    if(nums[i] + nums[j] + nums[k] == 0 ){
-                        int[] tripletArr = IntStream.of(nums[i], nums[j], nums[k]).toArray();
-                        Arrays.sort(tripletArr);
-                        List<Integer> triplets = IntStream.of(tripletArr).boxed().collect(Collectors.toList());
-                        if(!uniques.contains(triplets)){
-                            results.add(triplets);
-                            uniques.add(triplets);
-                        }
+    public List<List<Integer>> threeSumOptimal(int[] nums) {
+        Arrays.sort(nums);
+        int n = nums.length;
+        List<List<Integer>> result = new ArrayList<>();
+        for(int i = 0; i < n-2; i++){
+            if(i > 0 && nums[i] == nums[i-1]){
+                continue;
+            }
+            int firstNum = nums[i];
+            int left = i+1;
+            int right = n-1;
+            while(left < right){
+                if(nums[left] + nums[right] == (-firstNum)){
+                    result.add(List.of(firstNum, nums[left], nums[right]));
+                    while(left < right && nums[left] == nums[left+1]){
+                        left++;
                     }
+                    while(left < right && nums[right] == nums[right-1]){
+                        right--;
+                    }
+                    left++;
+                    right--;
+                }else if((nums[left] + nums[right]) < (-firstNum)){
+                    left++;
+                }else{
+                    right--;
                 }
             }
         }
-        return results;
+        return result;
     }
 
     public static List<List<Integer>> threeSumUsingHashMap(int[] nums) {

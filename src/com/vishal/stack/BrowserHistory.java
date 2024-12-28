@@ -21,17 +21,15 @@ public class BrowserHistory {
     }
 
     public String back(int steps) {
-        while(browserStack.size() != 1 && steps > 0){
+        while(browserStack.size() > 1 && steps-- > 0){
             tempStack.push(browserStack.pop());
-            steps--;
         }
         return !browserStack.isEmpty()? browserStack.peek(): null;
     }
 
     public String forward(int steps) {
-        while(!tempStack.isEmpty() && steps > 0){
+        while(!tempStack.isEmpty() && steps-- > 0){
             browserStack.push(tempStack.pop());
-            steps--;
         }
         return !browserStack.isEmpty()? browserStack.peek(): null;
     }

@@ -5,46 +5,53 @@ import java.util.PriorityQueue;
 
 public class MeetingRoomIII {
 
-    public int mostBooked(int n, int[][] meetings) {
-        // sort rooms by start time
-        Arrays.sort(meetings, (m1, m2) -> m1[0] - m2[0]);
-        // key: int[end time, room number]
-        // sort by end time, if the same end time - sort by lowest room number
-        PriorityQueue<int[]> busyRooms = new PriorityQueue<>((m1, m2) -> m1[0] != m2[0] ? m1[0] - m2[0]: m1[1] - m2[1]);
-        //store index of available room
-        PriorityQueue<Integer> availableRooms = new PriorityQueue<>();
-        for (int i = 0; i < n; i++) {
-            availableRooms.add(i); // add all rooms to availability
-        }
-        int[] roomUsageCount = new int[n];
-
-        for (int[] meeting : meetings) {
-            int currMeetingStartTime = meeting[0];
-            while (!busyRooms.isEmpty() && currMeetingStartTime >= busyRooms.peek()[0]) { // empty past meetings
-                availableRooms.add(busyRooms.remove()[1]); // add freed room to availability
+    class Solution {
+        public int mostBooked(int n, int[][] meetings) {
+            int[] rooms = new int[n];
+            //Sort meeting based on start date
+            Arrays.sort(meetings, (a,b) -> a[0] - b[0]);
+            //Room avaiability heap, returns min value
+            PriorityQueue<Integer> roomAvailability = new PriorityQueue<>();
+            //Tracking of occupied rooms availa
+            PriorityQueue<int[]> occupiedRoomAvailability = new PriorityQueue<>((a,b) ->{
+                if(a[0] != b[0]){
+                    return a[0] - b[0];
+                }else{
+                    return a[1] - b[1];
+                }
+            });
+            //All rooms available initially
+            for(int i = 0; i < n; i++){
+                roomAvailability.offer(i);
             }
-            int delay = 0;
-            if (availableRooms.size() == 0) { // all rooms are full
-                int[] endedMeeting = busyRooms.remove();
-                delay = endedMeeting[0] - currMeetingStartTime; // add delay
-                availableRooms.add(endedMeeting[1]); // add free room back to availability
+            //Process meeting by meeting
+            for(int[] meeting: meetings){
+                //Update room availability if existing meetings are over
+                while(!occupiedRoomAvailability.isEmpty() && meeting[0] >= occupiedRoomAvailability.peek()[0]){
+                    roomAvailability.offer(occupiedRoomAvailability.poll()[1]);
+                }
+                //If free room not available, then schedule current meeting with delay.
+                int delay = 0;
+                if(roomAvailability.isEmpty()){
+                    int[] earliestMeetingToComplete = occupiedRoomAvailability.poll();
+                    delay = earliestMeetingToComplete[0] - meeting[0];
+                    roomAvailability.offer(earliestMeetingToComplete[1]);
+                }
+                int meetingRoom = roomAvailability.poll();
+                occupiedRoomAvailability.offer(new int[]{meeting[1] + delay, meetingRoom});
+                rooms[meetingRoom]++;
             }
-            int currMeetingEndTime = meeting[1] + delay;
-            int availableRoom = availableRooms.remove(); // get lowest available room
-            busyRooms.add(new int[] {currMeetingEndTime, availableRoom}); // add current meeting
-            roomUsageCount[availableRoom]++;
-        }
-
-        // find the most used room
-        int maxUsedRoom = 0;
-        int maxUsage = 0;
-        for (int i = 0; i < n; i++) {
-            if (roomUsageCount[i] > maxUsage) {
-                maxUsage = roomUsageCount[i];
-                maxUsedRoom = i;
+            //Return the room which help maximum meeting
+            int maxMeeting = 0;
+            int result = -1;
+            for(int i = 0; i < rooms.length; i++){
+                if(rooms[i] > maxMeeting){
+                    maxMeeting = rooms[i];
+                    result = i;
+                }
             }
+            return result;
         }
-        return maxUsedRoom;
     }
 
 }

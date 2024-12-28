@@ -5,42 +5,41 @@ import java.util.Map;
 
 public class MinWindowSizeSubString {
 
-    public static String findSubstring(String s, String t) {
-        Map<Character,Integer> subOccurances = new HashMap<>();
+    public String minWindow(String s, String t) {
+        HashMap<Character,Integer> sOccurance = new HashMap<>();
+        HashMap<Character,Integer> tOccurance = new HashMap<>();
+        for(char ch: t.toCharArray()){
+            tOccurance.put(ch, tOccurance.getOrDefault(ch,0) + 1);
+        }
         int left = 0;
         int right = 0;
-        for(int i = 0; i < t.length(); i++){
-            char ch = t.charAt(i);
-            subOccurances.put(ch, subOccurances.getOrDefault(ch, 0) + 1);
-        }
-        Map<Character, Integer> strOccurances = new HashMap<>();
-        int maxLength = Integer.MAX_VALUE;
         String result = "";
+        int minLength = s.length() + 1;
         while(right < s.length()){
-            //expand
+            //expand until cond doesn't met
             char ch = s.charAt(right++);
-            strOccurances.put(ch, strOccurances.getOrDefault(ch, 0) + 1);
-            //shrink
-            while(isSubset(subOccurances, strOccurances) && left < right){
-                char removeChar = s.charAt(left);
-                if(maxLength > (right-left)){
-                    maxLength = right-left;
+            sOccurance.put(ch, sOccurance.getOrDefault(ch,0) + 1);
+            //keep shrinking until condition don't violate
+            while(left < right && isSubSetContains(sOccurance, tOccurance)){
+                if((right-left) < minLength){
+                    minLength = right-left;
                     result = s.substring(left, right);
                 }
-                if(strOccurances.get(removeChar) > 1){
-                    strOccurances.put(removeChar, strOccurances.get(removeChar) - 1);
+                char leftChar = s.charAt(left++);
+                if(sOccurance.get(leftChar) > 1){
+                    sOccurance.put(leftChar, sOccurance.get(leftChar)-1);
                 }else{
-                    strOccurances.remove(removeChar);
+                    sOccurance.remove(leftChar);
                 }
-                left++;
             }
         }
         return result;
     }
 
-    private static boolean isSubset(Map<Character, Integer> subOccurances, Map<Character, Integer> strOccurances){
-        for(Map.Entry<Character, Integer> entry: subOccurances.entrySet()){
-            if(!strOccurances.containsKey(entry.getKey()) || strOccurances.get(entry.getKey()) < entry.getValue()){
+    private boolean isSubSetContains(HashMap<Character,Integer> sOccurance, HashMap<Character,Integer> tOccurance){
+        for(Map.Entry<Character,Integer> entry: tOccurance.entrySet()){
+            Character key = entry.getKey();
+            if(!sOccurance.containsKey(key) || sOccurance.get(key) < tOccurance.get(key)){
                 return false;
             }
         }

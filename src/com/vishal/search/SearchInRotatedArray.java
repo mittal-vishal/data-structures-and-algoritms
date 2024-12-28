@@ -7,18 +7,21 @@ class SearchInRotatedArray {
         int end = nums.length-1;
         while(beg <= end){
             int mid = beg + (end-beg)/2;
-            if(nums[mid] == target){
+            if(target == nums[mid]){
                 return mid;
-            }else if(nums[beg] <= nums[mid]){
-                //left part is sorted
-                if(target >= nums[beg] && target <= nums[mid]){
+            }
+            //First half is sorted
+            else if(nums[beg] <= nums[mid]){
+                //check if target lies between beg and mid of first half, if yes, discard second half
+                if(nums[beg] <= target && target <= nums[mid]){
                     end = mid-1;
                 }else{
                     beg = mid+1;
                 }
-            }else{
-                //right part is sorted
-                if(target >= nums[mid] && target <= nums[end]){
+            }
+            //second half is sorted
+            else{
+                if(nums[mid] <= target && target <= nums[end]){
                     beg = mid+1;
                 }else{
                     end = mid-1;

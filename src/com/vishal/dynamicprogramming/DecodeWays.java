@@ -7,28 +7,28 @@ import java.util.Map;
 public class DecodeWays {
 
     public int numDecodings(String s) {
-        int[] dp = new int[s.length()];
-        Arrays.fill(dp, -1);
-        return decodeWays(s, 0, dp);
+        int[] memo = new int[s.length()+1];
+        Arrays.fill(memo, -1);
+        return decodeWays(s, 0, memo);
     }
 
-    private int decodeWays(String s, int index, int[] dp){
-        if(index == s.length()){
+    private int decodeWays(String s, int i, int[] memo){
+        if(i == s.length()){
             return 1;
-        }else if(s.charAt(index) == '0'){
+        }else if(s.charAt(i) == '0'){
             return 0;
-        }else if(dp[index] != -1){
-            return dp[index];
+        }else if(memo[i] != -1){
+            return memo[i];
         }
-        int singleDigit = decodeWays(s, index+1, dp);
-        int twoDigit = 0;
-        if(index+1 < s.length()){
-            String twoDigitStr = s.substring(index, index+2);
-            if(Integer.valueOf(twoDigitStr) >= 0 && Integer.valueOf(twoDigitStr) <= 26){
-                twoDigit = decodeWays(s, index+2, dp);
+        int singleCharLength = decodeWays(s, i+1, memo);
+        int doubleCharLength = 0;
+        if(i+1 < s.length()){
+            String twoCharStr = s.substring(i, i+2);
+            if(Integer.parseInt(twoCharStr) > 9 && Integer.parseInt(twoCharStr) <= 26){
+                doubleCharLength = decodeWays(s, i+2, memo);
             }
         }
-        return dp[index] = singleDigit + twoDigit;
+        return memo[i] = singleCharLength + doubleCharLength;
     }
 
 }

@@ -2,7 +2,13 @@ package com.vishal.google;
 
 public class KMP {
 
-    public int strStr(String haystack, String needle) {
+    public static void main(String[] args) {
+        String s = "ababcabcabababd";
+        String p = "ababd";
+        System.out.println(strStr(s,p));
+    }
+
+    public static int strStr(String haystack, String needle) {
         int i = 0;
         int j = 0;
         int[] lps = new int[needle.length()];
@@ -25,7 +31,7 @@ public class KMP {
         return -1;
     }
 
-    private void getLPS(String needle, int[] lps){
+    private static void getLPS(String needle, int[] lps){
         int i = 0;
         int j = 1;
         lps[0] = 0;

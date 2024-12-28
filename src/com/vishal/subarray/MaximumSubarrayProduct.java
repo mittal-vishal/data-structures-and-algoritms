@@ -3,24 +3,22 @@ package com.vishal.subarray;
 public class MaximumSubarrayProduct {
 
     public int maxProduct(int[] nums) {
-        int res = Integer.MIN_VALUE;
-        int currProduct = 1;
-        for(int i = 0; i < nums.length; i++){
-            currProduct *= nums[i];
-            res = Math.max(res, currProduct);
-            if(currProduct == 0){
-                currProduct = 1;
+        int result = Integer.MIN_VALUE;
+        int prefix = 1;
+        int suffix = 1;
+        int n = nums.length;
+        for(int i = 0; i < n; i++){
+            prefix *= nums[i];
+            suffix *= nums[n-i-1];
+            result = Math.max(result, Math.max(prefix, suffix));
+            if(prefix == 0){
+                prefix = 1;
+            }
+            if(suffix == 0){
+                suffix = 1;
             }
         }
-        currProduct = 1;
-        for(int i = nums.length - 1; i >= 0; i--){
-            currProduct *= nums[i];
-            res = Math.max(res, currProduct);
-            if(currProduct == 0){
-                currProduct = 1;
-            }
-        }
-        return res;
+        return result;
     }
 
 }
