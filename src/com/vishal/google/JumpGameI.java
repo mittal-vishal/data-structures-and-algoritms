@@ -8,21 +8,21 @@ public class JumpGameI {
 	}
 
 	public static boolean canJump(int[] nums) {
-		if(nums == null || nums.length == 0){
-			return false;
+		int jumps = nums[0];
+		int n = nums.length;
+		if(n == 1){
+			return true;
 		}
-
-		int maxReach = nums[0];
-
-		for(int i = 1; i < nums.length; i++){
-			if(maxReach < i){
+		for(int i = 0; i < n; i++){
+			jumps = Math.max(jumps, nums[i]);
+			if((i + jumps) >= n-1){
+				return true;
+			}else if(jumps <= 0){
 				return false;
 			}
-			maxReach = Math.max(maxReach, i +  nums[i]);
+			jumps--;
 		}
-
-		return true;
-
+		return false;
 	}
 
 }

@@ -7,30 +7,26 @@ import java.util.List;
 public class CombinationSumII {
 
     public List<List<Integer>> combinationSum2(int[] candidates, int target) {
-        List<List<Integer>> results = new ArrayList<>();
+        List<List<Integer>> result = new ArrayList<>();
         Arrays.sort(candidates);
-        combinationSum(candidates, 0, 0, target, new ArrayList<>(), results);
-        return results;
+        combinationSum(candidates, 0, target, new ArrayList<>(), result);
+        return result;
     }
 
-    private void combinationSum(int[] candidates, int idx, int sum, int target, List<Integer> result, List<List<Integer>> results){
-        if(sum >= target){
-            if(sum == target){
-                results.add(new ArrayList<>(result));
-            }
+    private void combinationSum(int[] candidates, int index, int target, List<Integer> ans, List<List<Integer>> result){
+        if(target == 0){
+            result.add(new ArrayList<>(ans));
             return;
         }
-        for(int i = idx; i < candidates.length; i++){
-            //skip duplicate cases
-            if((i > idx) && candidates[i] == candidates[i-1]){
+        for(int i = index; i < candidates.length; i++){
+            if(i > index && candidates[i] == candidates[i-1]){
                 continue;
             }
-            result.add(candidates[i]);
-            sum += candidates[i];
-            combinationSum(candidates, i+1, sum, target, result, results);
-            //backtrack
-            sum -= candidates[i];
-            result.remove(result.size()-1);
+            if(target >= candidates[i]){
+                ans.add(candidates[i]);
+                combinationSum(candidates, i+1, target-candidates[i], ans, result);
+                ans.remove(ans.size()-1);
+            }
         }
     }
 

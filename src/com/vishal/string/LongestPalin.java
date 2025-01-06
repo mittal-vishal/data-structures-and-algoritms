@@ -14,37 +14,35 @@ public class LongestPalin {
 	}
 
 	public static String longestPalindromeOptimal(String s) {
-		int maxLen = 0;
-		String longestPalin = "";
+		//for each index, expand around the corner to get the palindrome
+		String result = "";
 		for(int i = 0; i < s.length(); i++){
-			String palin = expandAroundTheMiddle(s, i, true);
-			if(palin.length() > maxLen){
-				longestPalin = palin;
-				maxLen = palin.length();
+			//for odd length
+			String palinOddLength = expandAroundCMiddle(s, i, i);
+			if(palinOddLength.length() > result.length()){
+				result = palinOddLength;
 			}
-			palin = expandAroundTheMiddle(s, i, false);
-			if(palin.length() > maxLen){
-				longestPalin = palin;
-				maxLen = palin.length();
+			//for even length
+			String palinEvenLength = expandAroundCMiddle(s, i, i+1);
+			if(palinEvenLength.length() > result.length()){
+				result = palinEvenLength;
 			}
 		}
-		return longestPalin;
+		return result;
 	}
 
-	private static String expandAroundTheMiddle(String s, int index, boolean isOdd){
-		int i = index;
-		int j = -1;
-		if(isOdd){
-			j = index;
-		}else{
-			j = index+1;
+	private static String expandAroundCMiddle(String s, int i, int j){
+		int left = 0;
+		int right = s.length()-1;
+		while(i >= left && j <= right){
+			if(s.charAt(i) == s.charAt(j)){
+				i--;
+				j++;
+			}else{
+				break;
+			}
 		}
-		while(i >= 0 && j < s.length() && s.charAt(i) == s.charAt(j)){
-			i--;
-			j++;
-		}
-		i++;
-		return s.substring(i, j);
+		return s.substring(i+1, j);
 	}
 
 	public String longestPalindrome(String s) {

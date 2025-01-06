@@ -6,26 +6,24 @@ import java.util.List;
 public class CombinationSum {
 
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
-        List<List<Integer>> results = new ArrayList<>();
-        combinationSum(candidates, 0, 0, target, new ArrayList<>(), results);
-        return results;
+        List<List<Integer>> result = new ArrayList<>();
+        combinationSum(candidates, candidates.length-1, target, new ArrayList<>(), result);
+        return result;
     }
 
-    private void combinationSum(int[] candidates, int idx, int sum, int target, List<Integer> result, List<List<Integer>> results){
-        if(idx == candidates.length || sum > target){
-            if(sum == target){
-                results.add(new ArrayList<>(result));
-            }
+    private void combinationSum(int[] candidates, int i, int target, List<Integer> ans, List<List<Integer>> result){
+        if(i < 0){
+            return;
+        }else if(target == 0){
+            result.add(new ArrayList<>(ans));
             return;
         }
-        //pick
-        result.add(candidates[idx]);
-        sum += candidates[idx];
-        combinationSum(candidates, idx, sum, target, result, results);
-        //non pick
-        result.remove(result.size()-1);
-        sum -= candidates[idx];
-        combinationSum(candidates, idx+1, sum, target, result, results);
+        if(target >= candidates[i]){
+            ans.add(candidates[i]);
+            combinationSum(candidates, i, target-candidates[i], ans, result);
+            ans.remove(ans.size()-1);
+        }
+        combinationSum(candidates, i-1, target, ans, result);
     }
 
 }
