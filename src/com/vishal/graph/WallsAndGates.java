@@ -6,65 +6,50 @@ import java.util.Queue;
 public class WallsAndGates {
 
     static class Cell{
-        int row;
-        int col;
-        int dist;
-        public Cell(int row, int col, int dist){
-            this.row = row;
-            this.col = col;
-            this.dist = dist;
+        int i;
+        int j;
+        public Cell(int i, int j){
+            this.i = i;
+            this.j = j;
         }
     }
-
     public void wallsAndGates(int[][] rooms) {
-        if(rooms == null || rooms.length == 0 || rooms[0].length == 0){
-            return;
-        }
         Queue<Cell> queue = new LinkedList<>();
-        for(int i = 0; i < rooms.length; i++){
-            for(int j = 0; j < rooms[0].length; j++){
+        int m = rooms.length;
+        int n = rooms[0].length;
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
                 if(rooms[i][j] == 0){
-                    queue.offer(new Cell(i, j, 0));
+                    queue.offer(new Cell(i,j));
                 }
             }
         }
-        int[][] dirs = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+        int dist = 1;
+        int[][] dirs = {{0,1}, {0,-1}, {-1,0}, {1,0}};
         while(!queue.isEmpty()){
-            Cell polledCell = queue.poll();
-            for(int[] dir: dirs){
-                int currRow = polledCell.row + dir[0];
-                int currCol = polledCell.col + dir[1];
-                if(!isValid(currRow, currCol, rooms) ||
-                        rooms[currRow][currCol] == -1 || rooms[currRow][currCol] == 0){
-                    continue;
-                }
-                if(rooms[polledCell.row][polledCell.col] + 1 < rooms[currRow][currCol]){
-                    rooms[currRow][currCol] = rooms[polledCell.row][polledCell.col] + 1;
-                    queue.offer(new Cell(currRow, currCol, rooms[currRow][currCol]));
+            int size = queue.size();
+            for(int i = 0; i < size; i++){
+                Cell curr = queue.poll();
+                for(int[] dir: dirs){
+                    int newRow = curr.i + dir[0];
+                    int newCol = curr.j + dir[1];
+                    if(isValid(newRow, newCol, rooms) && rooms[newRow][newCol] > dist){
+                        rooms[newRow][newCol] = dist;
+                        queue.offer(new Cell(newRow,newCol));
+                    }
                 }
             }
+            dist++;
         }
     }
-
     private boolean isValid(int i, int j, int[][] rooms){
-        if(i >= 0 && i < rooms.length && j >= 0 && j < rooms[0].length){
-            return true;
-        }else{
+        if(i < 0 || j < 0 || i == rooms.length || j == rooms[i].length){
             return false;
         }
-    }
-
-    public static void main(String[] args) {
-        int[][] rooms = {{2147483647,-1,0,2147483647}, {2147483647,2147483647,2147483647,-1},
-                {2147483647,-1,2147483647,-1}, {0,-1,2147483647,2147483647}};
-        WallsAndGates wallsAndGates = new WallsAndGates();
-        wallsAndGates.wallsAndGates(rooms);
-        for(int i = 0; i < rooms.length; i++){
-            for(int j = 0; j < rooms[0].length; j++){
-                System.out.print(rooms[i][j] + " ");
-            }
-            System.out.println();
+        if(rooms[i][j] == -1 || rooms[i][j] == 0){
+            return false;
         }
+        return true;
     }
 
 }

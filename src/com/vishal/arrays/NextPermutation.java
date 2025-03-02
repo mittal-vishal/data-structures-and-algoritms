@@ -1,52 +1,48 @@
 package com.vishal.arrays;
 
-import java.util.Arrays;
-
 public class NextPermutation {
 
     public void nextPermutation(int[] nums) {
-        int swappedPos = -1;
-        int n = nums.length;
-
-        for(int i = n-2; i >= 0; i--){
+        int indexToBeSwapped = -1;
+        int i = nums.length-2;
+        while(i >= 0){
             if(nums[i] < nums[i+1]){
-                swappedPos = i;
+                indexToBeSwapped = i;
                 break;
             }
+            i--;
         }
-
-        if(swappedPos != -1){
-            int swappedWith = n-1;
-
-            while(swappedWith != swappedPos){
-                if(nums[swappedWith] > nums[swappedPos])
+        if(indexToBeSwapped != -1){
+            i = nums.length-1;
+            while(i != indexToBeSwapped){
+                if(nums[i] > nums[indexToBeSwapped]){
+                    swap(nums, i, indexToBeSwapped);
+                    reverse(indexToBeSwapped+1, nums);
                     break;
-                else
-                    swappedWith--;
-            }
-
-            int temp = nums[swappedPos];
-            nums[swappedPos] = nums[swappedWith];
-            nums[swappedWith] = temp;
-
-            for(int i = swappedPos + 1; i < n; i++){
-                int min = i;
-                for(int j = i + 1; j < n; j++){
-                    if(nums[j] < nums[min]){
-                        min = j;
-                    }
                 }
-                if(min != i){
-                    temp = nums[i];
-                    nums[i] = nums[min];
-                    nums[min] = temp;
-                }
+                i--;
             }
-
         }else{
-            Arrays.sort(nums);
+            reverse(0, nums);
         }
+    }
 
+    private void reverse(int i, int[] nums){
+        int left = i;
+        int right = nums.length-1;
+        while(left < right){
+            int temp = nums[left];
+            nums[left] = nums[right];
+            nums[right] = temp;
+            left++;
+            right--;
+        }
+    }
+
+    private void swap(int[] nums, int i, int j){
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
     }
 
 }

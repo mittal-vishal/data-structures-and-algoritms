@@ -5,37 +5,36 @@ import java.util.Stack;
 
 public class ExclusiveTimeOfFunction {
 
-    static class Log{
+    static class Function{
         int id;
-        int ts;
-        int childTs;
-        public Log(int id, int ts){
+        int executionTime;
+        int childExecutionTime;
+        public Function(int id, int executionTime){
             this.id = id;
-            this.ts = ts;
+            this.executionTime = executionTime;
         }
     }
 
     public int[] exclusiveTime(int n, List<String> logs) {
-        Stack<Log> stack = new Stack<>();
-        int[] res = new int[n];
+        int[] exclusiveTimes = new int[n];
+        Stack<Function> stack = new Stack<>();
         for(String log: logs){
-            String[] logParts = log.split(":");
-            int currLogId = Integer.valueOf(logParts[0]);
-            int currLogTs = Integer.valueOf(logParts[2]);
-            boolean isStart = logParts[1].equals("start")? true: false;
+            String[] logInfo = log.split(":");
+            int id = Integer.valueOf(logInfo[0]);
+            boolean isStart = logInfo[1].equals("start") ? true : false;
+            int currExecutionTime = Integer.valueOf(logInfo[2]);
             if(isStart){
-                stack.push(new Log(currLogId, currLogTs));
+                stack.push(new Function(id, currExecutionTime));
             }else{
-                Log prevLog = stack.pop();
-                int interval = currLogTs - prevLog.ts + 1;
-                int executionTime = interval - prevLog.childTs;
-                res[currLogId] += executionTime;
-                if(stack.size() > 0){
-                    stack.peek().childTs += interval;
+                Function prev = stack.pop();
+                int totalTime = (currExecutionTime - prev.executionTime + 1) - prev.childExecutionTime;
+                exclusiveTimes[id] += totalTime;
+                if(!stack.isEmpty()){
+                    stack.peek().childExecutionTime += currExecutionTime - prev.executionTime + 1;
                 }
             }
         }
-        return res;
+        return exclusiveTimes;
     }
 
 }

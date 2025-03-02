@@ -43,9 +43,6 @@ public class MinMovesToMoveBoxToTargetLocation {
                     return steps;
                 }
                 for(int j = 0; j < dirs.length; j++){
-                    if(visited[currBoxLoc[0]][currBoxLoc[1]][j]){
-                        continue;
-                    }
                     int newPersonRow = currBoxLoc[0] - dirs[j][0];
                     int newPersonCol = currBoxLoc[1] - dirs[j][1];
                     if(!isValid(newPersonRow, newPersonCol, row, col) || grid[newPersonRow][newPersonCol] == '#'){
@@ -56,12 +53,12 @@ public class MinMovesToMoveBoxToTargetLocation {
                     if(!isValid(newBoxRow, newBoxCol, row, col) || grid[newBoxRow][newBoxCol] == '#'){
                         continue;
                     }
-                    if(!isReachable(newPersonRow, newPersonCol, currBoxLoc, currPersonLoc)){
-                        continue;
+                    if(isReachable(newPersonRow, newPersonCol, currBoxLoc, currPersonLoc)
+                            && !visited[newBoxRow][newBoxRow][j]){
+                        visited[newBoxRow][newBoxRow][j] = true;
+                        boxQueue.offer(new int[]{newBoxRow,newBoxCol});
+                        personQueue.offer(new int[]{newPersonRow,newPersonCol});
                     }
-                    visited[currBoxLoc[0]][currBoxLoc[1]][j] = true;
-                    boxQueue.offer(new int[]{newBoxRow,newBoxCol});
-                    personQueue.offer(new int[]{newPersonRow,newPersonCol});
                 }
             }
             steps++;

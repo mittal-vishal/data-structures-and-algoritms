@@ -2,42 +2,57 @@ package com.vishal.graph;
 
 public class MaxAreaIsland {
 
+    public static void main(String[] args) {
+        int[][] grid = {{0,0,1,0,0,0,0,1,0,0,0,0,0},
+                        {0,0,0,0,0,0,0,1,1,1,0,0,0},
+                        {0,1,1,0,1,0,0,0,0,0,0,0,0},
+                        {0,1,0,0,1,1,0,0,1,0,1,0,0},
+                        {0,1,0,0,1,1,0,0,1,1,1,0,0},
+                        {0,0,0,0,0,0,0,0,0,0,1,0,0},
+                        {0,0,0,0,0,0,0,1,1,1,0,0,0},
+                        {0,0,0,0,0,0,0,1,1,0,0,0,0}};
+        MaxAreaIsland maxAreaIsland = new MaxAreaIsland();
+        int ans = maxAreaIsland.maxAreaOfIsland(grid);
+        System.out.println(ans);
+    }
+
+    private int[][] dirs = {{-1,0}, {0,1}, {1,0}, {0, -1}};
     public int maxAreaOfIsland(int[][] grid) {
-        if(grid == null || grid.length == 0){
-            return 0;
-        }
-        int rows = grid.length;
-        int cols = grid[0].length;
-        boolean[][] visited = new boolean[rows][cols];
-        int maxArea = 0;
-        for(int i = 0; i < rows; i++){
-            for(int j = 0; j < cols; j++){
-                if(!visited[i][j] && grid[i][j] == 1){
-                    int area = dfs(i, j, grid, visited);
-                    maxArea = Math.max(maxArea, area);
+        int m = grid.length;
+        int n = grid[0].length;
+        int result = 0;
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(grid[i][j] == 1){
+                    int area = dfs(i, j, grid);
+                    result = Math.max(result, area);
                 }
             }
         }
-        return maxArea;
+        return result;
     }
 
-    private int dfs(int i, int j, int[][] grid, boolean[][] visited){
-        if(!isValid(i, j, grid) || visited[i][j] || grid[i][j] == 0){
+    private int dfs(int i, int j, int[][] grid){
+        if(!isValid(i, j, grid) || grid[i][j] == 0){
             return 0;
         }
-        visited[i][j] = true;
-        int up = dfs(i - 1, j, grid, visited);
-        int bottom = dfs(i + 1, j, grid, visited);
-        int left = dfs(i, j - 1, grid, visited);
-        int right = dfs(i, j + 1, grid, visited);
-        return (1 + up + bottom + left + right);
+        //mark current as visited
+        grid[i][j] = 0;
+        int area = 1;
+        for(int[] dir: dirs){
+            int newRow = i + dir[0];
+            int newCol = j + dir[1];
+            area += dfs(newRow, newCol, grid);
+        }
+        return area;
     }
 
     private boolean isValid(int i, int j, int[][] grid){
-        if(i >= 0 && i < grid.length && j >= 0 && j < grid[0].length){
+        if(i >= 0 && i < grid.length && j >= 0 && j < grid[i].length){
             return true;
+        }else{
+            return false;
         }
-        return false;
     }
 
 }
