@@ -2,59 +2,54 @@ package com.vishal.graph;
 
 import java.util.Arrays;
 import java.util.PriorityQueue;
+import java.util.Queue;
 
 public class PathWithMinimumEffort {
 
-    private int INT_MAX = (int)1e8;
-
-    class Cell{
+    static class Cell{
         int row;
         int col;
-        int diff;
-        public Cell(int row, int col, int diff){
+        int effort;
+        public Cell(int row, int col, int effort){
             this.row = row;
             this.col = col;
-            this.diff = diff;
+            this.effort = effort;
         }
     }
 
     public int minimumEffortPath(int[][] heights) {
-        int row = heights.length;
-        int col = heights[0].length;
-        int[][] dist = new int[row][col];
-        for(int i = 0; i < row; i++){
-            Arrays.fill(dist[i], INT_MAX);
+        int[][] efforts = new int[heights.length][heights[0].length];
+        Queue<Cell> queue = new PriorityQueue<>((a, b) -> a.effort - b.effort);
+        queue.offer(new Cell(0,0,0));
+        int[][] dirs = {{-1,0},{0,1},{1,0},{0,-1}};
+        for(int i = 0; i < heights.length; i++){
+            Arrays.fill(efforts[i], Integer.MAX_VALUE);
         }
-        dist[0][0] = 0;
-        PriorityQueue<Cell> pq = new PriorityQueue<>((a, b) -> a.diff-b.diff);
-        pq.offer(new Cell(0,0,0));
-        while(!pq.isEmpty()){
-            Cell polled = pq.poll();
-            if(polled.row == row-1 && polled.col == col-1){
-                return polled.diff;
-            }
-            int[][] dirs = {{0,1},{0,-1},{1,0},{-1,0}};
-            for(int i = 0; i < dirs.length; i++){
-                int newRow = polled.row + dirs[i][0];
-                int newCol = polled.col + dirs[i][1];
+        efforts[0][0] = 0;
+        while(!queue.isEmpty()){
+            Cell currCell = queue.poll();
+            for(int[] dir: dirs){
+                int newRow = currCell.row + dir[0];
+                int newCol = currCell.col + dir[1];
                 if(isValid(newRow, newCol, heights)){
-                    int newDiff = Math.abs(heights[newRow][newCol]-heights[polled.row][polled.col]);
-                    int pathMaxDiff = Math.max(newDiff, polled.diff);
-                    if(dist[newRow][newCol] > pathMaxDiff){
-                        dist[newRow][newCol] = pathMaxDiff;
-                        pq.offer(new Cell(newRow, newCol, pathMaxDiff));
+                    int currEffort = Math.max(efforts[currCell.row][currCell.col],
+                            Math.abs(heights[newRow][newCol]-heights[currCell.row][currCell.col]));
+                    if(currEffort < efforts[newRow][newCol]){
+                        efforts[newRow][newCol] = currEffort;
+                        queue.offer(new Cell(newRow, newCol, currEffort));
                     }
                 }
             }
         }
-        return 0;
+        return efforts[heights.length-1][heights[0].length-1];
     }
 
     private boolean isValid(int i, int j, int[][] heights){
-        if(i >= 0 && i < heights.length && j >= 0 && j < heights[0].length){
+        if(i >= 0 && i < heights.length && j >= 0 && j < heights[i].length){
             return true;
+        }else{
+            return false;
         }
-        return false;
     }
 
 }
