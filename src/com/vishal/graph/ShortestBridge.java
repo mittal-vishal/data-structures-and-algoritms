@@ -1,70 +1,85 @@
 package com.vishal.graph;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class ShortestBridge {
 
-    static class Point{
-        int x;
-        int y;
-        public Point(int x, int y){
-            this.x = x;
-            this.y = y;
+    static class Cell{
+        int i;
+        int j;
+        public Cell(int i, int j){
+            this.i = i;
+            this.j = j;
         }
     }
 
-    public int shortestBridge(int[][] A) {
-        List<Point> bridgeAList = new ArrayList<>();
-        List<Point> bridgeBList = new ArrayList<>();
-        int count = 0;
-        for(int i = 0; i < A.length; i++){
-            for(int j = 0; j < A[0].length; j++){
-                if(A[i][j] == 1){
-                    count++;
-                    if(count == 1){
-                        floodFill(A, i, j, bridgeAList);
-                    }else if(count == 2){
-                        floodFill(A, i, j, bridgeBList);
-                    }
+    private final int[][] dirs = {{0,1}, {0,-1}, {1,0}, {-1,0}};
+
+    public int shortestBridge(int[][] grid) {
+        //perform dfs and mark first island as visited
+        int m = grid.length;
+        int n = grid[0].length;
+        boolean[][] visited = new boolean[m][n];
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(grid[i][j] == 1){
+                    dfs(i, j, grid, visited);
+                    j = n;
+                    i = m;
                 }
             }
         }
-        int minDist = Integer.MAX_VALUE;
-        for(int i = 0; i < bridgeAList.size(); i++){
-            for(int j = 0; j < bridgeBList.size(); j++){
-                int currDist = Math.abs(bridgeAList.get(i).x - bridgeBList.get(j).x) +
-                        Math.abs(bridgeAList.get(i).y - bridgeBList.get(j).y) - 1;
-                minDist = Math.min(minDist, currDist);
+        Queue<Cell> queue = new LinkedList<>();
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(visited[i][j]){
+                    queue.offer(new Cell(i, j));
+                }
             }
         }
-        return minDist;
+        int dist = 0;
+        while(!queue.isEmpty()){
+            int queueSize = queue.size();
+            for(int i = 0; i < queueSize; i++){
+                Cell curr = queue.poll();
+                for(int[] dir: dirs){
+                    int newRow = curr.i + dir[0];
+                    int newCol = curr.j + dir[1];
+                    if(!isValid(newRow, newCol, grid) || visited[newRow][newCol]){
+                        continue;
+                    }
+                    visited[newRow][newCol] = true;
+                    if(grid[newRow][newCol] == 1){
+                        return dist;
+                    }else {
+                        queue.offer(new Cell(newRow, newCol));
+                    }
+                }
+            }
+            dist++;
+        }
+        return dist-1;
     }
 
-    private void floodFill(int[][] A, int i, int j, List<Point> list){
-        if(!isValid(i, j, A) || A[i][j] == 0){
+    private void dfs(int i, int j, int[][] grid, boolean[][] visited){
+        if(!isValid(i, j, grid) || grid[i][j] == 0 || visited[i][j]){
             return;
         }
-        list.add(new Point(i, j));
-        A[i][j] = 0;
-        floodFill(A, i-1, j, list);
-        floodFill(A, i+1, j, list);
-        floodFill(A, i, j-1, list);
-        floodFill(A, i, j+1, list);
-    }
-
-    private boolean isValid(int i, int j, int[][] A){
-        if(i >= 0 && i < A.length && j >= 0 && j < A[0].length){
-            return true;
+        visited[i][j] = true;
+        for(int[] dir: dirs){
+            int newRow = i + dir[0];
+            int newCol = j + dir[1];
+            dfs(newRow, newCol, grid, visited);
         }
-        return false;
     }
 
-    public static void main(String[] args) {
-        int[][] bridge = {{0,1},{1,0}};
-        ShortestBridge shortestBridge = new ShortestBridge();
-        int minDist = shortestBridge.shortestBridge(bridge);
-        System.out.println(minDist);
+    private boolean isValid(int i, int j, int[][] grid){
+        if(i >= 0 && i < grid.length && j >= 0 && j < grid[i].length){
+            return true;
+        }else{
+            return false;
+        }
     }
 
 }

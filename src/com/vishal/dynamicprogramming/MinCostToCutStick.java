@@ -8,35 +8,31 @@ import java.util.List;
 public class MinCostToCutStick {
 
     public int minCost(int n, int[] cuts) {
-        List<Integer> cutsList = new ArrayList<>();
-        cutsList.add(0);
-        for(int i = 0; i < cuts.length; i++){
-            cutsList.add(cuts[i]);
+        ArrayList<Integer> cutList = new ArrayList<>();
+        cutList.add(0);
+        for(int cut: cuts){
+            cutList.add(cut);
         }
-        cutsList.add(n);
-        Collections.sort(cutsList);
-        int[][] dp = new int[n][n];
-        for(int i = 0; i < n; i++){
-            Arrays.fill(dp[i], -1);
-        }
-        return minCost(1, cutsList.size()-2, cutsList, dp);
+        cutList.add(n);
+        int[][] dp = new int[cutList.size()][cutList.size()];
+        Collections.sort(cutList);
+        return minCost(cutList, 1, cutList.size()-2, dp);
     }
 
-    private int minCost(int i, int j, List<Integer> cuts, int[][] dp){
-        if(i > j){
+    private int minCost(List<Integer> cuts, int cutStart, int cutEnd, int[][] dp){
+        if(cutStart > cutEnd){
             return 0;
-        }else if(dp[i][j] != -1){
-            return dp[i][j];
+        }else if(dp[cutStart][cutEnd] != 0){
+            return dp[cutStart][cutEnd];
         }
-        int minimum = Integer.MAX_VALUE;
-        for(int cut = i; cut <= j; cut++){
-            int currCost = cuts.get(j+1) - cuts.get(i-1);
-            int left = minCost(i, cut-1, cuts, dp);
-            int right = minCost(cut+1, j, cuts, dp);
-            int totalCost = currCost + left + right;
-            minimum = Math.min(minimum, totalCost);
+        int res = Integer.MAX_VALUE;
+        for(int i = cutStart; i <= cutEnd; i++){
+            int leftCost = minCost(cuts, cutStart, i-1, dp);
+            int rightCost = minCost(cuts, i+1, cutEnd, dp);
+            int totalCost = (cuts.get(cutEnd+1) - cuts.get(cutStart-1)) + leftCost + rightCost;
+            res = Math.min(res, totalCost);
         }
-        return dp[i][j] = minimum;
+        return dp[cutStart][cutEnd] = res;
     }
 
 }
