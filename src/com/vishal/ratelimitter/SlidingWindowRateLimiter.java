@@ -1,16 +1,43 @@
 package com.vishal.ratelimitter;
 
-public class SlidingWindowRateLimiter implements RateLimiter{
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.atomic.AtomicInteger;
 
-    public SlidingWindowRateLimiter(){
+public class SlidingWindowRateLimiter {
+
+    private ConcurrentLinkedDeque<Long> requestsTs;
+    private final int maxRequests;
+    private final long windowSizeInMs;
+    private AtomicInteger count;
+
+    public SlidingWindowRateLimiter(int maxRequests, long windowSizeInMs){
+        this.maxRequests = maxRequests;
+        this.windowSizeInMs = windowSizeInMs;
+        this.count = new AtomicInteger();
+        requestsTs = new ConcurrentLinkedDeque<>();
     }
 
-    @Override
-    public void createRateLimiter(int bucketCapacity, int timeUnit, long userId) {
+    public boolean tryConsume() {
+        long currentTimeInMs = System.currentTimeMillis();
+        cleanUpOlderRequests(currentTimeInMs);
+        if(count.incrementAndGet() > maxRequests){
+            count.decrementAndGet();
+            return false;
+        }
+        //add current ts in queue
+        requestsTs.offerLast(currentTimeInMs);
+        return true;
     }
 
-    @Override
-    public boolean isAllowed(Integer userId) {
-        return false;
+    private void cleanUpOlderRequests(long currentTimeInMs) {
+        while(true){
+            Long prevTime = requestsTs.peekFirst();
+            if(prevTime == null || (currentTimeInMs - prevTime) <= windowSizeInMs){
+                break;
+            }
+            if(requestsTs.pollFirst() != null){
+                count.decrementAndGet();
+            }
+        }
     }
 }
