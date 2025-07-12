@@ -1,5 +1,7 @@
 package com.vishal.atlassian;
 
+import java.util.*;
+
 /*
 * 🚀 Context:
 You work in a robot factory. Once robots are built, they are moved to the shipping center using autonomous delivery carts.
@@ -60,6 +62,56 @@ Edit
 * */
 public class RobotPathFinder {
 
+    public static void main(String[] args) {
+        List<List<String>> paths = Arrays.asList(
+                Arrays.asList("B", "K"),
+                Arrays.asList("C", "K"),
+                Arrays.asList("E", "L"),
+                Arrays.asList("F", "G"),
+                Arrays.asList("J", "M"),
+                Arrays.asList("E", "F"),
+                Arrays.asList("C", "G"),
+                Arrays.asList("A", "B"),
+                Arrays.asList("A", "C"),
+                Arrays.asList("G", "H"),
+                Arrays.asList("G", "I")
+        );
+        Map<String,List<String>> result = findStartToEndPaths(paths);
+        System.out.println(result);
+    }
 
+    private static Map<String, List<String>> findStartToEndPaths(List<List<String>> paths) {
+        Map<String, List<String>> result = new HashMap<>();
+        //build graph and calculate inorder
+        HashMap<String,List<String>> graph = new HashMap<>();
+        HashMap<String,Integer> inDegree = new HashMap<>();
+        for(List<String> pair: paths){
+            String from = pair.get(0);
+            String to = pair.get(1);
+            graph.putIfAbsent(from, new ArrayList<>());
+            graph.get(from).add(to);
+            inDegree.put(to, inDegree.getOrDefault(to, 0) + 1);
+            inDegree.put(from, inDegree.getOrDefault(from, 0));
+        }
+        //dfs for all inorder
+        for(Map.Entry<String,Integer> entry: inDegree.entrySet()){
+            if(entry.getValue() == 0){
+                HashSet<String> destination = new HashSet<>();
+                dfs(entry.getKey(), graph, destination);
+                result.put(entry.getKey(), new ArrayList(destination));
+            }
+        }
+        return result;
+    }
+
+    private static void dfs(String key, HashMap<String, List<String>> graph, HashSet<String> destination) {
+        if(!graph.containsKey(key)){
+            destination.add(key);
+            return;
+        }
+        for(String neighbor: graph.get(key)){
+            dfs(neighbor, graph, destination);
+        }
+    }
 
 }

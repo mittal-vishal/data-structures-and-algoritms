@@ -91,7 +91,7 @@ Travis	Caledonia	Car 1	Car 1 reaches at 30min
 Jeremy	New Grafton	Car 2	Car 2 reaches at 40min, Car 1 at 45min
 Katie	Liverpool	Car 2	Car 2 starts here
 * */
-public class Carpool {
+public class CarPool {
 
     static class Edge{
         String city;

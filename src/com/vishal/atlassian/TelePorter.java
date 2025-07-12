@@ -1,5 +1,10 @@
 package com.vishal.atlassian;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+
 /*
 * 🧩 The Problem
 You're playing a game on a linear board with numbered positions:
@@ -61,5 +66,36 @@ Implement a function that returns all final positions you can reach after one di
 *
 * */
 public class TelePorter {
+
+    public static void main(String[] args) {
+        int lastNumber = 10;
+        int startPosition = 2;
+        List<String> teleporters = Arrays.asList("3,1", "5,10", "8,2");
+        int maxValue = 6;
+
+        HashSet<Integer> result = getFinalPositions(lastNumber, startPosition, teleporters, maxValue);
+        System.out.println("Reachable final positions: " + result);
+    }
+
+    private static HashSet<Integer> getFinalPositions(int lastNumber, int startPosition, List<String> teleporters, int maxValue) {
+        HashMap<Integer,Integer> telePorters = new HashMap<>();
+        for(String teleporter: teleporters){
+            Integer telePorterFrom = Integer.valueOf(teleporter.split(",")[0]);
+            Integer telePorterTo = Integer.valueOf(teleporter.split(",")[1]);
+            telePorters.put(telePorterFrom, telePorterTo);
+        }
+        HashSet<Integer> result = new HashSet<>();
+        for(int roll = 1; roll <= maxValue; roll++){
+            int startPosWithRoll = startPosition + roll;
+            if(startPosWithRoll > lastNumber){
+                startPosWithRoll = lastNumber;
+            }
+            if(telePorters.containsKey(startPosWithRoll)){
+                startPosWithRoll = telePorters.get(startPosWithRoll);
+            }
+            result.add(startPosWithRoll);
+        }
+        return result;
+    }
 
 }
