@@ -13,7 +13,7 @@ public class TokenBucketRateLimiter implements AutoCloseable {
     private ScheduledExecutorService scheduledExecutorService;
     private AtomicInteger tokens;
 
-    public void TokenBucketRateLimiter(int bucketSize, int refreshRate, long timeUnit) {
+    public TokenBucketRateLimiter(int bucketSize, int refreshRate, long timeUnit) {
         this.capacity = bucketSize;
         this.refillRate = refreshRate;
         this.refillUnitInMillis = timeUnit;
